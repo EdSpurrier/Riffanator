@@ -1,9 +1,11 @@
 import React, { memo, useState } from 'react';
+import EventBus from '../../systems/EventBus';
 import { Layout, Menu } from 'antd';
 
 import {
-  FolderOpenFilled,
+  AppstoreAddOutlined,
 } from '@ant-design/icons';
+
 
 const { Sider } = Layout;
 
@@ -17,51 +19,65 @@ function getItem(label, key, icon, children) {
 }
 
 const items = [
-  getItem('File Browser', '1', <FolderOpenFilled />),
+  getItem('File Selector', 'File Selector', <AppstoreAddOutlined />),
 ];
 
 const SideBarRight = memo((props) => {
-  const [current, setCurrent] = useState(new Array());
+  const [current, setCurrent] = useState([]);
 
   const onClick = (e) => {
-    //console.log('click ', e);
+    console.log('click ', e, items);
 
   };
+
 
   const onSelect = (e) => {
     //console.log('onSelect ', e);
-    console.log(current, e.key);
+    //console.log(current, e);
     setCurrent(e.key);
+
+    if (e.key === 'File Selector') {
+      EventBus.dispatch("FileSelector", { message: 'open' });
+    }
+
   };
 
   const onDeselect = (e) => {
-    console.log('onDeselect ', e);
-    setCurrent(new Array());
+    //console.log('onDeselect ', e);
+
+    if (e.key === 'File Selector') {
+      EventBus.dispatch("FileSelector", { message: 'close' });
+    }
+
+    setCurrent([]);
   };
 
   return (
-    <Sider
-      style={{
-          overflow: 'auto',
-          minHeight: '100vh',
-        }}
-      collapsed={true}
-      >
+    <>
+      <Sider
+        style={{
+            overflow: 'auto',
+            minHeight: '100vh',
+          }}
+        collapsed={true}
+        collapsedWidth={50}
+        >
 
-        <Menu 
-          onClick={onClick} 
-          onSelect={onSelect} 
-          onDeselect={onDeselect} 
-          selectedKeys={[current]}
-          multiple={true}
-          theme="dark" 
-          defaultSelectedKeys={[]} 
-          mode="inline" 
-          items={items} 
-          />
+          <Menu 
+            onClick={onClick} 
+            onSelect={onSelect} 
+            onDeselect={onDeselect} 
+            selectedKeys={[current]}
+            multiple={true}
+            theme="dark" 
+            defaultSelectedKeys={[]} 
+            mode="inline" 
+            items={items} 
+            />
 
-      
-    </Sider>
+        
+      </Sider>
+    </>
   );  
 });
 

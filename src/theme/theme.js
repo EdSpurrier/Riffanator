@@ -3,6 +3,7 @@ import { presetPalettes } from '@ant-design/colors';
 import colors from './colors';
 import fontSizes from './fontSizes';
 import buttons from './buttons';
+import animation from './animation';
 
 const withPalettes = (colors) => ({ ...colors, palettes: presetPalettes });
 const mq = Object.entries(breakpoints).reduce((obj, [key, value]) => {
@@ -22,6 +23,7 @@ const theme = {
   breakpoints: bpsArray,
   mq,
   colors: withPalettes(colors),
+  animation: animation,
   space: [0, 4, 8, 16, 24, 32, 40, 48, 56, 64, 128, 256],
   fonts: {
     sans: '"myriad-pro", "Helvetica Neue", Helvetica, Arial, sans-serif',

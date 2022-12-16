@@ -49,6 +49,7 @@ const SideBarLeft = memo((props) => {
           minHeight: '100vh',
         }}
       collapsed={true}
+      collapsedWidth={50}
       >
 
         <Menu 

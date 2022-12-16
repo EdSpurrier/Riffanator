@@ -5,6 +5,7 @@ import { theme } from './theme';
 import { ThemeProvider, createGlobalStyle } from 'styled-components';
 import SideBarLeft from './common/components/SideBarLeft';
 import SideBarRight from './common/components/SideBarRight';
+import FileSelector from './common/components/FileSelector';
 
 const GlobalStyles = createGlobalStyle`
   html, body {
@@ -22,8 +23,12 @@ function App() {
         <Layout>
           <Dashboard />
         </Layout>
+        <FileSelector>
+          hideFileSelector
+        </FileSelector>
         <SideBarRight />
       </Layout>
+      
     </ThemeProvider>
   );
 }

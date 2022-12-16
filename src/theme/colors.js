@@ -1,4 +1,10 @@
 const colors = {
+  dark : {
+    background: '#1A1A1A',
+    border: '#000',
+    text: '#fff'
+  },
+
   primary: '#0DD5F9',
   cyan100: '#CCF6FE',
   cyan200: '#80E9FC',
@@ -38,6 +44,8 @@ const colors = {
   greyUnknown2: '#E5E5E5',
   greyUnknown3: '#D9D9D9',
   yellow1: '#F7BE00',
+
+
 };
 
 module.exports = colors;
