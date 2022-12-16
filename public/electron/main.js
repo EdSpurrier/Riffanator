@@ -3,15 +3,23 @@ const path = require('path');
 const { app, BrowserWindow } = require('electron');
 const isDev = require('electron-is-dev');
 
+const { WINDOW, SHOW_FILEMENU, HIDE_DEVTOOLS } = require('./utils/constants');
+
+
+
 function createWindow() {
   // Create the browser window.
   const win = new BrowserWindow({
-    width: 800,
-    height: 600,
+    x: WINDOW.position.x,
+    y: WINDOW.position.y,
+    width: WINDOW.size.x,
+    height: WINDOW.size.y,
     webPreferences: {
       nodeIntegration: true,
     },
+    autoHideMenuBar: SHOW_FILEMENU //hide menu bar
   });
+
 
   // and load the index.html of the app.
   // win.loadFile("index.html");
@@ -21,8 +29,8 @@ function createWindow() {
       : `file://${path.join(__dirname, '../build/index.html')}`
   );
   // Open the DevTools.
-  if (isDev) {
-    win.webContents.openDevTools({ mode: 'detach' });
+  if (isDev && !HIDE_DEVTOOLS) {
+    win.webContents.openDevTools({ /* mode: 'detach' */ });
   }
 }
 
