@@ -1,7 +1,8 @@
 import clsx from 'clsx';
 import React, { memo, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import EventBus from '../EventBus';
+import EventBus from '../../systems/EventBus';
+
 
 const Container = styled.div`
     position: fixed;
@@ -20,7 +21,7 @@ const Container = styled.div`
 `
 
 
-const SlidePanel = memo(({ sidePanelId }) => {
+const SlidePanel = memo(({ children, sidePanelId }) => {
 
     const [activeState, setActiveState] = useState(false);
 

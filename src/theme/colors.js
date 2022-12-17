@@ -25,6 +25,16 @@ const standardColors = {
   blueGrey800: '#37474F',
   blueGrey900: '#263238',
 
+  amberA100: '#FFE57F',
+  amberA200: '#FFD740',
+  amberA400: '#FFC400',
+  amberA700: '#FFAB00',
+
+
+  orangeA100: '#FFD180',
+  orangeA200: '#FFAB40',
+  orangeA400: '#FF9100',
+  orangeA700: '#FF6D00',
 }
 
 
@@ -34,6 +44,36 @@ const colors = {
 
   primary       : standardColors.blue500,
   primaryHover  : standardColors.blue900,
+
+
+  instrumentTrack : {
+    background  : standardColors.blueGrey900,
+    text        : standardColors.white,
+
+    guitar  : {
+      background  : standardColors.blueGrey800,
+    }
+
+  },
+
+
+
+  trackScore : {
+    background  : standardColors.grey300,
+    border      : standardColors.grey600,
+    text        : standardColors.grey900,
+    note  : {
+      unselected  : standardColors.orangeA700,
+      selected    : standardColors.amberA700,
+      hover       : standardColors.amberA200,
+    },
+    
+    lines : {
+      beat        : standardColors.blueGrey400,
+      bar         : standardColors.blueGrey700,
+    }
+  },
+
 
 
 
@@ -91,6 +131,8 @@ const colors = {
     border: standardColors.black,
     text: standardColors.black,
   },
+
+
 
 };
 

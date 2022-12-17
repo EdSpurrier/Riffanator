@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useRef, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import EventBus from '../../systems/EventBus';
 
@@ -23,8 +23,6 @@ const Input = styled.input`
 const TransportSettings = memo(({ props }) => {
 
     const [tempo, setTempo] = useState(120);
-
-
 
     useEffect(() => {
 

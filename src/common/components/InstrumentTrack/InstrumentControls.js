@@ -1,9 +1,8 @@
 import React, { memo, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import LoopIcon from '../../components/Icons/LoopIcon';
-import PlayIcon from '../../components/Icons/PlayIcon';
-import SideBarButton from '../../components/SideBar/SideBarButton';
+import SideBarButton from '../SideBar/SideBarButton';
 import EventBus from '../../systems/EventBus';
+import SetupIcon from '../Icons/SetupIcon';
 
 const Container = styled.div`
     display             : flex;
@@ -14,35 +13,31 @@ const Container = styled.div`
 `
 
 
-function getItem(label, keyId, icon) {
+function getItem(label, keyId, icon, toggle = false) {
     return {
         label,
         keyId,
-        icon
+        icon,
+        toggle
     };
 }
 
 const items = [
-    getItem('Play', 'Play', <PlayIcon size={'1em'} />),
-    getItem('Loop', 'Loop', <LoopIcon size={'1em'} />),
+    getItem('Setup', 'Setup', <SetupIcon size={'1.25em'} />),
 ];
 
 
 
-const PlayControls = memo((props) => {
+const InstrumentControls = memo((props) => {
 
     const [current, setCurrent] = useState([]);
 
     useEffect(() => {
 
-
-        EventBus.dispatch("Update Transport", {
-            label: "Update Transport",
-            data: {
-                action: current
-            }
+        EventBus.dispatch("Update Instrument", {
+            label: props.instrumentName,
+            data: current
         });
-
 
     }, [current]);
 
@@ -68,7 +63,7 @@ const PlayControls = memo((props) => {
 
     const renderMenuButtons = (menuItems) => {
         return menuItems.map((menuItem, key) =>
-            <SideBarButton key={key} onClick={onClick} side={'bottom'} selected={current.includes(menuItem.keyId)} label={menuItem.label} keyId={menuItem.keyId}>
+            <SideBarButton key={key} onClick={onClick} side={'top'} selected={current.includes(menuItem.keyId) && menuItem.toggle} label={menuItem.label} keyId={menuItem.keyId}>
                 {menuItem.icon}
             </SideBarButton>
         )
@@ -81,6 +76,6 @@ const PlayControls = memo((props) => {
     );
 });
 
-PlayControls.displayName = 'PlayControls';
+InstrumentControls.displayName = 'InstrumentControls';
 
-export default PlayControls;
+export default InstrumentControls;

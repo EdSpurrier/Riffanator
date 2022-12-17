@@ -2,7 +2,7 @@ import React from 'react';
 import { theme } from './theme';
 import { ThemeProvider, createGlobalStyle } from 'styled-components';
 import FileSelector from './common/modules/FileSelector';
-import Layout from './common/components/Layout';
+import Layout from './Layout';
 import EventConsole from './common/systems/EventConsole';
 
 
@@ -10,6 +10,7 @@ const GlobalStyles = createGlobalStyle`
   html, body {
     background: ${({ theme }) => theme.colors.background};
     color: ${({ theme }) => theme.colors.text};
+    user-select: none;
   }
 `;
 
@@ -21,7 +22,7 @@ function App() {
 
         <Layout />
           
-        <EventConsole />
+        
         
         <FileSelector>
           hideFileSelector

@@ -19,7 +19,14 @@ const standardSizes = {
         small_medium    : "40px",
         medium          : "50px",
         large           : "75px",
-    }
+    },
+    tracks          : {
+        height : {
+            small   : "200px",
+            medium  : "400px",
+            large   : "600px",
+        }
+    },
 }
 
 const sizes = {
@@ -40,6 +47,35 @@ const sizes = {
     slidePanel : {
         width   : standardSizes.panels.width.large,
         padding : standardSizes.padding.small,
+    },
+
+    instrumentTrack : {
+        controlBar : {
+            height: standardSizes.small_medium,
+            paddingHorizontal: standardSizes.tiny, 
+        },
+
+        marginVertical : standardSizes.medium,
+        paddingVertical : standardSizes.small,
+
+
+    },
+
+    guitarInstrumentTrack : {
+        marginVertical : standardSizes.medium,
+        paddingVertical : standardSizes.tiny,  
+
+        trackScore : {
+            height          : standardSizes.tracks.height.small,
+            marginVertical : 0,
+            paddingVertical : 0,
+        }
+    },
+
+    trackScore : {
+        height          : standardSizes.tracks.height.medium,
+        marginVertical : standardSizes.small,
+        paddingVertical : standardSizes.small,
     }
 };
   

@@ -27,7 +27,7 @@ const EventConsole = memo(({ show }) => {
     const sidePanelId = "Event Console";
 
     const [eventLog, setEventLog] = useState([]);
-    const maxEventLogLength = 20;
+
 
     const updateEventLog = (eventName, event) => {
         setEventLog(eventLog => [...eventLog, eventName + JSON.stringify(event)]);
@@ -55,6 +55,15 @@ const EventConsole = memo(({ show }) => {
             updateEventLog('Update System', event)
         });
 
+        EventBus.on("Update Transport", (event) => {
+            //console.log('Update Transport', event)
+            updateEventLog('Update Transport', event)
+        });
+
+        EventBus.on("Update Instrument", (event) => {
+            updateEventLog("Update Instrument", event)
+        });
+
         EventBus.on("Update Dashboard", (event) => {
             //console.log('Update Dashboard', event)
             updateEventLog('Update Dashboard', event)
@@ -75,6 +84,8 @@ const EventConsole = memo(({ show }) => {
 
         return () => {
             EventBus.remove("Update System");
+            EventBus.remove("Update Transport");
+            EventBus.remove("Update Instrument");
             EventBus.remove("Update Dashboard");
             EventBus.remove("Update SidePanels");
         };
