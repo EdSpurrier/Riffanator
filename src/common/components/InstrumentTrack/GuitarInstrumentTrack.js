@@ -1,6 +1,7 @@
 import React, { memo } from 'react';
 import styled from 'styled-components';
-import Canvas from './InstrumentCanvas';
+import GuitarCanvas from './GuitarCanvas';
+import GuitarScore from './GuitarScore';
 import TrackScore from './TrackScore';
 
 const ControlBar = styled.div`
@@ -20,20 +21,20 @@ const Container = styled.div`
   padding-bottom      : ${({ theme }) => theme.sizes.guitarInstrumentTrack.paddingVertical};
 `
 
-const GuitarScore = styled.div`
+const GuitarScoreWrap = styled.div`
   background: ${({ theme }) => theme.colors.instrumentTrack.guitar.background};
-  height: 100px;
+
   width: 100%;
 `
 
-const GuitarCanvas = styled.canvas`
+/* const GuitarCanvas = styled.canvas`
   background: ${({ theme }) => theme.colors.instrumentTrack.guitar.background};
   height: 100px;
   width: 100%;
-`
+` */
 
 
-const GuitarInstrumentTrack = memo(({ children, instrumentData }) => {
+const GuitarInstrumentTrack = memo(({ children, instrumentData, guitar }) => {
 
 /*     const renderString = (tuning) => {
         return tuning.map((stringTuning, key) =>
@@ -48,9 +49,10 @@ const GuitarInstrumentTrack = memo(({ children, instrumentData }) => {
           { children }
         </ControlBar>
         
-        <GuitarScore>
-            <Canvas/>
-        </GuitarScore>
+        <GuitarScoreWrap>
+            <GuitarScore instrumentData={instrumentData} guitar={guitar} />
+            {/* <GuitarCanvas instrumentData={instrumentData} /> */}
+        </GuitarScoreWrap>
     </Container>
   );
 });

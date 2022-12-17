@@ -51,7 +51,7 @@ const colors = {
     text        : standardColors.white,
 
     guitar  : {
-      background  : standardColors.blueGrey800,
+      background  : standardColors.blueGrey50,
     }
 
   },

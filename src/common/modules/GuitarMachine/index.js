@@ -22,6 +22,10 @@ const GuitarMachine = memo(({ name, show }) => {
     const [guitar, setGuitar] = useState(new Guitar());
 
     const [instrumentData, setInstrumentData] = useState({
+        meta: {
+            instrumentName  : '',
+            setup           : false
+        },
         tuning: [],
         strings: [],
         style: [],
@@ -84,7 +88,7 @@ const GuitarMachine = memo(({ name, show }) => {
     return (
         <Container className={clsx(show?'active':'')}>
             
-            <GuitarInstrumentTrack instrumentData={instrumentData}>
+            <GuitarInstrumentTrack instrumentData={instrumentData} guitar={guitar}>
                 { name } : {renderTuning(instrumentData['tuning'])}
                 <InstrumentControls instrumentName={name} />
             </GuitarInstrumentTrack>

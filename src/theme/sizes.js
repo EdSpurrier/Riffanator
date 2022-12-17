@@ -22,6 +22,7 @@ const standardSizes = {
     },
     tracks          : {
         height : {
+            tiny    : "150px",
             small   : "200px",
             medium  : "400px",
             large   : "600px",
@@ -66,7 +67,7 @@ const sizes = {
         paddingVertical : standardSizes.tiny,  
 
         trackScore : {
-            height          : standardSizes.tracks.height.small,
+            height          : standardSizes.tracks.height.tiny,
             marginVertical : 0,
             paddingVertical : 0,
         }

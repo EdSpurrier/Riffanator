@@ -25,6 +25,8 @@ const Guitar = (numberOfStrings = 6, guitarTuning = 'Drop-B') => {
     var tuning = new Array();
     var strings = new Array();
     var style = Score;
+    var slices = new Array();
+
 
     var Init = () => {
         
@@ -47,6 +49,15 @@ const Guitar = (numberOfStrings = 6, guitarTuning = 'Drop-B') => {
 
         meta.instrumentName = setupData.instrumentName;
         meta.setup = true;
+    }
+
+
+    var GatherSlices = () => {
+        
+        slices = new Array();
+
+
+        
     }
 
     var GetInstrumentSliceByNoteId = (noteId) => {
