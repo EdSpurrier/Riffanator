@@ -1,6 +1,8 @@
 import React, { memo, useEffect, useState } from 'react';
+import SlideDrawer from '../../components/SlideDrawer';
 import EventBus from '../../systems/EventBus';
-import SlideDrawer from '../SlideDrawer';
+import FolderSelector from '../../utils/FolderSelector';
+
 
 const FileSelector = memo(() => {
 
@@ -36,6 +38,8 @@ const FileSelector = memo(() => {
             <SlideDrawer
                 openState={open}
             >
+                <FolderSelector />
+
                 Hello Stuff Here
             </SlideDrawer>
         </>
