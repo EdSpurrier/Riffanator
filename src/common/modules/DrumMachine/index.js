@@ -1,14 +1,17 @@
 import React, { memo } from 'react';
-import { Layout } from 'antd';
-const { Content } = Layout;
+import styled from 'styled-components';
+
+const Container = styled.div`
+
+`
 
 const DrumMachine = memo(({ name, show }) => {
 
     return (
         show ? (
-            <Content>
+            <Container>
                 { name } : DrumMachine
-            </Content>
+            </Container>
         ) : <></>
     );
     

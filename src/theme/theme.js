@@ -1,11 +1,13 @@
 import breakpoints from '../common/breakpoints';
-import { presetPalettes } from '@ant-design/colors';
+import './form-reset.css';
 import colors from './colors';
 import fontSizes from './fontSizes';
 import buttons from './buttons';
 import animation from './animation';
+import sizes from './sizes';
+import heirarchy from './heirarchy';
 
-const withPalettes = (colors) => ({ ...colors, palettes: presetPalettes });
+
 const mq = Object.entries(breakpoints).reduce((obj, [key, value]) => {
   obj[key] = `@media (min-width: ${value})`;
   obj[`${key}Inverted`] = `@media (max-width: ${value})`;
@@ -22,8 +24,10 @@ const bpsArray = Object.entries(breakpoints).reduce((arr, bp) => {
 const theme = {
   breakpoints: bpsArray,
   mq,
-  colors: withPalettes(colors),
+  colors: colors,
   animation: animation,
+  sizes: sizes,
+  heirarchy: heirarchy,
   space: [0, 4, 8, 16, 24, 32, 40, 48, 56, 64, 128, 256],
   fonts: {
     sans: '"myriad-pro", "Helvetica Neue", Helvetica, Arial, sans-serif',

@@ -1,14 +1,18 @@
 import React, { memo } from 'react';
-import { Layout } from 'antd';
-const { Content } = Layout;
+import styled from 'styled-components';
+
+const Container = styled.div`
+
+`
+
 
 const VocalMachine = memo(({ name, show }) => {
 
     return (
         show ? (
-            <Content>
+            <Container>
                 { name } : VocalMachine
-            </Content>
+            </Container>
         ) : <></>
     );
     

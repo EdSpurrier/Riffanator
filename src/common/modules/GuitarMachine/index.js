@@ -1,14 +1,21 @@
 import React, { memo } from 'react';
-import { Layout } from 'antd';
-const { Content } = Layout;
+import styled from 'styled-components';
+import InstrumentTrack from '../../components/InstrumentTrack';
+
+const Container = styled.div`
+
+`
+
 
 const GuitarMachine = memo(({ name, show }) => {
 
     return (
         show ? (
-            <Content>
-                { name } : GuitarMachine
-            </Content>
+            <Container>
+                <InstrumentTrack>
+                    { name } : GuitarMachine
+                </InstrumentTrack>
+            </Container>
         ) : <></>
     );
     

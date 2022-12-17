@@ -1,50 +1,96 @@
+const standardColors = {
+
+  black: '#000',
+  white: '#fff',
+
+  grey50: '#E0E0E0',
+  grey100: '#F5F5F5',
+  grey200: '#EEEEEE',
+  grey300: '#E0E0E0',
+  grey400: '#BDBDBD',
+  grey500: '#9E9E9E',
+  grey600: '#757575',
+  grey700: '#616161',
+  grey800: '#424242',
+  grey900: '#212121',
+
+  blueGrey50: '#ECEFF1',
+  blueGrey100: '#CFD8DC',
+  blueGrey200: '#B0BEC5',
+  blueGrey300: '#90A4AE',
+  blueGrey400: '#78909C',
+  blueGrey500: '#607D8B',
+  blueGrey600: '#546E7A',
+  blueGrey700: '#455A64',
+  blueGrey800: '#37474F',
+  blueGrey900: '#263238',
+
+}
+
+
 const colors = {
-  dark : {
-    background: '#1A1A1A',
-    border: '#000',
-    text: '#fff'
+  background    : standardColors.grey900,
+  text          : standardColors.white,
+
+  primary       : standardColors.blue500,
+  primaryHover  : standardColors.blue900,
+
+
+
+  dashboard : {
+    button  : {
+      unselected  : standardColors.grey500,
+      selected    : standardColors.white,
+      hover       : standardColors.grey200,
+    },
+    background: standardColors.grey900,
+    border: standardColors.grey400,
+    text: standardColors.white
   },
 
-  primary: '#0DD5F9',
-  cyan100: '#CCF6FE',
-  cyan200: '#80E9FC',
-  cyanShadow: 'drop-shadow(0px 0px 6px rgba(5, 185, 217, 0.56))',
-  primaryHover: 'linear-gradient(0deg, rgba(4, 13, 33, 0.15), rgba(4, 13, 33, 0.15)), #0DD5F9',
-  black: '#000',
-  blue50: '#E0E7F2',
-  blue500: '#1242F9',
-  blue900: '#040D21',
-  white: '#fff',
-  grey50: '#F8F8F8',
-  grey100: '#F2F2F2',
-  grey200: '#CCCCCC',
-  grey300: '#B2B2B2',
-  grey400: '#E2E9F2',
-  grey500: '#808080',
-  grey600: '#666666',
-  grey700: '#4D4D4D',
-  grey900: '#1A1A1A',
-  green: '#37B34A',
-  coolGrey50: '#F3F6F9',
-  coolGrey100: '#EFF3F7',
-  coolGrey200: '#EBF0F6',
-  coolGrey400: '#E2E9F2',
-  coolGrey600: '#C9D0D9',
-  coolGrey800: '#595C60',
-  ratingStar: 'rgb(247, 190, 0)',
-  magenta500: '#DF00C7',
-  magenta100: '#FFB8F7',
-  purple500: '#8960F9',
-  purple100: '#CFBFFD',
-  success100: '#DEF9E1',
-  success500: '#B0F2B7',
-  warning50: '#FFF4E6',
-  warning900: '#AB370C',
-  greyUnknown: '#E0E0E0',
-  greyUnknown2: '#E5E5E5',
-  greyUnknown3: '#D9D9D9',
-  yellow1: '#F7BE00',
+  transport : {
+    button  : {
+      unselected  : standardColors.grey500,
+      selected    : standardColors.white,
+      hover       : standardColors.grey200,
+    },
+    background: standardColors.grey800,
+    border: standardColors.grey400,
+    text: standardColors.white,
+    input   : {
+      background  : standardColors.grey600,
+    } 
 
+  },
+
+  sideBar : {
+    button  : {
+      unselected  : standardColors.grey500,
+      selected    : standardColors.white,
+      hover       : standardColors.grey200,
+    },
+    background: standardColors.grey800,
+    border: standardColors.grey400,
+    text: standardColors.white,
+  },
+
+  dark : {
+    background: standardColors.grey900,
+    border: standardColors.black,
+    text: standardColors.white,
+  },
+
+  eventConsole : {
+    background: standardColors.grey700,
+    border: standardColors.black,
+    text: standardColors.black,
+  },
+
+  slidePanel : {
+    background: standardColors.grey700,
+    border: standardColors.black,
+    text: standardColors.black,
+  },
 
 };
 
