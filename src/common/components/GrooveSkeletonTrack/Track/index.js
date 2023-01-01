@@ -8,6 +8,7 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   color: ${({ theme }) => theme.colors.grooveSkeleton.track.text};
+  margin-bottom: ${({ theme }) => theme.sizes.grooveSkeleton.track.marginBottom};
 `
 
 const Track = styled.div`
@@ -17,8 +18,18 @@ const Track = styled.div`
   display: flex;
   align-items: center;
   position: relative;
+  z-index: ${({ theme }) => theme.heirarchy.grooveSkeleton.track};
   cursor: pointer;
-  margin: ${({ theme }) => theme.sizes.grooveSkeleton.track.marginVertical} ${({ theme }) => theme.sizes.grooveSkeleton.track.marginHorizontal};
+  margin: ${({ theme }) => theme.sizes.grooveSkeleton.track.marginVertical} 0;
+
+  .positionMarker {
+    opacity: 0;
+    transition: opacity ${({ theme }) => theme.animation.med};
+  }
+
+  &:hover .positionMarker {
+    opacity: 1;
+  }
 `
 
 const ControlLayer = styled.div`
@@ -27,18 +38,18 @@ const ControlLayer = styled.div`
     bottom: 0;
     left: 0;
     right: 0;
-    z-index: 50;
+    z-index: ${({ theme }) => theme.heirarchy.grooveSkeleton.controlLayer};
 `;
 
 const PositionMarker = styled.div`
     top: 0;
     bottom: 0;
-    background: red;
-    width: 1px;
+    background: ${({ theme }) => theme.colors.grooveSkeleton.track.positionMarker};
+    width: 2px;
     position: absolute;
     left: -1px;
     user-select: none;
-    z-index: 20;
+    z-index: ${({ theme }) => theme.heirarchy.grooveSkeleton.positionMarker};
 `
 
 const GrooveLane = styled.div`
@@ -47,7 +58,7 @@ const GrooveLane = styled.div`
     bottom: 0;
     left: 0;
     right: 0;
-    z-index: 10;
+    z-index: ${({ theme }) => theme.heirarchy.grooveSkeleton.grooveLane};
 `
 
 const GrooveNote = styled.div`
@@ -55,7 +66,7 @@ const GrooveNote = styled.div`
     top: 0;
     bottom: 0;
     opacity: 0.5;
-    z-index: 10;
+    z-index: ${({ theme }) => theme.heirarchy.grooveSkeleton.grooveNote};
     box-sizing: border-box;
 
 
@@ -78,6 +89,9 @@ const GrooveSkeletonTrackTrackLane = memo(({ children }) => {
     const [localMousePos, setLocalMousePos] = useState({});
 
     const [selectorPosition, setSelectorPosition] = useState(0);
+    
+    const [positionMarker, setPositionMarker] = useState(0);
+
 
     const [groove, setGroove] = useState([
         {
@@ -108,7 +122,13 @@ const GrooveSkeletonTrackTrackLane = memo(({ children }) => {
 
         setSelectorPosition(localX / event.target.offsetWidth);
 
-        setLocalMousePos({ x: localX, y: localY });
+        setLocalMousePos({ 
+            x: localX, 
+            y: localY
+        });
+
+
+        setPositionMarker(getResolutionPosition(localX / event.target.offsetWidth) * event.target.offsetWidth);
     };
 
     useEffect(() => {
@@ -131,13 +151,15 @@ const GrooveSkeletonTrackTrackLane = memo(({ children }) => {
 
 
     useEffect(() => {
-        console.log('groove update:', groove);
+        //console.log('groove update:', groove);
     }, [groove]);
 
 
     const getResolutionPosition = (position) => {
         return Maths.closestNumber(position, (1/window.grooveSkeleton.resolution));
     };
+
+
 
     const OnTrackClick = (event) => {
         let resolutionSelectorPosition = getResolutionPosition(selectorPosition);
@@ -147,7 +169,6 @@ const GrooveSkeletonTrackTrackLane = memo(({ children }) => {
             return;
         }
         
-
         if (event.type === 'click' && !event.ctrlKey) {
 
             console.log('Add Split', resolutionSelectorPosition);
@@ -294,8 +315,9 @@ const GrooveSkeletonTrackTrackLane = memo(({ children }) => {
                         onContextMenu={OnTrackClick}
                     />
                     <PositionMarker
+                        className={'positionMarker'}
                         style={{
-                            left: localMousePos.x + 'px',
+                            left: (positionMarker-1) + 'px',
                         }}
                     />
                     <GrooveLane>

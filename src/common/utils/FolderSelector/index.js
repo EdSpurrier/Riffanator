@@ -13,7 +13,7 @@ const FolderSelector = memo(({}) => {
 
 
     useEffect(() => {
-        console.log(files);
+        //console.log(files);
     }, [files]);
 
     const selectFolder = (e) => {

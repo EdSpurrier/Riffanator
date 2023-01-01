@@ -5,9 +5,10 @@ import GrooveSkeletonTrackTrackLane from './Track';
 
 
 const Container = styled.div`
-    width: 100%;
-`;
+    background: ${({ theme }) => theme.colors.grooveSkeleton.background};
 
+    padding: 0 ${({ theme }) => theme.sizes.grooveSkeleton.paddingHorizontal};
+`;
 
 
 const GrooveSkeletonTrack = memo(({ children }) => {

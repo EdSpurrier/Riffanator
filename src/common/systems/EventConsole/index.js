@@ -13,7 +13,7 @@ const Container = styled.div`
     background: ${({ theme }) => theme.colors.eventConsole.background};
     padding: ${({ theme }) => theme.sizes.eventConsole.padding};
     transition: right ${({ theme }) => theme.animation.med_slow};
-    z-index: ${({ theme }) => theme.heirarchy.slidePanels};
+    z-index: ${({ theme }) => theme.heirarchy.slidePanel};
     &.open {
         right: ${({ theme }) => theme.sizes.sideBar.width};
     }
@@ -30,7 +30,13 @@ const EventConsole = memo(({ show }) => {
 
 
     const updateEventLog = (eventName, event) => {
-        setEventLog(eventLog => [...eventLog, eventName + JSON.stringify(event)]);
+        try {
+            setEventLog(eventLog => [...eventLog, eventName + JSON.stringify(event)]);
+        } catch {
+            console.log('ERROR [updateEventLog()]>', eventName, event);
+            setEventLog(eventLog => [...eventLog, 'ERROR [updateEventLog()]>' + eventName]);
+        }
+        
     }
 
 

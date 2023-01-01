@@ -4,11 +4,12 @@ import EventBus from '../../systems/EventBus';
 import BassMachine from "../BassMachine";
 import DrumMachine from "../DrumMachine";
 import GrooveSkeleton from "../GrooveSkeleton";
+import RiffSettings from "../RiffSettings";
 import GuitarMachine from "../GuitarMachine";
 import VocalMachine from "../VocalMachine";
+import MidiCore from "../MidiCore";
 
 const Container = styled.div`
-
   background: ${({ theme }) => theme.colors.dashboard.background};
   width: 100%;
 `
@@ -32,6 +33,11 @@ const Dashboard = memo(() => {
 
   return (
     <Container>
+        <MidiCore />
+        <RiffSettings 
+          name="Riff Settings"
+          show={selectedInstruments.includes("Riff Settings")}
+        />
         <GrooveSkeleton 
           name="Groove Skeleton"
           show={selectedInstruments.includes("Groove Skeleton")}

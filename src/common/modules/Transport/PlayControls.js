@@ -47,6 +47,28 @@ const PlayControls = memo((props) => {
     }, [current]);
 
 
+    
+    
+    useEffect(() => {
+        
+        EventBus.on("Update System", (event) => {
+            
+            if (event.label === "Update MidiClock") {
+                //console.log("Update MidiClock", event.data.action, current);
+                if (event.data.action === "Stop") {
+                    deselectItem("Play");
+                }
+            }
+        });
+
+        return () => {
+            EventBus.remove("Update System");
+        };
+    }, []);
+
+
+
+
     const onClick = (keyId) => {
 
         if (current.includes(keyId)) {

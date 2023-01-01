@@ -7,7 +7,7 @@ import DrumkitIcon from '../../common/components/Icons/DrumkitIcon';
 import BassIcon from '../../common/components/Icons/BassIcon';
 import MicrophoneIcon from '../../common/components/Icons/MicrophoneIcon';
 import SkeletonIcon from '../../common/components/Icons/SkeletonIcon';
-
+import RiffSettingsIcon from '../../common/components/Icons/RiffSettingsIcon';
 
 function getItem(label, keyId, icon) {
     return {
@@ -18,6 +18,7 @@ function getItem(label, keyId, icon) {
 }
 
 const items = [
+    getItem('Riff Settings', 'Riff Settings', <RiffSettingsIcon size={'1.8em'} />),
     getItem('Groove Skeleton', 'Groove Skeleton', <SkeletonIcon size={'1.8em'} />),
     getItem('Guitar [One]', 'Guitar [One]', <GuitarIcon size={'1.8em'} />),
     getItem('Guitar [Two]', 'Guitar [Two]', <GuitarIcon size={'1.8em'} />),

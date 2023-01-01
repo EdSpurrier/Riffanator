@@ -3,16 +3,20 @@ const standardColors = {
   black: '#000',
   white: '#fff',
 
-  grey50: '#E0E0E0',
-  grey100: '#F5F5F5',
-  grey200: '#EEEEEE',
-  grey300: '#E0E0E0',
-  grey400: '#BDBDBD',
-  grey500: '#9E9E9E',
-  grey600: '#757575',
-  grey700: '#616161',
-  grey800: '#424242',
-  grey900: '#212121',
+  grey50:   '#E0E0E0',
+  grey100:  '#F5F5F5',
+  grey200:  '#EEEEEE',
+  grey300:  '#E0E0E0',
+  grey400:  '#BDBDBD',
+  grey500:  '#9E9E9E',
+  grey600:  '#757575',
+  grey700:  '#616161',
+  grey800:  '#424242',
+  grey800:  '#424242',
+  grey850:  '#313131',
+  grey900:  '#212121',
+  grey950:  '#141414',
+  grey1000: '#101010',
 
   blueGrey50: '#ECEFF1',
   blueGrey100: '#CFD8DC',
@@ -36,7 +40,11 @@ const standardColors = {
   orangeA400: '#FF9100',
   orangeA700: '#FF6D00',
 
+  tealGreen700: '#388E3C',
+  tealGreen900: '#1B5E20',
+
   green700: '#689F38',
+  green900: '#33691E',
 
   cyan200: '#80DEEA',
   cyan600: '#0097A7',
@@ -52,25 +60,64 @@ const colors = {
   primary       : standardColors.blue500,
   primaryHover  : standardColors.blue900,
 
-  grooveSkeleton : {
-    background  : standardColors.blueGrey900,
+  midiCore : {
+    background  : standardColors.grey850,
     text        : standardColors.white,
+    border      : standardColors.grey800,
+  },
+
+
+  riffSettings : {
+    background  : standardColors.grey850,
+    text        : standardColors.white,
+    border      : standardColors.grey800,
+  },
+
+
+
+  grooveSkeleton : {
+    background  : standardColors.grey850,
+    text        : standardColors.white,
+    border      : standardColors.grey800,
+
     controlBar : {
-      background  : standardColors.blueGrey700,
+      background  : standardColors.grey850,
       text        : standardColors.white,
       icon        : standardColors.white,
     },
+
     track : {
-      background  : standardColors.grey700,
-      text        : standardColors.black,
-      noteOn      : standardColors.green700,
-      noteOff     : standardColors.red900,
-      noteBorder  : standardColors.black,
+      background      : standardColors.blueGrey700,
+      text            : standardColors.black,
+      noteOn          : standardColors.green700,
+      noteOff         : standardColors.red900,
+      noteBorder      : standardColors.black,
+      positionMarker  : standardColors.orangeA400,
     }
 
   },
 
 
+  pianoKeyboard : {
+    background  : standardColors.grey850,
+    text        : standardColors.white,
+    border      : standardColors.grey800,
+
+    key : {
+      border              : standardColors.grey800,
+      onHoverBackground   : standardColors.orangeA200,
+      activeBackground    : standardColors.tealGreen700,
+    },
+
+    whiteKey : {
+      background          : standardColors.white,
+    },
+
+    blackKey : {
+      background          : standardColors.grey1000,
+    },
+
+  },
 
 
 
@@ -129,7 +176,7 @@ const colors = {
       selected    : standardColors.white,
       hover       : standardColors.grey200,
     },
-    background: standardColors.grey900,
+    background: standardColors.grey1000,
     border: standardColors.grey400,
     text: standardColors.white
   },

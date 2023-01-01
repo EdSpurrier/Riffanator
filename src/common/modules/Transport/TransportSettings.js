@@ -30,6 +30,8 @@ const TransportSettings = memo(({ props }) => {
             data: tempo
         });
 
+        //console.log(tempo);
+
     }, [tempo]);
 
     useEffect(() => {
@@ -50,7 +52,7 @@ const TransportSettings = memo(({ props }) => {
 
     return (
         <Container>
-            <Input type="text" value={tempo} onChange={(e)=>updateTempo(e.target.value)} />
+            <Input type="number" step="0.25" min="50" max="400" value={tempo} onChange={(e)=>updateTempo(e.target.value)} />
         </Container>
     );
     

@@ -20,6 +20,10 @@ const fontSizes = {
 
     grooveSkeleton : {
         controlBar : standardFontSizes.small,
+    },
+
+    riffSettings : {
+        controlBar : standardFontSizes.small,
     }
 }
 

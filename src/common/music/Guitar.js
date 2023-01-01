@@ -102,7 +102,7 @@ const Guitar = (stringCount = 6) => {
 
 
     var Init = () => {
-        console.log('Guitar Initiated.');
+        //console.log('Guitar Initiated.');
     }
 
     var Setup = (setupData) => {

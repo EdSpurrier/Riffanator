@@ -1,117 +1,179 @@
 const standardSizes = {
-    zero            : "0px",
-    micro           : "5px",
-    tiny            : "10px",
-    small           : "25px",
-    small_medium    : "40px",
-    medium          : "50px",
-    large           : "75px",
-    panels          : {
-        width : {
-            small   : "300px",
-            medium  : "500px",
-            large   : "750px",
+    zero: "0px",
+    micro: "5px",
+    tiny: "10px",
+    small: "25px",
+    small_medium: "40px",
+    medium: "50px",
+    large: "75px",
+
+    spacing: {
+
+    },
+
+    panels: {
+        width: {
+            small: "300px",
+            medium: "500px",
+            large: "750px",
         }
     },
 
-    gutters : {
-        micro           : "5px",
-        tiny            : "10px",
-        small           : "25px",
-        small_medium    : "40px",
-        medium          : "50px",
-        large           : "75px",
+    borders: {
+        top: "1px 0px 0px 0px",
+        bottom: "0px 0px 1px 0px",
+        left: "0px 0px 0px 1px",
+        right: "0px 1px 0px 0px",
+        vertical: "1px 0px 1px 0px",
+        horizontal: "0px 1px 0px 1px",
+        all: "1px 1px 1px 1px",
     },
 
-    padding : {
-        micro           : "5px",
-        tiny            : "10px",
-        small           : "25px",
-        small_medium    : "40px",
-        medium          : "50px",
-        large           : "75px",
+    gutters: {
+        micro: "5px",
+        tiny: "10px",
+        small: "25px",
+        small_medium: "40px",
+        medium: "50px",
+        large: "75px",
     },
 
-    grooveSkeleton      : {
-        height : {
-            track : "35px"
+    padding: {
+        micro: "5px",
+        tiny: "10px",
+        small: "25px",
+        small_medium: "40px",
+        medium: "50px",
+        large: "75px",
+    },
+
+    grooveSkeleton: {
+        height: {
+            controlBar: "20px",
+            track: "35px",
+
         }
     },
 
-    tracks          : {
-        height : {
-            tiny    : "150px",
-            small   : "200px",
-            medium  : "400px",
-            large   : "600px",
+    tracks: {
+        height: {
+            tiny: "150px",
+            small: "200px",
+            medium: "400px",
+            large: "600px",
         }
     },
 }
 
 const sizes = {
-    transport : {
-        height  : standardSizes.medium,
-        input   : {
-            height : standardSizes.small,
+    transport: {
+        height: standardSizes.medium,
+        input: {
+            height: standardSizes.small,
             padding: standardSizes.micro,
         }
     },
-    sideBar : {
-        width   : standardSizes.medium
+    sideBar: {
+        width: standardSizes.medium
     },
-    eventConsole : {
-        width   : standardSizes.panels.width.large,
-        padding : standardSizes.padding.small,
+    eventConsole: {
+        width: standardSizes.panels.width.large,
+        padding: standardSizes.padding.small,
     },
-    slidePanel : {
-        width   : standardSizes.panels.width.large,
-        padding : standardSizes.padding.small,
+    slidePanel: {
+        width: standardSizes.panels.width.large,
+        padding: standardSizes.padding.small,
     },
 
 
-    grooveSkeleton : {
+    grooveSkeleton: {
 
-        controlBar : {
+        paddingVertical: standardSizes.padding.micro,
+        border: standardSizes.borders.vertical,
+        paddingHorizontal: standardSizes.gutters.small,
+
+        controlBar: {
+            height: standardSizes.grooveSkeleton.height.controlBar,
+            controlSpacingHorizontal: standardSizes.tiny,
+            iconSpacingHorizontal: standardSizes.micro,
+            marginBottom: standardSizes.padding.micro,
+        },
+
+        track: {
+            height: standardSizes.grooveSkeleton.height.track,
+            marginVertical: standardSizes.zero,
+            marginBottom: standardSizes.padding.micro,
+        }
+
+    },
+
+    
+
+    riffSettings: {
+        border: standardSizes.borders.vertical,
+        paddingVertical: standardSizes.padding.tiny,
+        paddingHorizontal: standardSizes.gutters.small,
+
+        controlBar: {
+            height: standardSizes.grooveSkeleton.height.controlBar,
+            paddingHorizontal: standardSizes.gutters.small,
+            controlSpacingHorizontal: standardSizes.tiny,
+            iconSpacingHorizontal: standardSizes.micro,
+            marginBottom: standardSizes.padding.micro,
+        },
+
+    },
+
+
+    pianoKeyboard: {
+        paddingVertical: standardSizes.padding.micro,
+        border: standardSizes.borders.all,
+        marginHorizontal: standardSizes.gutters.small,
+
+        key: {
+            
+        },
+
+        whiteKey: {
+            border: standardSizes.borders.horizontal,
+        },
+
+        blackKey: {
+
+        }
+
+    },
+
+
+
+    instrumentTrack: {
+        controlBar: {
+            height: standardSizes.small_medium,
             paddingHorizontal: standardSizes.tiny,
         },
-        track : {
-            height              : standardSizes.grooveSkeleton.height.track,
-            marginHorizontal   : standardSizes.gutters.small,
-            marginVertical     : standardSizes.zero,
-        }
-    
-      },
 
-
-    instrumentTrack : {
-        controlBar : {
-            height: standardSizes.small_medium,
-            paddingHorizontal: standardSizes.tiny, 
-        },
-
-        marginVertical : standardSizes.medium,
-        paddingVertical : standardSizes.small,
+        marginVertical: standardSizes.medium,
+        paddingVertical: standardSizes.small,
 
 
     },
 
-    guitarInstrumentTrack : {
-        marginVertical : standardSizes.medium,
-        paddingVertical : standardSizes.tiny,  
+    guitarInstrumentTrack: {
+        marginVertical: standardSizes.medium,
+        paddingVertical: standardSizes.tiny,
 
-        trackScore : {
-            height          : standardSizes.tracks.height.tiny,
-            marginVertical : 0,
-            paddingVertical : 0,
+        trackScore: {
+            height: standardSizes.tracks.height.tiny,
+            marginVertical: 0,
+            paddingVertical: 0,
         }
     },
 
-    trackScore : {
-        height          : standardSizes.tracks.height.medium,
-        marginVertical : standardSizes.small,
-        paddingVertical : standardSizes.small,
+    trackScore: {
+        height: standardSizes.tracks.height.medium,
+        marginVertical: standardSizes.small,
+        paddingVertical: standardSizes.small,
     }
 };
-  
+
 module.exports = sizes;
-  

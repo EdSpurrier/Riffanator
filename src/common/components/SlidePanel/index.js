@@ -14,7 +14,7 @@ const Container = styled.div`
     background: ${({ theme }) => theme.colors.slidePanel.background};
     padding: ${({ theme }) => theme.sizes.slidePanel.padding};
     transition: right ${({ theme }) => theme.animation.med_slow};
-    z-index: ${({ theme }) => theme.heirarchy.slidePanels};
+    z-index: ${({ theme }) => theme.heirarchy.slidePanel};
     &.open {
         right: ${({ theme }) => theme.sizes.sideBar.width};
     }
