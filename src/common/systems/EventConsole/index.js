@@ -80,6 +80,11 @@ const EventConsole = memo(({ show }) => {
             };
         });
 
+        EventBus.on("Update GrooveSkeleton", (event) => {
+            //console.log('Update GrooveSkeleton', event)
+            updateEventLog('Update GrooveSkeleton', event)
+        });
+
 
 
         return () => {
@@ -88,6 +93,7 @@ const EventConsole = memo(({ show }) => {
             EventBus.remove("Update Instrument");
             EventBus.remove("Update Dashboard");
             EventBus.remove("Update SidePanels");
+            EventBus.remove("Update GrooveSkeleton");
         };
     }, []);
 

@@ -11,7 +11,6 @@ const Container = styled.div`
 `
 const Input = styled.input`
     padding: ${({ theme }) => theme.sizes.transport.input.padding};
-
     width: 50px;
     color: ${({ theme }) => theme.colors.transport.text};
     background: ${({ theme }) => theme.colors.transport.input.background};

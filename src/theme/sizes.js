@@ -1,4 +1,5 @@
 const standardSizes = {
+    zero            : "0px",
     micro           : "5px",
     tiny            : "10px",
     small           : "25px",
@@ -12,6 +13,16 @@ const standardSizes = {
             large   : "750px",
         }
     },
+
+    gutters : {
+        micro           : "5px",
+        tiny            : "10px",
+        small           : "25px",
+        small_medium    : "40px",
+        medium          : "50px",
+        large           : "75px",
+    },
+
     padding : {
         micro           : "5px",
         tiny            : "10px",
@@ -20,6 +31,13 @@ const standardSizes = {
         medium          : "50px",
         large           : "75px",
     },
+
+    grooveSkeleton      : {
+        height : {
+            track : "35px"
+        }
+    },
+
     tracks          : {
         height : {
             tiny    : "150px",
@@ -49,6 +67,21 @@ const sizes = {
         width   : standardSizes.panels.width.large,
         padding : standardSizes.padding.small,
     },
+
+
+    grooveSkeleton : {
+
+        controlBar : {
+            paddingHorizontal: standardSizes.tiny,
+        },
+        track : {
+            height              : standardSizes.grooveSkeleton.height.track,
+            marginHorizontal   : standardSizes.gutters.small,
+            marginVertical     : standardSizes.zero,
+        }
+    
+      },
+
 
     instrumentTrack : {
         controlBar : {

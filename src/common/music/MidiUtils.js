@@ -11,7 +11,6 @@ const MidiUtils = {
     },
 
     GetNoteNumber(noteName){
-        
         return midi2note(noteName) // => 'A4';
     }
 }

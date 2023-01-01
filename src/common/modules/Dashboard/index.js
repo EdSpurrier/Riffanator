@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import EventBus from '../../systems/EventBus';
 import BassMachine from "../BassMachine";
 import DrumMachine from "../DrumMachine";
+import GrooveSkeleton from "../GrooveSkeleton";
 import GuitarMachine from "../GuitarMachine";
 import VocalMachine from "../VocalMachine";
 
@@ -31,6 +32,10 @@ const Dashboard = memo(() => {
 
   return (
     <Container>
+        <GrooveSkeleton 
+          name="Groove Skeleton"
+          show={selectedInstruments.includes("Groove Skeleton")}
+        />
         <GuitarMachine 
           name="Guitar [One]"
           show={selectedInstruments.includes("Guitar [One]")}

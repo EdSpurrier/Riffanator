@@ -35,6 +35,13 @@ const standardColors = {
   orangeA200: '#FFAB40',
   orangeA400: '#FF9100',
   orangeA700: '#FF6D00',
+
+  green700: '#689F38',
+
+  cyan200: '#80DEEA',
+  cyan600: '#0097A7',
+  
+  red900: '#B71C1C',
 }
 
 
@@ -45,6 +52,27 @@ const colors = {
   primary       : standardColors.blue500,
   primaryHover  : standardColors.blue900,
 
+  grooveSkeleton : {
+    background  : standardColors.blueGrey900,
+    text        : standardColors.white,
+    controlBar : {
+      background  : standardColors.blueGrey700,
+      text        : standardColors.white,
+      icon        : standardColors.white,
+    },
+    track : {
+      background  : standardColors.grey700,
+      text        : standardColors.black,
+      noteOn      : standardColors.green700,
+      noteOff     : standardColors.red900,
+      noteBorder  : standardColors.black,
+    }
+
+  },
+
+
+
+
 
   instrumentTrack : {
     background  : standardColors.blueGrey900,
@@ -52,6 +80,24 @@ const colors = {
 
     guitar  : {
       background  : standardColors.blueGrey50,
+      slice       : standardColors.grey400,
+      border      : standardColors.grey400,
+
+      slice      : {
+        noteOn      : standardColors.green700,
+        noteOff     : standardColors.red900,
+
+        selected    : standardColors.amberA700,
+        hover       : standardColors.grey700,
+      },
+
+      string      : {
+        noteOn      : standardColors.green700,
+        noteOff     : standardColors.red900,
+
+        selected    : standardColors.orangeA400,
+        hover       : standardColors.orangeA200,
+      }
     }
 
   },

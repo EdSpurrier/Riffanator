@@ -4,130 +4,80 @@ import styled from 'styled-components';
 const Score = styled.div`
     background: white;
     width: 100%;
-`
-const Note = styled.div`
-  background: pink;
+    display: flex;
 `
 
-const Beat = styled.div`
-  background: yellow;
-  width: 25%;
-`
+const Slice = styled.div`
+    display: flex;
+    flex-direction: column;
+    background: ${({ theme }) => theme.colors.instrumentTrack.guitar.slice};
+    border-left: 1px solid ${({ theme }) => theme.colors.instrumentTrack.guitar.border};
+    border-right: 1px solid ${({ theme }) => theme.colors.instrumentTrack.guitar.border};
+    flex-grow: 4;
+    transition: border ${({ theme }) => theme.animation.fast};
 
-const Bar = styled.div`
-  background: blue;
-    height: 40px;
-    width: 25%;
-`
-
-const GuitarScore = memo(({ instrumentData, guitar }) => {
-
-/*     const [slices, setSlices] = useState([]); */
-
-
-    useEffect(() => {
-        if (instrumentData === null) {
-            return;
-        }
-        console.log("instrumentData Updated....", instrumentData);
-        
-    }, [instrumentData]);
-
-
-
-    const renderSlices = (guitarData) => {
-
-        let noteCount = 0;
-        let notes = new Array();
-
-        guitarData.strings.forEach(string => {
-            string.bars.forEach(bar => {
-                noteCount += bar.notes.length;
-            });
-        });
-
-
+    &:hover {
+        border-color: ${({ theme }) => theme.colors.instrumentTrack.guitar.slice.hover};
     }
 
+    &:hover .stringBox {
+        background: ${({ theme }) => theme.colors.instrumentTrack.guitar.string.hover};
+    }
 
+    &.barEnd {
+        border-right: 1px solid black;
+    }
+`
+const String = styled.div`
+    color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: ${({ theme }) => theme.colors.instrumentTrack.guitar.slice};
+    border-bottom: 1px solid ${({ theme }) => theme.colors.instrumentTrack.guitar.border};
+    height: 30px;
+    cursor: pointer;
+    /* transition: background ${({ theme }) => theme.animation.fast}; */
 
+    &:hover {
+        background: ${({ theme }) => theme.colors.instrumentTrack.guitar.string.hover};
+    }
+`
 
-    const renderScore = (thisData) => {
+const PlayStyle = styled.div`
+    color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: ${({ theme }) => theme.colors.instrumentTrack.guitar.slice};
+    border-bottom: 1px solid ${({ theme }) => theme.colors.instrumentTrack.guitar.border};
+    height: 30px;
+    cursor: pointer;
+    /* transition: background ${({ theme }) => theme.animation.fast}; */
 
+    &:hover {
+        background: ${({ theme }) => theme.colors.instrumentTrack.guitar.string.hover};
+    }
+`
+const GuitarScore = memo(({ slices }) => {
 
- 
-        if (instrumentData === null) {
-            return;
-        }
-
-        if (instrumentData.style === null) {
-            return;
-        }
-
-
-
-/* 
-        for(let i = 0; i < totalCount; i++) {
-
-            let instrumentSlice = {
-                tuning : tuning,
-                strings : thisData.strings.forEach(string => {
-                    return thisData.string.bars[barId].notes[barNoteId];
-                }),
-                style : style.bars[barId].notes[barNoteId]
-            };
-
-            slices.push(instrumentSlice);
-        } */
-
-        /* thisData.style.bars.forEach(bar => {
-            console.log(bar);
-        });
- */
-/*         thisData.style.bars.forEach(bar => {
-            console.log(bar);
-        }); */
-
-        
-
-
-/* 
-        thisData['style'].forEach(style => {
-            style['bars'].forEach(bar => {
-                console.log(bar);
-            });
-        }); 
- */
-        /* thisData.strings.forEach(string => {
-            string.bars.forEach(bar => {
-                //console.log(bar);
-            });
-        });
-
-        let totalCount = thisData.style.bars.length * 32;
-        console.log('totalCount', totalCount); */
-/*         console.log('totalCount', totalCount); */
-
-/*         let instrumentSlice = {
-            tuning : tuning,
-            strings : strings.forEach(string => {
-                return string.bars[barId].notes[barNoteId];
-            }),
-            style : style.bars[barId].notes[barNoteId]
-        }; */
-
-
-        return thisData.strings.map((string, key) =>
-            <Bar key={key}> -{key}| </Bar>
+    const renderScore = (slices) => {
+        return slices.map((slice, key) =>
+            <Slice key={key} className={(key+1) % 4 === 0?'barEnd':''}>
+                {slice.strings.map((string, stringKey) =>
+                   <String className={'stringBox'} key={stringKey}>{(string.type !== 0)?string.fret:''}</String> 
+                )}
+                <PlayStyle className={'stringBox'}>{slice.style}</PlayStyle> 
+            </Slice>
         )
+
     }
 
 
     return (
 
         <Score className={'score'}>
-            {renderScore(instrumentData)}
-            
+            {renderScore(slices)}
         </Score>
     );
 });

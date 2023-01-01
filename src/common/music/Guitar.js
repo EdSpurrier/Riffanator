@@ -1,3 +1,5 @@
+import GuitarUtils from "./GuitarUtils";
+
 //==============
 //  GUITAR
 //  strings
@@ -5,89 +7,120 @@
 //--------------
 //
 //  tuning: Array of Notes for tuning of guitar
-//  string: Score for each string
+//  slice: {
+//      strings : [
+//          {
+//              fret : 0,
+//              type : 1
+//          },
+//      ],
+//      style   : note => (The Odin II play style)
+//  }
+//  string: {fret = 0-24, type = (1 = noteon, -1 = noteoff, 0 = nothing)}
 //  style: Score for the play style
 //  
 //==============
 
-import Bar from "./Bar";
-import GuitarUtils from "./GuitarUtils";
-import Score from "./Score";
+
+const Guitar = (stringCount = 6) => {
+
+    var createSliceString = (fret, type) => {
+
+        if (type === 'on') {
+            type = 1;
+        } else if (type === 'off') {
+            type = -1;
+        } else {
+            type = 0;
+        }
+
+        return {
+            fret    : fret || 0,
+            type    : type
+        }
+    }
 
 
 
-const Guitar = (numberOfStrings = 6, guitarTuning = 'Drop-B') => {
+    var CreateSlice = ( sliceData ) => {
+        return {
+            strings : [
+                sliceData.string[0],
+                sliceData.string[1],
+                sliceData.string[2],
+                sliceData.string[3],
+                sliceData.string[4],
+                sliceData.string[5],
+            ],
+            style : GuitarUtils.GetPlayStyle('open')
+        };
+    }
+
+
+    var CreateEmptySlice = () => {
+        return {
+            strings : [
+                createSliceString(),
+                createSliceString(),
+                createSliceString(),
+                createSliceString(),
+                createSliceString(),
+                createSliceString(),
+            ],
+            style : GuitarUtils.GetPlayStyle('none')
+        };
+    }
+
+
 
     var meta = {
         instrumentName  : '',
         setup           : false
     };
-    var tuning = new Array();
-    var strings = new Array();
-    var style = Score;
-    var slices = new Array();
+
+    var tuning = [];
+
+    var slices = [];
+
+
+
+
+    var UpdateSlideById = (sliceId, sliceData) => {
+        slices[sliceId] = CreateSlice(sliceData);
+    }
+
+
+
+    var GetSliceById = (sliceId) => {
+        return slices[sliceId];
+    }
+
+
+    var GenerateNewSliceAtEnd = (sliceId) => {
+        return slices[sliceId];
+    }
 
 
     var Init = () => {
-        
-        console.log('Guitar Initiated...');
+        console.log('Guitar Initiated.');
     }
 
     var Setup = (setupData) => {
         
-
         tuning = GuitarUtils.GetGuitarTuning(setupData.guitarTuning);
         
-        strings = Array(setupData.numberOfStrings).fill(Score);
- 
-        strings.forEach(string => {
-            string.bars = Array(setupData.barCount).fill(Bar);
-        });
+        let totalNotes = (setupData.barCount * 32);
+        slices = [];
 
-        style = Score;
-        style.bars = Array(setupData.barCount).fill(Bar);
+        slices = Array(totalNotes).fill(CreateEmptySlice());
 
         meta.instrumentName = setupData.instrumentName;
         meta.setup = true;
+
+        console.log('Guitar Setup.');
     }
 
 
-    var GatherSlices = () => {
-        
-        slices = new Array();
-
-
-        
-    }
-
-    var GetInstrumentSliceByNoteId = (noteId) => {
-
-        let barId = parseInt(Math.floor(noteId/32));
-        let barNoteId = noteId-(barId*32);
-
-        
-
-        let instrumentSlice = {
-            tuning : tuning,
-            strings : strings.forEach(string => {
-                return string.bars[barId].notes[barNoteId];
-            }),
-            style : style.bars[barId].notes[barNoteId]
-        };
-
-        console.log({
-            barId           : barId,
-            barNoteId       : barNoteId,
-            instrumentSlice : instrumentSlice
-        });
-
-        return instrumentSlice;
-    }
-
-
-    var SetNoteOn = (stringId, fretNumber) => {
-
-    }
 
     var GetMeta = () => {
         return meta;
@@ -97,22 +130,17 @@ const Guitar = (numberOfStrings = 6, guitarTuning = 'Drop-B') => {
         return tuning;
     }
 
-    var GetStrings = () => {
-        return strings;
+    var GetSlices = () => {
+        return slices;
     }
 
-
-    var GetStyle = () => {
-        return style;
-    }
 
 
     var GetAllData = () => {
         return {
             meta: GetMeta(),
             tuning: GetTuning(),
-            strings: GetStrings(),
-            style: GetStyle(),
+            slices: GetSlices()
         };
     }
 
@@ -120,8 +148,6 @@ const Guitar = (numberOfStrings = 6, guitarTuning = 'Drop-B') => {
     Init();
 
     return {
-
-
         Setup       : function (setupData) {
             Setup (setupData);
             return this;
@@ -131,21 +157,13 @@ const Guitar = (numberOfStrings = 6, guitarTuning = 'Drop-B') => {
             return GetAllData();
         },
 
+        GetSlices : function () {
+            return GetSlices();
+        },
+
         GetTuning   : function () {
             return GetTuning();
-        },
-        
-        GetStrings  : GetStrings,
-
-        GetStyle    : GetStyle,
-
-        SetNoteOn : SetNoteOn = (stringId, fretNumber) => {
-            return SetNoteOn(stringId, fretNumber);
-        },
-
-        GetInstrumentSliceByNoteId : GetInstrumentSliceByNoteId = (noteId) => {
-            return GetInstrumentSliceByNoteId(noteId);
-        },
+        }
     }
 };
 

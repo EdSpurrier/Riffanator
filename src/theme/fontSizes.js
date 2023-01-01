@@ -1,1 +1,26 @@
-export default [10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48];
+const standardFontSizes = {
+    micro           : "5px",
+    tiny            : "8px",
+    small           : "12px",
+    small_medium    : "14px",
+    medium          : "16px",
+    medium_large    : "18px",
+    large           : "22px",
+    xlarge          : "26px",
+}
+
+const fontSizes = {
+    standard : standardFontSizes,
+    note    : standardFontSizes.small,
+    body    : standardFontSizes.small_medium,
+    h1      : standardFontSizes.xlarge,
+    h2      : standardFontSizes.large,
+    h3      : standardFontSizes.medium_large,
+    h4      : standardFontSizes.medium,
+
+    grooveSkeleton : {
+        controlBar : standardFontSizes.small,
+    }
+}
+
+module.exports = fontSizes;
