@@ -50,8 +50,8 @@ const standardSizes = {
     grooveSkeleton: {
         height: {
             controlBar: "20px",
-            track: "35px",
-
+            track: "40px",
+            guide: "7px"
         }
     },
 
@@ -97,12 +97,20 @@ const sizes = {
             controlSpacingHorizontal: standardSizes.tiny,
             iconSpacingHorizontal: standardSizes.micro,
             marginBottom: standardSizes.padding.micro,
+            input: {
+                height: standardSizes.small,
+                padding: standardSizes.micro,
+            }
         },
 
         track: {
             height: standardSizes.grooveSkeleton.height.track,
             marginVertical: standardSizes.zero,
             marginBottom: standardSizes.padding.micro,
+        },
+
+        guide: {
+            height: standardSizes.grooveSkeleton.height.guide,
         }
 
     },

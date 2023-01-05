@@ -93,6 +93,13 @@ const colors = {
       noteOff         : standardColors.red900,
       noteBorder      : standardColors.black,
       positionMarker  : standardColors.orangeA400,
+
+      guideBackground : standardColors.blueGrey900,
+      guideBar        : standardColors.blueGrey200,
+      guideBeat       : standardColors.blueGrey300,
+      guideNote       : standardColors.blueGrey700,
+      guidePlayMarker : standardColors.red900,
+
     }
 
   },

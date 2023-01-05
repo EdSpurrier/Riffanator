@@ -6,11 +6,13 @@ const heirarchy = {
     dashboard   : 100,
 
     grooveSkeleton : {
-        track           : 105,
-        grooveLane      : 106,
-        grooveNote      : 110,
-        positionMarker  : 115,
-        controlLayer    : 130,
+        track               : 105,
+        grooveLane          : 106,
+        grooveNote          : 110,
+        guideLane           : 112,
+        positionMarker      : 115,
+        groovePlayMarker    : 117,
+        controlLayer        : 130,
     }
 };
   

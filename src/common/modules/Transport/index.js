@@ -15,12 +15,17 @@ const Container = styled.div`
   z-index         : ${({ theme }) => theme.heirarchy.transport};
 `
 
+window.transport = {
+  tempo: 120
+}
+
+
 const Transport = memo((props) => {
 
   return (
     <Container>
-       <PlayControls />
-       <TransportSettings />
+      <PlayControls />
+      <TransportSettings />
     </Container>
   );
 

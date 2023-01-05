@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo, useCallback, useEffect, useState } from 'react';
 import EventBus from '../../common/systems/EventBus';
 import SideBar from '../../common/components/SideBar';
 import SideBarButton from '../../common/components/SideBar/SideBarButton';
@@ -32,6 +32,26 @@ const SideBarLeft = memo(() => {
 
     const [current, setCurrent] = useState([]);
 
+
+    const keyDownActions = useCallback(e => {
+
+        if (e.charCode === 103 || e.charCode === 71) {
+          onClick('Groove Skeleton');
+        } else if (e.charCode === 115 || e.charCode === 83) {
+            onClick('Riff Settings');
+        }
+
+    }, [current])
+
+
+    useEffect(() => {
+        window.addEventListener('keypress', keyDownActions);
+        return () => window.removeEventListener("keypress", keyDownActions)
+    }, [current]);
+
+
+
+
     useEffect(() => {
 
         EventBus.dispatch("Update Dashboard", {
@@ -50,6 +70,7 @@ const SideBarLeft = memo(() => {
         } else {
             selectItem(keyId);
         }
+
     };
 
     const deselectItem = (keyId) => {

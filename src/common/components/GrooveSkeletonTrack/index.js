@@ -11,6 +11,25 @@ const Container = styled.div`
 `;
 
 
+
+window.grooveSkeleton = {
+    resolution      : 32,
+    outputOctave    : 1,
+    groove          : [
+        
+    ],
+    midi            : {
+        output          : {
+            name    : 'Riff Generator',
+            id      : 0
+        },
+    }
+};
+
+
+
+
+
 const GrooveSkeletonTrack = memo(({ children }) => {
 
     return (

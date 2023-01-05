@@ -21,7 +21,7 @@ const Input = styled.input`
 
 const TransportSettings = memo(({ props }) => {
 
-    const [tempo, setTempo] = useState(120);
+    const [tempo, setTempo] = useState(window.transport.tempo);
 
     useEffect(() => {
 
@@ -30,7 +30,8 @@ const TransportSettings = memo(({ props }) => {
             data: tempo
         });
 
-        //console.log(tempo);
+        window.transport.tempo = tempo;
+
 
     }, [tempo]);
 

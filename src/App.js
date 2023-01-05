@@ -20,6 +20,15 @@ window.midi = {
   webMidi: null,
   inputs: [],
   outputs: [],
+  grooveSkeleton: {
+    initialized : false,
+    updateMidiFrame: null
+  },
+  instruments: [],
+  midiCore: {
+    initialized : false,
+    midiClock : null,
+  }
 }
 
 
@@ -42,7 +51,7 @@ function onEnabled() {
 
   window.midi.inputs = WebMidi.inputs;
   window.midi.outputs = WebMidi.outputs;
-
+  
 
 
   EventBus.dispatch("Update System", {

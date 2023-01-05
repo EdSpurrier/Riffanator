@@ -2,6 +2,9 @@ import React, { memo, useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
 import clsx from 'clsx';
 import Maths from '../../../utils/Maths';
+import MidiUtils from '../../../music/MidiUtils';
+import util from 'util';
+import { WebMidi } from 'webmidi';
 
 const Container = styled.div`
   width: 100%;
@@ -52,9 +55,70 @@ const PositionMarker = styled.div`
     z-index: ${({ theme }) => theme.heirarchy.grooveSkeleton.positionMarker};
 `
 
-const GrooveLane = styled.div`
+
+const GrooveLaneGuide = styled.div`
+    background: ${({ theme }) => theme.colors.grooveSkeleton.track.guideBackground};
+    height: ${({ theme }) => theme.sizes.grooveSkeleton.guide.height};
+    position: absolute;
+    top: 0px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    box-sizing: border-box;
+    display: flex;
+    z-index: ${({ theme }) => theme.heirarchy.grooveSkeleton.guideLane};
+`
+
+const GrooveLaneGuideBar = styled.div`
+    position: absolute;
+    bottom: 0;
+    background: transparent;
+    height: 100%;
+    z-index: ${({ theme }) => theme.heirarchy.grooveSkeleton.grooveNote};
+    box-sizing: border-box;
+
+    border-left: 1px solid ${({ theme }) => theme.colors.grooveSkeleton.track.guideBar};
+    border-right: 1px solid ${({ theme }) => theme.colors.grooveSkeleton.track.guideBar};
+`
+
+const GrooveLaneGuideBeat = styled.div`
+    position: absolute;
+    bottom: 0;
+    width: 2px;
+    height: 100%;
+    z-index: ${({ theme }) => theme.heirarchy.grooveSkeleton.grooveNote};
+    box-sizing: border-box;
+    border-left: 1px solid ${({ theme }) => theme.colors.grooveSkeleton.track.guideBeat};
+    border-right: 1px solid ${({ theme }) => theme.colors.grooveSkeleton.track.guideBeat};
+
+`
+
+const GrooveLaneGuideNote = styled.div`
+    position: absolute;
+    bottom: 0;
+    width: 2px;
+    height: 100%;
+    z-index: ${({ theme }) => theme.heirarchy.grooveSkeleton.grooveNote};
+    box-sizing: border-box;
+    border-left: 1px solid ${({ theme }) => theme.colors.grooveSkeleton.track.guideNote};
+    border-right: 1px solid ${({ theme }) => theme.colors.grooveSkeleton.track.guideNote};
+`
+
+const GrooveLaneGuidePlayMarker = styled.div`
     position: absolute;
     top: 0;
+    left: 0;
+    width: 2px;
+    height: ${({ theme }) => theme.sizes.grooveSkeleton.track.height};
+    z-index: ${({ theme }) => theme.heirarchy.grooveSkeleton.groovePlayMarker};
+    box-sizing: border-box;
+    border-left: 1px solid ${({ theme }) => theme.colors.grooveSkeleton.track.guidePlayMarker};
+    border-right: 1px solid ${({ theme }) => theme.colors.grooveSkeleton.track.guidePlayMarker};
+`
+
+const GrooveLane = styled.div`
+    position: absolute;
+    top: 0px;
     bottom: 0;
     left: 0;
     right: 0;
@@ -63,7 +127,7 @@ const GrooveLane = styled.div`
 
 const GrooveNote = styled.div`
     position: absolute;
-    top: 0;
+    top: ${({ theme }) => theme.sizes.grooveSkeleton.guide.height};
     bottom: 0;
     opacity: 0.5;
     z-index: ${({ theme }) => theme.heirarchy.grooveSkeleton.grooveNote};
@@ -82,6 +146,19 @@ const GrooveNote = styled.div`
 
 `
 
+/* window.grooveSkeleton = {
+    resolution  : 32,
+    groove      : [
+        
+    ],
+    midi        : {
+        output      : {
+            name : 'Riff Generator',
+            id : 0
+        },
+    }
+}; */
+
 
 const GrooveSkeletonTrackTrackLane = memo(({ children }) => {
 
@@ -91,6 +168,8 @@ const GrooveSkeletonTrackTrackLane = memo(({ children }) => {
     const [selectorPosition, setSelectorPosition] = useState(0);
     
     const [positionMarker, setPositionMarker] = useState(0);
+
+    const [playMarkerPosition, setPlayMarkerPosition] = useState(0);
 
 
     const [groove, setGroove] = useState([
@@ -103,6 +182,80 @@ const GrooveSkeletonTrackTrackLane = memo(({ children }) => {
 
     const controlRef = useRef(null);
 
+
+    const initialize = () => {
+        window.midi.grooveSkeleton.startMidiPlay = startMidiPlay;
+        window.midi.grooveSkeleton.stopMidiPlay = stopMidiPlay;
+        window.midi.grooveSkeleton.updateMidiFrameAction = updateMidiFrameAction;
+        window.midi.grooveSkeleton.updateMidiFrameGUI = updateMidiFrameGUI;
+        window.midi.grooveSkeleton.initialized = true;
+    }
+    
+
+    const PlayNote = () => {
+
+        //console.log(util.inspect(window.midi.midiCore, {showHidden: false, depth: null, colors: true}));
+
+        if(!window.midi.midiCore.midiClock.isPlaying) {
+            return;
+        }
+
+        //console.log('noteOn', bassRootNote);
+        let bassRootNote = window.riffSettings.scale.rootNote + window.riffSettings.rootOctave;
+        WebMidi.outputs[window.grooveSkeleton.midi.output.id].playNote(bassRootNote);
+
+    }
+
+    const StopNote = () => {
+
+        //console.log('noteOff', bassRootNote);
+        let bassRootNote = window.riffSettings.scale.rootNote + window.riffSettings.rootOctave;
+        WebMidi.outputs[window.grooveSkeleton.midi.output.id].stopNote(bassRootNote);
+
+    }
+
+    const startMidiPlay = () => {
+        //  Clear Midi Output for device
+        console.log('grooveSkeleton.startMidiPlay');
+        if(WebMidi.outputs.length === 0) return;
+
+    }
+    
+
+
+
+    const stopMidiPlay = () => {
+        //  Clear Midi Output for device
+        
+        if(WebMidi.outputs.length === 0) return;
+        console.log('grooveSkeleton.stopMidiPlay');
+        StopNote();
+        
+    }
+
+    const updateMidiFrameAction = () => {
+
+        let noteOff = window.grooveSkeleton.groove.find((grooveNote) => grooveNote.end === window.midi.midiCore.midiClock.clockTick);
+
+        if (noteOff) {
+            StopNote();
+        }
+
+
+        let noteOn = window.grooveSkeleton.groove.find((grooveNote) => grooveNote.start === window.midi.midiCore.midiClock.clockTick);
+
+        if (noteOn && noteOn.state) {
+            PlayNote();
+        }
+
+    }
+
+
+    const updateMidiFrameGUI = () => {
+        setPlayMarkerPosition(window.midi.midiCore.midiClock.tick * (controlRef?.current?.offsetWidth / window.midi.midiCore.midiClock.midiResolution));
+    }
+
+
     const getAbsoluteOffset = (el) => {
         const rect = el.getBoundingClientRect();
         return {
@@ -110,6 +263,7 @@ const GrooveSkeletonTrackTrackLane = memo(({ children }) => {
             top: rect.top + window.scrollY
         }
     }
+
 
     const handleMouseMove = (event) => {
 
@@ -131,7 +285,11 @@ const GrooveSkeletonTrackTrackLane = memo(({ children }) => {
         setPositionMarker(getResolutionPosition(localX / event.target.offsetWidth) * event.target.offsetWidth);
     };
 
+
     useEffect(() => {
+
+        initialize();
+
         const handleMouseMove = (event) => {
             setGlobalMousePos({
                 x: event.clientX,
@@ -151,7 +309,9 @@ const GrooveSkeletonTrackTrackLane = memo(({ children }) => {
 
 
     useEffect(() => {
-        //console.log('groove update:', groove);
+        console.log('groove update:', groove);
+
+        window.grooveSkeleton.groove = groove;
     }, [groove]);
 
 
@@ -286,8 +446,65 @@ const GrooveSkeletonTrackTrackLane = memo(({ children }) => {
 
 
 
+    const renderGrooveGuide = () => {
+
+        let barCount = 1;
+        let beatCount = 4;
+        let noteCount = window.grooveSkeleton.resolution;
+
+
+        let barLength = controlRef?.current?.offsetWidth / barCount;
+        let beatLength = barLength / beatCount;
+        let noteLength = barLength / noteCount;
+
+        let notesInBeat = noteCount/beatCount;
+
+        const bars = [];
+        for (let i = 0; i < barCount; i++) {
+            bars.push(
+                <GrooveLaneGuideBar 
+                    key={`${i}`}
+                    style={{
+                        width: (barLength) + 'px',
+                        left: (barLength * i) + 'px'
+                    }}
+                />
+            );
+            for (let ii = 1; ii < beatCount; ii++) {
+                bars.push(
+                    <GrooveLaneGuideBeat 
+                        key={`${i}-${ii}`}
+                        style={{
+                            left: ((barLength * i) + (beatLength * ii) ) - 1 + 'px'
+                        }}
+                    />
+                );
+                for (let iii = 0; iii < (noteCount); iii++) {
+                    if (iii % notesInBeat) {
+                        bars.push(
+                            <GrooveLaneGuideNote 
+                                key={`${i}-${ii}-${iii}`}
+                                style={{
+                                    left: ((barLength * i) + (noteLength * iii)) - 1 + 'px'
+                                }}
+                            />
+                        );
+                    }
+                }
+            }
+        }
+
+
+        return (
+            <>{bars}</>
+        )
+    }
+
+
+
 
     const renderGroove = (grooveData) => {
+        
         return grooveData.map((grooveNote, key) =>
             <GrooveNote className={clsx(grooveNote.state ? 'noteOn' : 'noteOff')}
                 key={key}
@@ -298,6 +515,7 @@ const GrooveSkeletonTrackTrackLane = memo(({ children }) => {
             >
             </GrooveNote>
         )
+
     }
 
 
@@ -308,21 +526,33 @@ const GrooveSkeletonTrackTrackLane = memo(({ children }) => {
             <Container>
 
                 <Track>
+                    <GrooveLaneGuide>
+                        {renderGrooveGuide()}
+                        <GrooveLaneGuidePlayMarker 
+                            style={{
+                                left: (playMarkerPosition-1) + 'px',
+                            }}
+                        />
+                    </GrooveLaneGuide>
+
                     <ControlLayer
                         ref={controlRef}
                         onMouseMove={handleMouseMove}
                         onClick={OnTrackClick}
                         onContextMenu={OnTrackClick}
                     />
+
                     <PositionMarker
                         className={'positionMarker'}
                         style={{
                             left: (positionMarker-1) + 'px',
                         }}
                     />
+
                     <GrooveLane>
                         {renderGroove(groove)}
                     </GrooveLane>
+
                 </Track>
 
             </Container>

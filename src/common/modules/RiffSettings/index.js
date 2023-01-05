@@ -52,18 +52,29 @@ const ScaleTypeSelector = styled.select`
 `;
 
 
+const Input = styled.input`
+    padding: ${({ theme }) => theme.sizes.transport.input.padding};
+    width: 50px;
+    color: ${({ theme }) => theme.colors.transport.text};
+    background: ${({ theme }) => theme.colors.transport.input.background};
+    border: none;
+    border-radius: 3px;
+    text-align: center;
+`
+
 window.riffSettings = {
+    rootOctave  : 1,
     scale  : {
         rootNote    : 'B',
         type        : Music.scales[0].type,
     },
-    
 };
 
 
 
 const RiffSettings = memo(({ name, show }) => {
 
+    
     const [currentScale, setCurrentScale] = useState(window.riffSettings.scale)
 
     const changeScaleRootNote = (rootNote) => {
@@ -120,6 +131,40 @@ const RiffSettings = memo(({ name, show }) => {
         )
     }
 
+
+
+    const [rootOctave, setRootOctave] = useState(window.riffSettings.rootOctave);
+
+    useEffect(() => {
+
+        window.riffSettings.rootOctave = rootOctave;
+
+    }, [rootOctave]);
+
+
+
+    const updateRootOctave = (value) => {
+        setRootOctave(value);
+    }
+
+
+/* 
+
+    useEffect(() => {
+        EventBus.on("Update System", (event) => {
+          if (event.label === "Midi Initialized") {
+            setRootOctave(window.riffSettings.rootOctave)
+            console.log(window.riffSettings.rootOctave);
+          }
+        });
+  
+    
+        return () => {
+          EventBus.remove("Update System");
+        };
+      }, []);
+ */
+
     return (
         show ? (
             <Container>
@@ -147,6 +192,8 @@ const RiffSettings = memo(({ name, show }) => {
                                 {renderScaleTypeOptions(Music.scales)}
 
                             </ScaleTypeSelector>
+                            <div>Scale: {currentScale.rootNote} - </div>
+                            <Input type="number" step="1" min="-2" max="8" value={rootOctave} onChange={(e)=>updateRootOctave(e.target.value)} />
                         </Scale>
                     </Control>
                     

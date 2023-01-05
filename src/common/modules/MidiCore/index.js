@@ -5,7 +5,6 @@ import Metronome from './Metronome';
 
 import useSound from 'use-sound';
 
-
 import barClick from "./sounds/click2.wav";
 import beatClick from "./sounds/click1.wav";
 import { useTimer } from './Timer/useTimer';
@@ -18,9 +17,10 @@ const Container = styled.div`
 `
 
 
+
 const MidiCore = memo(({ }) => {
 
-    const midiResolution = 32;
+    const midiResolution = 64;
 
     const [playBarClick, { stop: stopBarClick }] = useSound(barClick);
     const [playBeatClick, { stop: stopBeatClick }] = useSound(beatClick);
@@ -32,29 +32,97 @@ const MidiCore = memo(({ }) => {
         count: 0,
         tempo: 100,
         beatsPerMeasure: 4,
+        midiResolution: midiResolution,
+        metronome: false
     })
 
 
+    const initialize = () => {
+        window.midi.midiCore.midiClock = {
+            ...midiClock,
+            tick : timerTick,
+            clockTick : timerTick * (1/midiResolution),
+        };
+        window.midi.midiCore.initialized = true;
+    }
+
+
+    const startMidiPlay = () => {
+        if(!window.midi.midiCore.midiClock) return;
+
+
+        //  Perform Midi Actions First
+        if(window.midi.grooveSkeleton.initialized) {
+            window.midi.grooveSkeleton.startMidiPlay();
+        };
+
+        //  Update GUI Last (Midi Actions Takes Precendence)
+        if(window.midi.grooveSkeleton.initialized) {
+            // window.midi.grooveSkeleton.updateMidiFrame();
+        };
+    }
+
+
+    const stopMidiPlay = () => {
+        if(!window.midi.midiCore.midiClock) return;
+
+
+        //  Perform Midi Actions First
+        if(window.midi.grooveSkeleton.initialized) {
+            window.midi.grooveSkeleton.stopMidiPlay();
+        };
+
+        //  Update GUI Last (Midi Actions Takes Precendence)
+        if(window.midi.grooveSkeleton.initialized) {
+            // window.midi.grooveSkeleton.updateMidiFrame();
+        };
+    }
+
 
     
+
+    const updateMidiFrame = () => {
+        if(!window.midi.midiCore.midiClock) return;
+        
+        window.midi.midiCore.midiClock.tick = timerTick;
+        window.midi.midiCore.midiClock.clockTick = timerTick * (1/midiResolution);
+
+        //  Perform Midi Actions First
+        if(window.midi.grooveSkeleton.initialized) {
+            window.midi.grooveSkeleton.updateMidiFrameAction();
+        };
+
+        //  Update GUI Last (Midi Actions Takes Precendence)
+        if(window.midi.grooveSkeleton.initialized) {
+            window.midi.grooveSkeleton.updateMidiFrameGUI();
+        };
+    }
+
 
     useEffect(() => {
 
         updateCount();
     
+        updateMidiFrame();
+
     }, [timerTick]);
 
 
     const updateCount = () => {
 
-        let newCount = Math.floor((timerTick/32) % midiClock.beatsPerMeasure);
+        let newCount = Math.floor((timerTick/(midiResolution/midiClock.beatsPerMeasure)) % midiClock.beatsPerMeasure);
 
         if (midiClock.isPlaying && newCount !== midiClock.count) {
             if (newCount === 0) {
-                playBarClick();
+                if(midiClock.metronome) {
+                    playBarClick();
+                }
+
                 reset();
             } else {
-                playBeatClick();
+                if(midiClock.metronome) {
+                    playBeatClick();
+                }
             }
         }
 
@@ -66,12 +134,27 @@ const MidiCore = memo(({ }) => {
     }
     
     useEffect(() => {
+        
+        initialize();
+
+
         EventBus.on("Update Transport", (event) => {
-            if (event.data.action.includes('Play')) {
-                playMidiClock();
-            } else {
+
+
+            if (event.label === "Stop") {
                 stopMidiClock();
+            } else if (event.label === "Play") {
+                playMidiClock();
+            } else if (event.label === "Metronome On") {
+                setMidiClock(prevState => ({...prevState,  
+                    metronome: true,
+                }))
+            } else if (event.label === "Metronome Off") {
+                setMidiClock(prevState => ({...prevState,  
+                    metronome: false,
+                }))
             }
+            
         });
 
 
@@ -107,7 +190,17 @@ const MidiCore = memo(({ }) => {
 
     useEffect(() => {
 
-        setInterval( ((60 / midiClock.tempo) * 1000)/midiResolution);
+        window.midi.midiCore.midiClock = midiClock;
+
+        if (midiClock.isPlaying && midiClock.count === -1) {
+            startMidiPlay();
+        } else if (!midiClock.isPlaying && midiClock.count === -1) {
+            stopMidiPlay();
+        }
+
+        setInterval( ((60 / midiClock.tempo) * 1000)/(midiResolution/midiClock.beatsPerMeasure));
+
+        //console.log('midiClock Updated:', midiClock.count, timerTick);
 
     }, [midiClock]);
 
@@ -129,13 +222,17 @@ const MidiCore = memo(({ }) => {
         }))
 
         start();
+
     }
 
     const stopMidiClock = () => {
 
         //console.log('STOP!');
 
-        setMidiClock(prevState => ({...prevState,  isPlaying: false}))
+        setMidiClock(prevState => ({...prevState,  
+            isPlaying: false,
+            count: -1,
+        }))
 
         stop();
 

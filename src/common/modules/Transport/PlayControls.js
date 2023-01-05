@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo, useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import LoopIcon from '../../components/Icons/LoopIcon';
 import PlayIcon from '../../components/Icons/PlayIcon';
@@ -24,7 +24,8 @@ function getItem(label, keyId, icon) {
 
 const items = [
     getItem('Play', 'Play', <PlayIcon size={'1em'} />),
-    getItem('Loop', 'Loop', <LoopIcon size={'1em'} />),
+    getItem('Metronome', 'Metronome', <LoopIcon size={'1em'} />),
+    /* getItem('Loop', 'Loop', <LoopIcon size={'1em'} />), */
 ];
 
 
@@ -32,6 +33,23 @@ const items = [
 const PlayControls = memo((props) => {
 
     const [current, setCurrent] = useState([]);
+
+    const keyDownActions = useCallback(e => {
+
+        if (e.charCode === 32) {
+          onClick('Play');
+        }
+
+    }, [current])
+
+
+    useEffect(() => {
+        window.addEventListener('keypress', keyDownActions);
+        return () => window.removeEventListener("keypress", keyDownActions)
+    }, [current]);
+
+
+
 
     useEffect(() => {
 
@@ -43,7 +61,9 @@ const PlayControls = memo((props) => {
             }
         });
 
-
+        return () => {
+            EventBus.remove("Update System");
+        };
     }, [current]);
 
 
@@ -80,10 +100,43 @@ const PlayControls = memo((props) => {
 
 
     const deselectItem = (keyId) => {
+        if (keyId === "Play") {
+            EventBus.dispatch("Update Transport", {
+                label: "Stop",
+                data: {
+                    action: current
+                }
+            });
+        } else if (keyId === "Metronome") {
+            EventBus.dispatch("Update Transport", {
+                label: "Metronome Off",
+                data: {
+                    action: current
+                }
+            });
+        }
+
         setCurrent((current) => current.filter(thisKeyId => thisKeyId !== keyId));
     }
 
     const selectItem = (keyId) => {
+        if (keyId === "Play") {
+            EventBus.dispatch("Update Transport", {
+                label: "Play",
+                data: {
+                    action: current
+                }
+            });
+        } else if (keyId === "Metronome") {
+            EventBus.dispatch("Update Transport", {
+                label: "Metronome On",
+                data: {
+                    action: current
+                }
+            });
+        }
+
+
         setCurrent((current) => [...current, keyId]);
     }
 

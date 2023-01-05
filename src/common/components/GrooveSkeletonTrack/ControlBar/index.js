@@ -1,9 +1,11 @@
-import React, { memo, useState, useEffect } from 'react';
+import React, { memo, useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import EventBus from '../../../systems/EventBus';
 import ResolutionIcon from '../../Icons/ResolutionIcon';
 import theme from '../../../../theme/theme';
-import Midi from '../../../utils/Midi';
+import MidiUtils from '../../../music/MidiUtils';
+import { WebMidi } from 'webmidi';
+
 
 
 const Container = styled.div`
@@ -56,36 +58,46 @@ const MidiOutputSelector = styled.select`
 
 
 
-window.grooveSkeleton = {
+
+
+/* window.grooveSkeleton = {
     resolution  : 32,
     groove      : [
         
     ],
     midi        : {
         output      : {
-            name : ''
+            name : 'Riff Generator',
+            id : 0
         },
     }
 };
-
+ */
 
 const GrooveSkeletonTrackControlBar = memo(({ children }) => {
 
     const [midiOutputs, setMidiOutputs] = useState([]);
     const [currentMidiOutput, setCurrentMidiOutput] = useState(window.grooveSkeleton.midi.output)
+    const midiOutputRef = useRef(null);
+
 
     useEffect(() => {
       EventBus.on("Update System", (event) => {
         if (event.label === "Midi Initialized") {
             setMidiOutputs(window?.midi?.outputs);
-            if (currentMidiOutput.name === '') {
-                changeMidiOutput(window?.midi?.outputs?.[0]);
+            
+            const presetOutput = WebMidi.getOutputByName("Riff Generator");
+            let midiOutputId = 0;
+
+            if (presetOutput) {
+                midiOutputId = WebMidi.outputs.indexOf(presetOutput);
             }
+
+            changeMidiOutput(midiOutputId);
+
         }
       });
 
-
-      
   
       return () => {
         EventBus.remove("Update System");
@@ -100,8 +112,15 @@ const GrooveSkeletonTrackControlBar = memo(({ children }) => {
     }, [midiOutputs]);
 
 
-    const changeMidiOutput = (newMidiOutput) => {
+    const changeMidiOutput = (newMidiOutputId) => {
+
+        let newMidiOutput = {
+            name: WebMidi.outputs[newMidiOutputId].name,
+            id: newMidiOutputId
+        };
+
         setCurrentMidiOutput(newMidiOutput);
+
         window.grooveSkeleton.midi.output = newMidiOutput;
     }
 
@@ -110,9 +129,11 @@ const GrooveSkeletonTrackControlBar = memo(({ children }) => {
 
         EventBus.dispatch("Update GrooveSkeleton", {
             label: "Update Midi Output",
-            data: currentMidiOutput.name
+            data: currentMidiOutput
         });
         
+        midiOutputRef.current.value = currentMidiOutput.id;
+
     }, [currentMidiOutput]);
 
 
@@ -138,14 +159,14 @@ const GrooveSkeletonTrackControlBar = memo(({ children }) => {
 
 
     const renderMidiOutputOptions = (midiOutputDevices) => {
-
         return midiOutputDevices.map((outputDevice, key) =>
-            <option key={key} value={outputDevice}>{outputDevice.name}</option>
+            <option key={key} value={key}>{outputDevice.name}</option>
         )
     }
 
     return (
         <Container>
+
             <Control>
                 <ResolutionIcon size={theme.fontSizes.grooveSkeleton.controlBar} />
                 <ResolutionSelector
@@ -157,17 +178,17 @@ const GrooveSkeletonTrackControlBar = memo(({ children }) => {
                     <option value="32">32</option>
                     <option value="64">64</option>
                 </ResolutionSelector>
-
-
             </Control>
+
             <Control>
                 <MidiOutputSelector
+                    ref={midiOutputRef}
                     onChange={(event) => changeMidiOutput(event.target.value)}
-                    value={currentMidiOutput.name}
                 >
                     {renderMidiOutputOptions(window?.midi?.outputs || [])}
                 </MidiOutputSelector>
             </Control>
+
         </Container>
     );
 });

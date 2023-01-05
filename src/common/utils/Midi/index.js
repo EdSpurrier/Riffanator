@@ -3,11 +3,6 @@ var note2midi = require('note-midi')
 
 const Midi = {
 
-    getOutputs() {
-
-        return ['Hi'];
-    },
-
     GetNoteName(noteNumber){
         return midi2note(noteNumber) // => 'A4';
     },
