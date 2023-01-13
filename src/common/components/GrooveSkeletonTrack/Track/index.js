@@ -5,6 +5,8 @@ import Maths from '../../../utils/Maths';
 import MidiUtils from '../../../music/MidiUtils';
 import util from 'util';
 import { WebMidi } from 'webmidi';
+import GuitarUtils from '../../../music/GuitarUtils';
+import { config } from '../../../utils/config';
 
 const Container = styled.div`
   width: 100%;
@@ -72,8 +74,9 @@ const GrooveLaneGuide = styled.div`
 const GrooveLaneGuideBar = styled.div`
     position: absolute;
     bottom: 0;
+    top: -3px;
     background: transparent;
-    height: 100%;
+    height: calc(100% + 6px);
     z-index: ${({ theme }) => theme.heirarchy.grooveSkeleton.grooveNote};
     box-sizing: border-box;
 
@@ -160,6 +163,21 @@ const GrooveNote = styled.div`
 }; */
 
 
+
+/* 
+    
+    Groove Note Object in Groove Array
+
+[
+    {
+        start   : 0,    //  Percentage Start Point eg. 0.5
+        end     : 1,    //  Percentage End Point eg. 0.75
+        state   : true  //  noteOn or noteOff
+    }
+]
+*/
+
+
 const GrooveSkeletonTrackTrackLane = memo(({ children }) => {
 
     const [globalMousePos, setGlobalMousePos] = useState({});
@@ -171,6 +189,17 @@ const GrooveSkeletonTrackTrackLane = memo(({ children }) => {
 
     const [playMarkerPosition, setPlayMarkerPosition] = useState(0);
 
+/* 
+    For Future Implementation
+
+    Array(8).fill().map(item => (
+        [{
+            start   : 0,    //  Percentage Start Point eg. 0.5
+            end     : 1,    //  Percentage End Point eg. 0.75
+            state   : true  //  noteOn or noteOff
+        }]
+    ))
+*/
 
     const [groove, setGroove] = useState([
         {
@@ -180,7 +209,7 @@ const GrooveSkeletonTrackTrackLane = memo(({ children }) => {
         }
     ]);
 
-    const controlRef = useRef(null);
+    const controlRef = useRef(null); 
 
 
     const initialize = () => {
@@ -192,6 +221,8 @@ const GrooveSkeletonTrackTrackLane = memo(({ children }) => {
     }
     
 
+
+
     const PlayNote = () => {
 
         //console.log(util.inspect(window.midi.midiCore, {showHidden: false, depth: null, colors: true}));
@@ -200,9 +231,15 @@ const GrooveSkeletonTrackTrackLane = memo(({ children }) => {
             return;
         }
 
-        //console.log('noteOn', bassRootNote);
+        
         let bassRootNote = window.riffSettings.scale.rootNote + window.riffSettings.rootOctave;
-        WebMidi.outputs[window.grooveSkeleton.midi.output.id].playNote(bassRootNote);
+
+        console.log('noteOn', bassRootNote);
+
+        GuitarUtils.PlayGuitarNote(bassRootNote, window.grooveSkeleton.playStyle, window.grooveSkeleton.midi.output.id);
+        
+
+        //WebMidi.outputs[window.grooveSkeleton.midi.output.id].playNote(bassRootNote);
 
     }
 
@@ -210,7 +247,13 @@ const GrooveSkeletonTrackTrackLane = memo(({ children }) => {
 
         //console.log('noteOff', bassRootNote);
         let bassRootNote = window.riffSettings.scale.rootNote + window.riffSettings.rootOctave;
-        WebMidi.outputs[window.grooveSkeleton.midi.output.id].stopNote(bassRootNote);
+
+        console.log('noteOff', bassRootNote);
+
+        GuitarUtils.StopGuitarNote(bassRootNote, window.grooveSkeleton.playStyle, window.grooveSkeleton.midi.output.id);
+
+        //WebMidi.outputs[window.grooveSkeleton.midi.output.id].stopNote(bassRootNote);
+
 
     }
 
@@ -233,16 +276,72 @@ const GrooveSkeletonTrackTrackLane = memo(({ children }) => {
         
     }
 
+
+    const getTotalActiveBars = () => {
+        return window.transport.loop.to - window.transport.loop.from + 1;
+    }
+
+    const getRelativeClockTick = () => {
+
+
+
+        /*
+
+            calculate from the loop.from
+
+            and finish on the loop.to
+
+
+            dont show anything before the loop.from
+            dont show anything after the loop.to
+
+            recalculate the position based of the 1.0 percentage position within the grooveData 0 => 1.0
+            calculate the 1.0 (100%) from the number of bars within loop.from => loop.to
+
+        */
+/* 
+        let startBar = window.transport.loop.from - 1;
+        let endBar = window.transport.loop.to; */
+
+
+
+        let numberOfActiveBars = window.transport.loop.to - window.transport.loop.from + 1;
+
+        let barLength = 1 / config.number_of_bars;
+        
+        let totalLength = numberOfActiveBars * barLength;
+
+        let startPoint = (window.transport.loop.from - 1) * barLength;
+        let endPoint = (window.transport.loop.to) * barLength;
+
+        let relativeTick = startPoint + (window.midi.midiCore.midiClock.clockTick * totalLength);
+
+   
+/*         
+        console.log(
+            'clockTick', window.midi.midiCore.midiClock.clockTick, ' => ', relativeTick,
+            'startPoint', startPoint,
+            'endPoint', endPoint
+        ); */
+
+        return relativeTick;
+    }
+
+
     const updateMidiFrameAction = () => {
 
-        let noteOff = window.grooveSkeleton.groove.find((grooveNote) => grooveNote.end === window.midi.midiCore.midiClock.clockTick);
+        //console.log( window.midi.midiCore.midiClock.tick, 'clockTick', window.midi.midiCore.midiClock.clockTick);
 
-        if (noteOff) {
+        let relativeClockTick = getRelativeClockTick();
+
+        let noteOff = window.grooveSkeleton.groove.find((grooveNote) => grooveNote.end === relativeClockTick);
+
+        if (noteOff && noteOff.state) {
             StopNote();
         }
 
 
-        let noteOn = window.grooveSkeleton.groove.find((grooveNote) => grooveNote.start === window.midi.midiCore.midiClock.clockTick);
+        let noteOn = window.grooveSkeleton.groove.find((grooveNote) => grooveNote.start === relativeClockTick);
 
         if (noteOn && noteOn.state) {
             PlayNote();
@@ -252,7 +351,13 @@ const GrooveSkeletonTrackTrackLane = memo(({ children }) => {
 
 
     const updateMidiFrameGUI = () => {
-        setPlayMarkerPosition(window.midi.midiCore.midiClock.tick * (controlRef?.current?.offsetWidth / window.midi.midiCore.midiClock.midiResolution));
+
+        setPlayMarkerPosition(
+            (window.midi.midiCore.midiClock.tick / window.midi.midiCore.midiClock.activeBars)
+            * (controlRef?.current?.offsetWidth / window.midi.midiCore.midiClock.midiResolution)
+            );
+        
+        //setPlayMarkerPosition(window.midi.midiCore.midiClock.tick * (controlRef?.current?.offsetWidth / window.midi.midiCore.midiClock.midiResolution));
     }
 
 
@@ -316,19 +421,74 @@ const GrooveSkeletonTrackTrackLane = memo(({ children }) => {
 
 
     const getResolutionPosition = (position) => {
-        return Maths.closestNumber(position, (1/window.grooveSkeleton.resolution));
+        let barCount = window.transport.loop.to - window.transport.loop.from + 1;
+
+        return Maths.closestNumber(position, (1/ (window.grooveSkeleton.resolution * barCount)));
+    };
+
+
+
+    const modifyPositionRelativeToLoop = (position) => {
+
+        /*
+
+            calculate from the loop.from
+
+            and finish on the loop.to
+
+
+            dont show anything before the loop.from
+            dont show anything after the loop.to
+
+            recalculate the position based of the 1.0 percentage position within the grooveData 0 => 1.0
+            calculate the 1.0 (100%) from the number of bars within loop.from => loop.to
+
+        */
+/* 
+        let startBar = window.transport.loop.from - 1;
+        let endBar = window.transport.loop.to; */
+
+
+
+        let numberOfActiveBars = window.transport.loop.to - window.transport.loop.from + 1;
+
+        let barLength = 1 / config.number_of_bars;
+        
+        let totalLength = numberOfActiveBars * barLength;
+
+        let startPoint = (window.transport.loop.from - 1) * barLength;
+        let endPoint = (window.transport.loop.to) * barLength;
+
+        let relativePosition = startPoint + (position * totalLength);
+/*         
+        console.log(
+            'relativePosition', relativePosition,
+            window.transport.loop,
+            'barLength', barLength,
+            'numberOfActiveBars', numberOfActiveBars,
+            'totalLength', totalLength,
+            'startPoint', startPoint,
+            'endPoint', endPoint
+        ); */
+
+
+        return relativePosition;
     };
 
 
 
     const OnTrackClick = (event) => {
         let resolutionSelectorPosition = getResolutionPosition(selectorPosition);
-        
+
         if (resolutionSelectorPosition === 0 || resolutionSelectorPosition === 1) {
             console.log("Not Valid Position", resolutionSelectorPosition);
             return;
-        }
+        };
+
+
+        resolutionSelectorPosition = modifyPositionRelativeToLoop(resolutionSelectorPosition);
         
+
         if (event.type === 'click' && !event.ctrlKey) {
 
             console.log('Add Split', resolutionSelectorPosition);
@@ -420,7 +580,7 @@ const GrooveSkeletonTrackTrackLane = memo(({ children }) => {
             //  Remove GrooveNote
             newGrooveArray.splice(indexToRemove, 1);
 
-            setGroove(newGrooveArray);
+            setGroove(newGrooveArray); 
 
 
 
@@ -429,9 +589,12 @@ const GrooveSkeletonTrackTrackLane = memo(({ children }) => {
 
             let newGrooveArray =  [...groove];
 
+            let relativeSelectorPosition = modifyPositionRelativeToLoop(selectorPosition);
+        
+
             newGrooveArray.forEach((grooveNote, index) => {
 
-                if (grooveNote.start < selectorPosition && grooveNote.end > selectorPosition) {
+                if (grooveNote.start < relativeSelectorPosition && grooveNote.end > relativeSelectorPosition) {
                     
                     newGrooveArray[index].state = !newGrooveArray[index].state;
                     
@@ -448,7 +611,10 @@ const GrooveSkeletonTrackTrackLane = memo(({ children }) => {
 
     const renderGrooveGuide = () => {
 
-        let barCount = 1;
+        /* let barCount = config.number_of_bars; */
+
+        let barCount = window.transport.loop.to - window.transport.loop.from + 1;
+
         let beatCount = 4;
         let noteCount = window.grooveSkeleton.resolution;
 
@@ -459,8 +625,13 @@ const GrooveSkeletonTrackTrackLane = memo(({ children }) => {
 
         let notesInBeat = noteCount/beatCount;
 
+        let startBar = window.transport.loop.from - 1;
+        let endBar = window.transport.loop.to;
+
         const bars = [];
-        for (let i = 0; i < barCount; i++) {
+       /*  for (let i = 0; i < barCount; i++) { */
+
+        for (let i = 0; i < barCount; i++) {    
             bars.push(
                 <GrooveLaneGuideBar 
                     key={`${i}`}
@@ -505,6 +676,77 @@ const GrooveSkeletonTrackTrackLane = memo(({ children }) => {
 
     const renderGroove = (grooveData) => {
         
+        /*
+
+            calculate from the loop.from
+
+            and finish on the loop.to
+
+
+            dont show anything before the loop.from
+            dont show anything after the loop.to
+
+            recalculate the position based of the 1.0 percentage position within the grooveData 0 => 1.0
+            calculate the 1.0 (100%) from the number of bars within loop.from => loop.to
+
+        */
+/* 
+        let startBar = window.transport.loop.from - 1;
+        let endBar = window.transport.loop.to; */
+
+
+
+        let numberOfActiveBars = window.transport.loop.to - window.transport.loop.from + 1;
+
+        //let barLength = 1 / numberOfActiveBars; //config.number_of_bars;
+
+        let barLength = 1 / config.number_of_bars;
+        
+        let totalLength = numberOfActiveBars * barLength;
+
+        let startPoint = (window.transport.loop.from - 1) * barLength;
+        let endPoint = (window.transport.loop.to) * barLength;
+/*         
+        console.log(
+            window.transport.loop,
+            'barLength', barLength,
+            'numberOfActiveBars', numberOfActiveBars,
+            'totalLength', totalLength,
+            'startPoint', startPoint,
+            'endPoint', endPoint
+        ); */
+
+        return grooveData.map((grooveNote, key) => {
+
+            let noteStartPoint = (grooveNote.start-startPoint) / totalLength;
+
+            let noteEndPoint = (grooveNote.end-startPoint) / totalLength;
+
+            //  If note runs past the end of the loop then set it to the end of the loop
+            if (grooveNote.end >= endPoint) {
+                noteEndPoint = 1;
+            };
+
+            return (grooveNote.start >= startPoint && grooveNote.start < endPoint?
+                /* grooveNote.start >= startPoint && grooveNote.end <= endPoint? */
+            <GrooveNote className={clsx(grooveNote.state ? 'noteOn' : 'noteOff')}
+                key={key}
+                style={{
+                    left: (noteStartPoint * controlRef?.current?.offsetWidth) + 'px',
+                    right: -1 *((noteEndPoint * controlRef?.current?.offsetWidth) - controlRef?.current?.offsetWidth) + 'px',
+                }}
+            >
+            </GrooveNote>
+            : <></>
+            )
+        })
+
+
+    }
+
+
+/*     const renderGroove = (grooveData) => {
+         
         return grooveData.map((grooveNote, key) =>
             <GrooveNote className={clsx(grooveNote.state ? 'noteOn' : 'noteOff')}
                 key={key}
@@ -516,10 +758,7 @@ const GrooveSkeletonTrackTrackLane = memo(({ children }) => {
             </GrooveNote>
         )
 
-    }
-
-
-
+    } */
 
     return (
         <>

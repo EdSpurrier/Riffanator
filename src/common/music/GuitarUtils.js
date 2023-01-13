@@ -1,4 +1,4 @@
-import MidiUtils from "./MidiUtils";
+import { WebMidi } from "webmidi";
 
 const GuitarTunings = {
     'Drop-B' : ['B1','F#2','B2','E3','G#3','C#4']
@@ -13,8 +13,26 @@ const GuitarChords = {
 }
 
 
-
 const GuitarUtils = {
+
+    GuitarTunings : {
+        'Drop-B' : ['B1','F#2','B2','E3','G#3','C#4']
+    },
+    
+    
+    GuitarChords : {
+        'Octave Chords' : [
+            
+        ]
+    },
+    
+    PlayStyle : {
+        'chugga' : 'G#-1',
+        'down mute' : 'E0',
+        'up mute' : 'F0',
+    },
+
+
     GetGuitarTuning(tuningName){
         return GuitarTunings[tuningName];
     },
@@ -24,20 +42,40 @@ const GuitarUtils = {
         return GuitarChords[chordName];
     },
 
-    GetPlayStyle(playStyleName) {
-        let styleNoteId = -1;
-        if (playStyleName === 'open') {
-            styleNoteId = -1;
-        } else if (playStyleName === 'chugga') {
-            styleNoteId = MidiUtils.GetNoteNumber('G#-1');
-        } else if (playStyleName === 'down mute') {
-            styleNoteId = MidiUtils.GetNoteNumber('E0');
-        } else if (playStyleName === 'up mute') {
-            styleNoteId = MidiUtils.GetNoteNumber('F0');
-        };
 
-        return styleNoteId;
+
+
+    SetPlayStyle (playStyleName, midiOutputId) {
+        if (playStyleName != 'open') {
+            WebMidi.outputs[midiOutputId].playNote(this.PlayStyle[playStyleName]);
+        } else {
+            this.UnsetPlayStyle(playStyleName, midiOutputId);
+        }
     },
+
+    UnsetPlayStyle (playStyleName, midiOutputId) {
+        WebMidi.outputs[midiOutputId].stopNote(this.PlayStyle[playStyleName]);
+    },
+
+
+
+
+    PlayGuitarNote (noteName, playStyleName, midiOutputId) {
+
+        this.SetPlayStyle(playStyleName, midiOutputId);
+        
+        WebMidi.outputs[midiOutputId].playNote(noteName);
+    },
+
+
+
+
+    StopGuitarNote (noteName, playStyleName, midiOutputId) {
+        
+        
+        WebMidi.outputs[midiOutputId].stopNote(noteName);
+        this.UnsetPlayStyle(playStyleName, midiOutputId);
+    }
 
 }
 

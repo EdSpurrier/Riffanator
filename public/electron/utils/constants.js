@@ -5,6 +5,8 @@ exports.GetENV = () => {
     return process.env;
 }
 
+exports.NUMBER_OF_BARS = process.env.NUMBER_OF_BARS;
+
 exports.SHOW_FILEMENU = process.env.SHOW_FILEMENU == "true" || false;
 
 exports.HIDE_DEVTOOLS = process.env.HIDE_DEVTOOLS == "true" || false;

@@ -16,48 +16,6 @@ const MidiUtils = {
         return midi2note(noteName) // => 'A4';
     },
 
-
-    GetOutputByName(outputName) {
-        //console.log(window.midi.outputs.find((output) => output.name === outputName));
-        return WebMidi.getOutputByName(outputName);
-        
-        //return window.midi.outputs.find((output) => output.name === outputName);
-        
-    },
-
-    GetOutputById(outputId) {
-        return window.midi.outputs.find(({ output }) => output.id === outputId);
-    },
-
-
-
-    SendAllNotesOffByOutput(output) {
-        console.log('SendAllNotesOffByOutput', output);
-
-/*         const myOutput = WebMidi.getOutputByName("Riff Generator");
-        console.log(myOutput);
-        myOutput.sendAllSoundOff();
-        return; */
-        return;
-        output.SendAllNotesOff();
-    },
-
-
-    SendAllNotesOffByOutputGroup(outputs) {
-        outputs.forEach(output => {
-            output.SendAllNotesOff();
-        });
-    },
-
-    PlayNote(noteName, output) {
-        const note = new WebMidi.Note(noteName);
-        output.playNote(note);
-    },
-
-    StopNote(noteName, output) {
-        const note = new WebMidi.Note(noteName);
-        output.stopNote(note);
-    },
 }
 
 

@@ -33,15 +33,30 @@ const MidiCore = memo(({ }) => {
         tempo: 100,
         beatsPerMeasure: 4,
         midiResolution: midiResolution,
-        metronome: false
+        metronome: false,
+        bar: 0,
+        totalBars: 1,
     })
 
+    const getTotalActiveBars = () => {
+        return window.transport.loop.to - window.transport.loop.from + 1;
+    }
 
-    const initialize = () => {
+    const calculateClockTick = () => {
+
+        let numberOfActiveBars = window.transport.loop.to - window.transport.loop.from + 1;
+
+        //console.log(numberOfActiveBars);
+
+        return timerTick * (1/ (midiResolution * numberOfActiveBars) );
+    }
+
+    const initialize = () => { 
         window.midi.midiCore.midiClock = {
             ...midiClock,
             tick : timerTick,
-            clockTick : timerTick * (1/midiResolution),
+            clockTick : calculateClockTick(),
+            activeBars : getTotalActiveBars()
         };
         window.midi.midiCore.initialized = true;
     }
@@ -85,7 +100,11 @@ const MidiCore = memo(({ }) => {
         if(!window.midi.midiCore.midiClock) return;
         
         window.midi.midiCore.midiClock.tick = timerTick;
-        window.midi.midiCore.midiClock.clockTick = timerTick * (1/midiResolution);
+        window.midi.midiCore.midiClock.activeBars = getTotalActiveBars();
+
+
+        //window.midi.midiCore.midiClock.clockTick = timerTick * (1/midiResolution);
+        window.midi.midiCore.midiClock.clockTick = calculateClockTick();
 
         //  Perform Midi Actions First
         if(window.midi.grooveSkeleton.initialized) {
@@ -104,31 +123,54 @@ const MidiCore = memo(({ }) => {
         updateCount();
     
         updateMidiFrame();
+        //console.log(timerTick);
 
+        
     }, [timerTick]);
 
 
     const updateCount = () => {
 
         let newCount = Math.floor((timerTick/(midiResolution/midiClock.beatsPerMeasure)) % midiClock.beatsPerMeasure);
+        let newBar = Math.floor(timerTick/midiResolution);
+
+        //console.log("Could be missing last tick of beat/bar - check timertick and counts");
+
+        let numberOfActiveBars = window.transport.loop.to - window.transport.loop.from + 1;
 
         if (midiClock.isPlaying && newCount !== midiClock.count) {
             if (newCount === 0) {
                 if(midiClock.metronome) {
                     playBarClick();
                 }
+                //console.log("BAR => CLICK");
 
-                reset();
+                if(newBar >= numberOfActiveBars) {
+                    console.log("BAR => RESET");
+                    newBar = 0;
+                    newCount = 0;
+                    reset();
+                };
+/* 
+                console.log(window.transport, 'midiClock.newBar >= numberOfActiveBars', newBar >= numberOfActiveBars, newBar, numberOfActiveBars);
+                 */
             } else {
                 if(midiClock.metronome) {
                     playBeatClick();
+                    
                 }
+
+                //console.log("BEAT => CLICK");
             }
+
+            console.log('count:', newCount + "/" + newBar);
         }
 
 
         setMidiClock(prevState => ({...prevState,  
             count: newCount,
+            bar: newBar,
+            activeBars : getTotalActiveBars(),
         }))
 
     }
@@ -198,8 +240,12 @@ const MidiCore = memo(({ }) => {
             stopMidiPlay();
         }
 
+        //setInterval( ((60 / midiClock.tempo) * 1000)/(midiResolution/midiClock.beatsPerMeasure));
+
+
         setInterval( ((60 / midiClock.tempo) * 1000)/(midiResolution/midiClock.beatsPerMeasure));
 
+        
         //console.log('midiClock Updated:', midiClock.count, timerTick);
 
     }, [midiClock]);
@@ -240,7 +286,7 @@ const MidiCore = memo(({ }) => {
 
     return (
         <Container>
-            MidiCore Clock (bpm:{midiClock.tempo})(count:{midiClock.count})= {timerTick}/ {Math.floor(timerTick/midiResolution)}<br />
+            MidiCore Clock (bpm:{midiClock.tempo})(count:{midiClock.count})= {timerTick}/ {midiClock.bar/* Math.floor(timerTick/midiResolution) */}<br />
             <Metronome />
             
         </Container>
@@ -251,3 +297,4 @@ const MidiCore = memo(({ }) => {
 MidiCore.displayName = 'MidiCore';
 
 export default MidiCore;
+ 

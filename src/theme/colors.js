@@ -199,7 +199,12 @@ const colors = {
     text: standardColors.white,
     input   : {
       background  : standardColors.grey600,
-    } 
+    },
+    slider  : {
+      background  : standardColors.grey850,
+      thumb       : standardColors.white,
+      range       : standardColors.grey700,
+    }
 
   },
 

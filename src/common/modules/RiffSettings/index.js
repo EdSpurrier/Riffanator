@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import PianoKeyboardController from '../../components/PianoKeyboardController';
 import EventBus from '../../systems/EventBus';
 import Music from '../../utils/Music';
-
+import clsx from 'clsx';
 
 const Container = styled.div`
     background: ${({ theme }) => theme.colors.riffSettings.background};
@@ -52,6 +52,20 @@ const ScaleTypeSelector = styled.select`
 `;
 
 
+const RootOctave = styled.div`
+    display: flex;
+    align-items: center;
+`
+
+const ControlColumn = styled.div`
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 5px;
+    justify-content: space-between;
+`
+
+
 const Input = styled.input`
     padding: ${({ theme }) => theme.sizes.transport.input.padding};
     width: 50px;
@@ -60,10 +74,20 @@ const Input = styled.input`
     border: none;
     border-radius: 3px;
     text-align: center;
+    font-size: ${({ theme }) => theme.fontSizes.riffSettings.controlBar};
+
+    &.rootOctave {
+        width: 30px;
+        text-align: left;
+        background: transparent;
+        padding: 0;
+        margin-bottom: -2px;
+    }
 `
 
 window.riffSettings = {
     rootOctave  : 1,
+    bars        : 4,
     scale  : {
         rootNote    : 'B',
         type        : Music.scales[0].type,
@@ -74,7 +98,6 @@ window.riffSettings = {
 
 const RiffSettings = memo(({ name, show }) => {
 
-    
     const [currentScale, setCurrentScale] = useState(window.riffSettings.scale)
 
     const changeScaleRootNote = (rootNote) => {
@@ -149,7 +172,6 @@ const RiffSettings = memo(({ name, show }) => {
 
 
 /* 
-
     useEffect(() => {
         EventBus.on("Update System", (event) => {
           if (event.label === "Midi Initialized") {
@@ -182,19 +204,26 @@ const RiffSettings = memo(({ name, show }) => {
                     </Control>
 
                     <Control>
-                        
-                        <Scale>
-                            <div>Scale: {currentScale.rootNote} - </div>
-                            <ScaleTypeSelector
-                                onChange={(event) => changeScaleType(event.target.value)}
-                                value={currentScale.type}
-                            >
-                                {renderScaleTypeOptions(Music.scales)}
+                        <ControlColumn>
+                            <Scale>
+                                <div>Scale: {currentScale.rootNote} - </div>
+                                <ScaleTypeSelector
+                                    onChange={(event) => changeScaleType(event.target.value)}
+                                    value={currentScale.type}
+                                >
+                                    {renderScaleTypeOptions(Music.scales)}
 
-                            </ScaleTypeSelector>
-                            <div>Scale: {currentScale.rootNote} - </div>
-                            <Input type="number" step="1" min="-2" max="8" value={rootOctave} onChange={(e)=>updateRootOctave(e.target.value)} />
-                        </Scale>
+                                </ScaleTypeSelector>
+                            </Scale>
+
+                            <RootOctave>
+                                Root Octave: {currentScale.rootNote}
+                                <Input className={clsx('rootOctave')} type="number" step="1" min="-2" max="8" value={rootOctave} onChange={(e)=>updateRootOctave(e.target.value)} />
+                            </RootOctave>
+                        </ControlColumn>
+                    </Control>
+                    <Control>       
+
                     </Control>
                     
                     <Control>

@@ -15,8 +15,11 @@ const Container = styled.div`
 window.grooveSkeleton = {
     resolution      : 32,
     outputOctave    : 1,
+    playStyle       : 'chugga',
     groove          : [
-        
+        [
+            
+        ]
     ],
     midi            : {
         output          : {

@@ -1,6 +1,7 @@
 import React, { memo, useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import LoopIcon from '../../components/Icons/LoopIcon';
+import MetronomeIcon from '../../components/Icons/MetronomeIcon';
 import PlayIcon from '../../components/Icons/PlayIcon';
 import SideBarButton from '../../components/SideBar/SideBarButton';
 import EventBus from '../../systems/EventBus';
@@ -24,8 +25,8 @@ function getItem(label, keyId, icon) {
 
 const items = [
     getItem('Play', 'Play', <PlayIcon size={'1em'} />),
-    getItem('Metronome', 'Metronome', <LoopIcon size={'1em'} />),
-    /* getItem('Loop', 'Loop', <LoopIcon size={'1em'} />), */
+    getItem('Metronome', 'Metronome', <MetronomeIcon size={'1.25em'} />),
+    getItem('Loop', 'Loop', <LoopIcon size={'1em'} />),
 ];
 
 
