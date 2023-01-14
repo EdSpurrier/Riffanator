@@ -1,62 +1,57 @@
-import clsx from 'clsx';
 import React, { memo, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import GuitarInstrumentTrack from '../../components/InstrumentTrack/GuitarInstrumentTrack';
-import InstrumentControls from '../../components/InstrumentTrack/InstrumentControls.js';
-import Guitar from '../../music/Guitar';
-import EventBus from '../../systems/EventBus';
+import clsx from 'clsx';
+import GuitarMachineTrack from '../../components/GuitarMachineTrack';
+import { config } from '../../utils/config';
 
 const Container = styled.div`
-    display: none;
+    background: ${({ theme }) => theme.colors.grooveSkeleton.background};
+    width: 100%;
+    padding: ${({ theme }) => theme.sizes.grooveSkeleton.paddingVertical} 0;
+    border-width: ${({ theme }) => theme.sizes.grooveSkeleton.border};
+    border-style: solid;
+    border-color: ${({ theme }) => theme.colors.grooveSkeleton.border};
 
-
-    &.active {
-        display:block;
+    &.hide {
+        display: none;
     }
 `
 
-
-const GuitarMachine = memo(({ name, show }) => {
-
-    const [guitar, setGuitar] = useState(new Guitar());
-
-    const [slices, setSlices] = useState([]);
-
-    useEffect(() => {
-
-        EventBus.on("Update Instrument", (event) => {
-            if (name === event.label) {
-
-                if(event.data.includes('Setup')) {
-                    
-                    guitar.Setup({
-                        instrumentName : name,
-                        guitarTuning : 'Drop-B',
-                        barCount : 2
-                    });
-                    
-
-                    setSlices(guitar.GetSlices());
-                };
-                
+/* 
+    window.guitars = [
+        {
+            rootOctave    : config.guitarMachine.machines[0].rootOctave,
+            groove          : [],
+            midi            : {
+                output          : {
+                    name    : config.guitarMachine.machines[0].midi.output.name,
+                    id      : config.guitarMachine.machines[0].midi.output.id
+                },
             }
-        });
+        },
+        {
+            rootOctave    : config.guitarMachine.machines[1].rootOctave,
+            groove          : [],
+            midi            : {
+                output          : {
+                    name    : config.guitarMachine.machines[1].midi.output.name,
+                    id      : config.guitarMachine.machines[1].midi.output.id
+                },
+            }
+        }
+    ]
+*/
 
 
-        return () => {
-            EventBus.remove("Update Instrument");
-        };
-    }, []);
 
+
+const GuitarMachine = memo(({ name, show, machineId }) => {
 
     return (
-        <Container className={clsx(show?'active':'')}>
-            
-            <GuitarInstrumentTrack slices={slices}>
-                { name }
-                <InstrumentControls instrumentName={name} />
-            </GuitarInstrumentTrack>
-            
+        <Container className={clsx(show?'active':'hide')}>
+            <GuitarMachineTrack 
+                machineId={machineId}
+            />
         </Container>
     );
     

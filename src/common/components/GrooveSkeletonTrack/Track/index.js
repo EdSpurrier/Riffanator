@@ -2,8 +2,6 @@ import React, { memo, useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
 import clsx from 'clsx';
 import Maths from '../../../utils/Maths';
-import MidiUtils from '../../../music/MidiUtils';
-import util from 'util';
 import { WebMidi } from 'webmidi';
 import GuitarUtils from '../../../music/GuitarUtils';
 import { config } from '../../../utils/config';
@@ -234,7 +232,7 @@ const GrooveSkeletonTrackTrackLane = memo(({ children }) => {
         
         let bassRootNote = window.riffSettings.scale.rootNote + window.riffSettings.rootOctave;
 
-        console.log('noteOn', bassRootNote);
+        //console.log('noteOn', bassRootNote);
 
         GuitarUtils.PlayGuitarNote(bassRootNote, window.grooveSkeleton.playStyle, window.grooveSkeleton.midi.output.id);
         
@@ -248,7 +246,7 @@ const GrooveSkeletonTrackTrackLane = memo(({ children }) => {
         //console.log('noteOff', bassRootNote);
         let bassRootNote = window.riffSettings.scale.rootNote + window.riffSettings.rootOctave;
 
-        console.log('noteOff', bassRootNote);
+        //console.log('noteOff', bassRootNote);
 
         GuitarUtils.StopGuitarNote(bassRootNote, window.grooveSkeleton.playStyle, window.grooveSkeleton.midi.output.id);
 
@@ -259,7 +257,7 @@ const GrooveSkeletonTrackTrackLane = memo(({ children }) => {
 
     const startMidiPlay = () => {
         //  Clear Midi Output for device
-        console.log('grooveSkeleton.startMidiPlay');
+        //console.log('grooveSkeleton.startMidiPlay');
         if(WebMidi.outputs.length === 0) return;
 
     }
@@ -271,7 +269,7 @@ const GrooveSkeletonTrackTrackLane = memo(({ children }) => {
         //  Clear Midi Output for device
         
         if(WebMidi.outputs.length === 0) return;
-        console.log('grooveSkeleton.stopMidiPlay');
+        //console.log('grooveSkeleton.stopMidiPlay');
         StopNote();
         
     }
@@ -414,7 +412,7 @@ const GrooveSkeletonTrackTrackLane = memo(({ children }) => {
 
 
     useEffect(() => {
-        console.log('groove update:', groove);
+        //console.log('groove update:', groove);
 
         window.grooveSkeleton.groove = groove;
     }, [groove]);

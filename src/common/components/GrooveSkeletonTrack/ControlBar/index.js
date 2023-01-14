@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import EventBus from '../../../systems/EventBus';
 import ResolutionIcon from '../../Icons/ResolutionIcon';
 import theme from '../../../../theme/theme';
-import MidiUtils from '../../../music/MidiUtils';
 import { WebMidi } from 'webmidi';
 
 
@@ -57,9 +56,6 @@ const MidiOutputSelector = styled.select`
 `;
 
 
-
-
-
 /* window.grooveSkeleton = {
     resolution  : 32,
     groove      : [
@@ -72,7 +68,7 @@ const MidiOutputSelector = styled.select`
         },
     }
 };
- */
+*/
 
 const GrooveSkeletonTrackControlBar = memo(({ children }) => {
 

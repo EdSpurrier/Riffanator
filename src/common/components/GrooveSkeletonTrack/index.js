@@ -1,5 +1,6 @@
 import React, { memo, useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { config } from '../../utils/config';
 import GrooveSkeletonTrackControlBar from './ControlBar';
 import GrooveSkeletonTrackTrackLane from './Track';
 
@@ -13,18 +14,14 @@ const Container = styled.div`
 
 
 window.grooveSkeleton = {
-    resolution      : 32,
-    outputOctave    : 1,
-    playStyle       : 'chugga',
-    groove          : [
-        [
-            
-        ]
-    ],
+    resolution      : config.grooveSkeleton.resolution,
+    outputOctave    : config.grooveSkeleton.outputOctave,
+    playStyle       : config.grooveSkeleton.playStyle,
+    groove          : [],
     midi            : {
         output          : {
-            name    : 'Riff Generator',
-            id      : 0
+            name    : config.grooveSkeleton.midi.output.name,
+            id      : config.grooveSkeleton.midi.output.id
         },
     }
 };

@@ -45,10 +45,12 @@ const Dashboard = memo(() => {
         <GuitarMachine 
           name="Guitar [One]"
           show={selectedInstruments.includes("Guitar [One]")}
+          machineId={0}
         />
         <GuitarMachine 
           name="Guitar [Two]"
           show={selectedInstruments.includes("Guitar [Two]")}
+          machineId={1}
         />
         <BassMachine 
           name="Bass"

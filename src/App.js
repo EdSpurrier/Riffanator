@@ -1,10 +1,10 @@
 import React from 'react';
 import { theme } from './theme';
 import { ThemeProvider, createGlobalStyle } from 'styled-components';
-import FileSelector from './common/modules/FileSelector';
 import Layout from './Layout';
 import { WebMidi } from "webmidi";
 import EventBus from './common/systems/EventBus';
+import { config } from './common/utils/config';
 
 
 const GlobalStyles = createGlobalStyle`
@@ -30,6 +30,31 @@ window.midi = {
     midiClock : null,
   }
 }
+
+
+window.guitars = [
+  {
+      rootOctave    : config.guitarMachine.machines[0].rootOctave,
+      groove          : [],
+      midi            : {
+          output          : {
+              name    : config.guitarMachine.machines[0].midi.output.name,
+              id      : config.guitarMachine.machines[0].midi.output.id
+          },
+      }
+  },
+  {
+      rootOctave    : config.guitarMachine.machines[1].rootOctave,
+      groove          : [],
+      midi            : {
+          output          : {
+              name    : config.guitarMachine.machines[1].midi.output.name,
+              id      : config.guitarMachine.machines[1].midi.output.id
+          },
+      }
+  }
+]
+
 
 
 WebMidi
@@ -70,11 +95,6 @@ function App() {
 
       <Layout />
 
-
-
-      <FileSelector>
-        hideFileSelector
-      </FileSelector>
 
 
     </ThemeProvider>

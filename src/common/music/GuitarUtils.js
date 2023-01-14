@@ -71,8 +71,6 @@ const GuitarUtils = {
 
 
     StopGuitarNote (noteName, playStyleName, midiOutputId) {
-        
-        
         WebMidi.outputs[midiOutputId].stopNote(noteName);
         this.UnsetPlayStyle(playStyleName, midiOutputId);
     }

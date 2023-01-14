@@ -74,6 +74,32 @@ const colors = {
   },
 
 
+  machine       : {
+    background  : standardColors.grey850,
+    text        : standardColors.white,
+    border      : standardColors.grey800,
+
+    controlBar : {
+      background  : standardColors.grey850,
+      text        : standardColors.white,
+      icon        : standardColors.white,
+    },
+
+    fretboard   : {
+      background  : standardColors.white,
+      text        : standardColors.white,
+      icon        : standardColors.black,
+    }
+  },
+
+
+  controlBar : {
+    button  : {
+      unselected  : standardColors.grey600,
+      selected    : standardColors.white,
+      hover       : standardColors.grey200,
+    },
+  },
 
   grooveSkeleton : {
     background  : standardColors.grey850,

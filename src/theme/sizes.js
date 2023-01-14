@@ -86,6 +86,23 @@ const sizes = {
     },
 
 
+    machine : {
+        paddingVertical: standardSizes.padding.micro,
+        border: standardSizes.borders.vertical,
+        paddingHorizontal: standardSizes.gutters.small,
+
+        controlBar: {
+            height: standardSizes.grooveSkeleton.height.controlBar,
+            controlSpacingHorizontal: standardSizes.tiny,
+            iconSpacingHorizontal: standardSizes.micro,
+            marginBottom: standardSizes.padding.micro,
+            input: {
+                height: standardSizes.small,
+                padding: standardSizes.micro,
+            }
+        },
+    },
+
     grooveSkeleton: {
 
         paddingVertical: standardSizes.padding.micro,

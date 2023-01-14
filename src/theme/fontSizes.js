@@ -18,6 +18,10 @@ const fontSizes = {
     h3      : standardFontSizes.medium_large,
     h4      : standardFontSizes.medium,
 
+    machine : {
+        controlBar : standardFontSizes.small,
+    },
+
     grooveSkeleton : {
         controlBar : standardFontSizes.small,
     },
