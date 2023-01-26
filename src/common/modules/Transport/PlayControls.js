@@ -26,7 +26,7 @@ function getItem(label, keyId, icon) {
 const items = [
     getItem('Play', 'Play', <PlayIcon size={'1em'} />),
     getItem('Metronome', 'Metronome', <MetronomeIcon size={'1.25em'} />),
-    getItem('Loop', 'Loop', <LoopIcon size={'1em'} />),
+    /* getItem('Loop', 'Loop', <LoopIcon size={'1em'} />), */
 ];
 
 

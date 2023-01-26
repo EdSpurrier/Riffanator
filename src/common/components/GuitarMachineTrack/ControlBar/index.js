@@ -103,7 +103,7 @@ const GuitarMachineTrackControlBar = memo(({ children, machineId }) => {
 
         setCurrentMidiOutput(newMidiOutput);
 
-        config.guitarMachine.machines[machineId].midi.output = newMidiOutput;
+        window.guitars[machineId].midi.output = newMidiOutput;
     }
 
 

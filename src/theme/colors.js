@@ -11,7 +11,7 @@ const standardColors = {
   grey500:  '#9E9E9E',
   grey600:  '#757575',
   grey700:  '#616161',
-  grey800:  '#424242',
+  grey750:  '#525252',
   grey800:  '#424242',
   grey850:  '#313131',
   grey900:  '#212121',
@@ -86,9 +86,19 @@ const colors = {
     },
 
     fretboard   : {
-      background  : standardColors.white,
-      text        : standardColors.white,
-      icon        : standardColors.black,
+      background        : standardColors.grey700,
+      horizontalBorder  : standardColors.grey850,
+      verticalBorder    : standardColors.grey850,
+      text              : standardColors.black,
+      icon              : standardColors.black,
+      tuningText        : standardColors.white,
+      singleDotFret     : standardColors.grey750,
+      doubleDotFret     : standardColors.grey800,
+      fretHover         : standardColors.grey600,
+      fretNote          : {
+          background : standardColors.amberA400,
+          text : standardColors.black,
+      }
     }
   },
 

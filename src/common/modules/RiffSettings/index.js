@@ -75,6 +75,7 @@ const Input = styled.input`
     border-radius: 3px;
     text-align: center;
     font-size: ${({ theme }) => theme.fontSizes.riffSettings.controlBar};
+    user-select: none;
 
     &.rootOctave {
         width: 30px;

@@ -20,22 +20,16 @@ const GuitarMachineTrack = memo(({ children, machineId }) => {
 
     const [guitar, setGuitar] = useState(new Guitar());
 
-
-
-
-
-
-
-
-
-
     return (
         <Container>
             <GuitarMachineTrackControlBar 
                 machineId={machineId}
             />
             GUITAR id:{machineId} TALBATURE TRACK<br />
-            <FretBoard guitar={guitar}/>
+            <FretBoard 
+                guitar={guitar}
+                machineId={machineId}
+            />
         </Container>
     );
 

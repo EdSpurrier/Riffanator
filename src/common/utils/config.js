@@ -24,6 +24,7 @@ exports.config = {
         machines        : [
             {
                 rootOctave      : 1,
+                fretCount       : 24,
                 midi            : {
                     output          : {
                         name    : 'Riff Generator [Guitar A]',
@@ -33,6 +34,7 @@ exports.config = {
             },
             {
                 rootOctave      : 1,
+                fretCount       : 24,
                 midi            : {
                     output          : {
                         name    : 'Riff Generator [Guitar B]',
