@@ -30,7 +30,11 @@ exports.config = {
                         name    : 'Riff Generator [Guitar A]',
                         id      : 0
                     },
-                }
+                },
+                guitar          : null,
+                tablature       : [
+        
+                ],
             },
             {
                 rootOctave      : 1,
@@ -40,7 +44,11 @@ exports.config = {
                         name    : 'Riff Generator [Guitar B]',
                         id      : 0
                     },
-                }
+                },
+                guitar          : null,
+                tablature       : [
+        
+                ],
             }
         ]
         

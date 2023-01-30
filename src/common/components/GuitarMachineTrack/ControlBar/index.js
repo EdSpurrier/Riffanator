@@ -6,6 +6,10 @@ import { config } from '../../../utils/config';
 import ToggleButton from '../../Buttons/ToggleButton';
 import UnmuteIcon from '../../Icons/UnmuteIcon';
 import MuteIcon from '../../Icons/MuteIcon';
+import GuitarTabIcon from '../../Icons/GuitarTabIcon';
+import CloneIcon from '../../Icons/CloneIcon';
+
+
 
 const Container = styled.div`
     height: ${({ theme }) => theme.sizes.machine.controlBar.height};
@@ -54,7 +58,7 @@ const MidiOutputSelector = styled.select`
 
 
 
-const GuitarMachineTrackControlBar = memo(({ children, machineId }) => {
+const GuitarMachineTrackControlBar = memo(({ children, machineId, updateControl=null }) => {
 
     const [midiOutputs, setMidiOutputs] = useState([]);
     const [currentMidiOutput, setCurrentMidiOutput] = useState(config.guitarMachine.machines[machineId].midi.output)
@@ -76,7 +80,6 @@ const GuitarMachineTrackControlBar = memo(({ children, machineId }) => {
             }
 
             changeMidiOutput(midiOutputId);
-
         }
       });
 
@@ -137,6 +140,37 @@ const GuitarMachineTrackControlBar = memo(({ children, machineId }) => {
     }
 
 
+
+
+    const [showFretBoard, setShowFretBoard] = useState(true);
+
+
+    useEffect(() => {
+
+        console.log('showFretBoard:', showFretBoard);
+        updateControl('showFretBoard', showFretBoard);
+
+    }, [showFretBoard]);
+
+
+    const toggleFretBoard = () => {
+        console.log('toggleFretBoard()');
+        setShowFretBoard(!showFretBoard);
+    }
+
+
+    const cloneGrooveSkeleton = () => {
+        console.log('cloneGrooveSkeleton()');
+
+        updateControl('selectedNote', -1);
+
+        EventBus.dispatch("Update GuitarMachine", {
+            label: "Clone GrooveSkeleton",
+            data: machineId
+        });
+    }
+
+
     const renderMidiOutputOptions = (midiOutputDevices) => {
         return midiOutputDevices.map((outputDevice, key) =>
             <option key={key} value={key}>{outputDevice.name}</option>
@@ -152,6 +186,22 @@ const GuitarMachineTrackControlBar = memo(({ children, machineId }) => {
                     onClickAction={toggleMute}
                     toggleState={muteState}
                 />
+                <ToggleButton 
+                    iconActive={<GuitarTabIcon size={'1em'} />}
+                    iconInactive={<GuitarTabIcon size={'1em'}/>}
+                    onClickAction={toggleFretBoard}
+                    toggleState={showFretBoard}
+                />
+                <ToggleButton 
+                    iconActive={<CloneIcon size={'1em'} />}
+                    iconInactive={<CloneIcon size={'1em'}/>}
+                    onClickAction={cloneGrooveSkeleton}
+                    toggleState={true}
+                />
+            </Control>
+
+            <Control>
+                Guitar #{machineId+1}
             </Control>
 
             <Control>

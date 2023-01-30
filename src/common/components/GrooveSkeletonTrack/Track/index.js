@@ -130,7 +130,7 @@ const GrooveNote = styled.div`
     position: absolute;
     top: ${({ theme }) => theme.sizes.grooveSkeleton.guide.height};
     bottom: 0;
-    opacity: 0.5;
+    opacity: 1;
     z-index: ${({ theme }) => theme.heirarchy.grooveSkeleton.grooveNote};
     box-sizing: border-box;
 
@@ -674,6 +674,7 @@ const GrooveSkeletonTrackTrackLane = memo(({ children }) => {
 
     const renderGroove = (grooveData) => {
         
+        //console.log('rerendering groove');
         /*
 
             calculate from the loop.from

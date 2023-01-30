@@ -50,7 +50,7 @@ const ToggleButton = memo(({
 
     const onClickToggle = (event) => {
         
-        console.log(event);
+        //console.log(event);
 
         if (!onClickAction) {
             alert('No Action Connected....');

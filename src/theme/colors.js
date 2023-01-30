@@ -1,7 +1,55 @@
 const standardColors = {
+  grey50:   '#E0E0E0',
+  grey100:  '#F5F5F5',
 
   black: '#000',
   white: '#fff',
+
+  
+  blue50 : "#e3f2fd",
+  blue100 : "#bbdefb",
+  blue200 : "#90caf9",
+  blue300 : "#64b5f6",
+  blue400 : "#42a5f5",
+  blue500 : "#2196f3",
+  blue600 : "#1e88e5",
+  blue700 : "#1976d2",
+  blue800 : "#1565c0",
+  blue900 : "#0d47a1",
+
+  
+  cyan50  : "#e0f7fa",
+  cyan100 : "#b2ebf2",
+  cyan200 : "#80deea",
+  cyan300 : "#4dd0e1",
+  cyan400 : "#26c6da",
+  cyan500 : "#00bcd4",
+  cyan600 : "#00acc1",
+  cyan700 : "#0097a7",
+  cyan800 : "#00838f",
+  cyan900 : "#006064",
+
+  purple50    : "#f3e5f5",
+  purple100   : "#e1bee7",
+  purple200   : "#ce93d8",
+  purple300   : "#ba68c8",
+  purple400   : "#ab47bc",
+  purple500   : "#9c27b0",
+  purple600   : "#8e24aa",
+  purple700   : "#7b1fa2",
+  purple800   : "#6a1b9a",
+  purple900   : "#4a148c",
+
+  tealGreen50   : "#e0f2f1",
+  tealGreen100  : "#b2dfdb",
+  tealGreen200  : "#80cbc4",
+  tealGreen300  : "#4db6ac",
+  tealGreen400  : "#26a69a",
+  tealGreen500  : "#009688",
+  tealGreen600  : "#00897b",
+  tealGreen700  : "#00796b",
+  tealGreen800  : "#00695c",
+  tealGreen900  : "#004d40",
 
   grey50:   '#E0E0E0',
   grey100:  '#F5F5F5',
@@ -29,6 +77,40 @@ const standardColors = {
   blueGrey800: '#37474F',
   blueGrey900: '#263238',
 
+  brown50   : "#efebe9",
+  brown100  : "#d7ccc8",
+  brown200  : "#bcaaa4",
+  brown300  : "#a1887f",
+  brown400  : "#8d6e63",
+  brown500  : "#795548",
+  brown600  : "#6d4c41",
+  brown700  : "#5d4037",
+  brown800  : "#4e342e",
+  brown900  : "#3e2723",
+
+  
+  yellow50    : "#fffde7",
+  yellow100   : "#fff9c4",
+  yellow200   : "#fff59d",
+  yellow300   : "#fff176",
+  yellow400   : "#ffee58",
+  yellow500   : "#ffeb3b",
+  yellow600   : "#fdd835",
+  yellow700   : "#fbc02d",
+  yellow800   : "#f9a825",
+  yellow900   : "#f57f17",
+
+  indigo50    : "#e8eaf6",
+  indigo100   : "#c5cae9",
+  indigo200   : "#9fa8da",
+  indigo300   : "#7986cb",
+  indigo400   : "#5c6bc0",
+  indigo500   : "#3f51b5",
+  indigo600   : "#3949ab",
+  indigo700   : "#303f9f",
+  indigo800   : "#283593",
+  indigo900   : "#1a237e",
+  
   amberA100: '#FFE57F',
   amberA200: '#FFD740',
   amberA400: '#FFC400',
@@ -40,8 +122,18 @@ const standardColors = {
   orangeA400: '#FF9100',
   orangeA700: '#FF6D00',
 
-  tealGreen700: '#388E3C',
-  tealGreen900: '#1B5E20',
+  deepOrange50    : "#fbe9e7",
+  deepOrange100   : "#ffccbc",
+  deepOrange200   : "#ffab91",
+  deepOrange300   : "#ff8a65",
+  deepOrange400   : "#ff7043",
+  deepOrange500   : "#ff5722",
+  deepOrange600   : "#f4511e",
+  deepOrange700   : "#e64a19",
+  deepOrange800   : "#d84315",
+  deepOrange900   : "#bf360c",
+
+
 
   green700: '#689F38',
   green900: '#33691E',
@@ -83,6 +175,13 @@ const colors = {
       background  : standardColors.grey850,
       text        : standardColors.white,
       icon        : standardColors.white,
+    },
+
+    tablature   : {
+        noteOn          : standardColors.cyan600,
+        selected        : standardColors.cyan300,
+        hover           : standardColors.cyan500,
+        noteOff         : standardColors.grey800,
     },
 
     fretboard   : {

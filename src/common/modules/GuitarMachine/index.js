@@ -17,7 +17,7 @@ const Container = styled.div`
     }
 `
 
-/* 
+/*
     window.guitars = [
         {
             rootOctave    : config.guitarMachine.machines[0].rootOctave,
@@ -27,7 +27,11 @@ const Container = styled.div`
                     name    : config.guitarMachine.machines[0].midi.output.name,
                     id      : config.guitarMachine.machines[0].midi.output.id
                 },
-            }
+            },
+            guitar          : null,
+            tablature       : [
+            
+            ],
         },
         {
             rootOctave    : config.guitarMachine.machines[1].rootOctave,
@@ -37,12 +41,14 @@ const Container = styled.div`
                     name    : config.guitarMachine.machines[1].midi.output.name,
                     id      : config.guitarMachine.machines[1].midi.output.id
                 },
-            }
+            },
+            guitar          : null,
+            tablature       : [
+            
+            ],
         }
     ]
 */
-
-
 
 
 const GuitarMachine = memo(({ name, show, machineId }) => {

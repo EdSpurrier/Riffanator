@@ -101,6 +101,10 @@ const sizes = {
                 padding: standardSizes.micro,
             }
         },
+
+        tablature   : {
+            height: standardSizes.large,
+        },
     },
 
     grooveSkeleton: {
