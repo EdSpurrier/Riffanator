@@ -65,6 +65,10 @@ const GuitarMachineTrackControlBar = memo(({ children, machineId, updateControl=
     const midiOutputRef = useRef(null);
 
 
+    
+
+
+
     useEffect(() => {
       EventBus.on("Update System", (event) => {
         if (event.label === "Midi Initialized") {

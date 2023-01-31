@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import clsx from 'clsx';
 import { config } from '../../../utils/config';
 import EventBus from '../../../systems/EventBus';
-import Maths from '../../../utils/Maths';
 
 const Container = styled.div`
 `;

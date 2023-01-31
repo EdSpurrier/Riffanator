@@ -2,10 +2,15 @@ import clsx from 'clsx';
 import React, { memo, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { config } from '../../../utils/config';
-
-
+import FretBoardControlBar from './FretBoardControlBar';
 
 const Container = styled.div`
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+`;
+
+const FretBoardContainer = styled.div`
     background: ${({ theme }) => theme.colors.machine.fretboard.background};
     color: ${({ theme }) => theme.colors.machine.fretboard.text}; 
     width: 100%;
@@ -93,7 +98,7 @@ const FretNote = styled.div`
 `;
 
 
-const FretBoard = memo(({ children, guitar, machineId, showFretBoard, selectedNote }) => {
+const FretBoard = memo(({ children, guitar, machineId, showFretBoard, selectedNote, updateControl=null }) => {
 
     const singleDotFrets = [
         3, 5, 7, 9,
@@ -177,7 +182,7 @@ const FretBoard = memo(({ children, guitar, machineId, showFretBoard, selectedNo
         });
         /* stringElement.querySelector('.fretboard-location-') */
 
-        console.log(window.guitars[machineId]);
+        console.log(window.guitars[machineId].tablature[selectedNote]);
     }
 
 
@@ -254,8 +259,16 @@ const FretBoard = memo(({ children, guitar, machineId, showFretBoard, selectedNo
     }
 
     return (
-        <Container className={clsx(showFretBoard ? 'show' : 'hide', 'fretboard')}>
-            {renderStrings(guitar)}
+        <Container>
+            <FretBoardContainer className={clsx(showFretBoard ? 'show' : 'hide', 'fretboard')}>
+                {renderStrings(guitar)}
+            </FretBoardContainer>
+            <FretBoardControlBar 
+                machineId={machineId}
+                updateControl={updateControl}
+                selectedNote={selectedNote}
+                updateFretBoard={updateFretBoard}
+            />
         </Container>
     );
 

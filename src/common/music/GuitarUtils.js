@@ -27,9 +27,10 @@ const GuitarUtils = {
     },
     
     PlayStyle : {
-        'chugga' : 'G#-1',
+        'open'      : 'C-2',
+        'chugga'    : 'G#-1',
         'down mute' : 'E0',
-        'up mute' : 'F0',
+        'up mute'   : 'F0',
     },
 
 

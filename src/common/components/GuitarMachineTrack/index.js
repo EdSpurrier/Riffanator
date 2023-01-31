@@ -101,6 +101,7 @@ const GuitarMachineTrack = memo(({ children, machineId }) => {
                 machineId={machineId}
                 showFretBoard={controlStates.showFretBoard}
                 selectedNote={controlStates.selectedNote}
+                updateControl={updateControlStates}
             />
 
         </Container>

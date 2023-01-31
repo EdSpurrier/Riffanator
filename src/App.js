@@ -5,6 +5,7 @@ import Layout from './Layout';
 import { WebMidi } from "webmidi";
 import EventBus from './common/systems/EventBus';
 import { config } from './common/utils/config';
+import useEventListener from './common/hooks/useEventListener';
 
 
 const GlobalStyles = createGlobalStyle`
@@ -21,37 +22,37 @@ window.midi = {
   inputs: [],
   outputs: [],
   grooveSkeleton: {
-    initialized : false,
+    initialized: false,
     updateMidiFrame: null
   },
   instruments: [],
   midiCore: {
-    initialized : false,
-    midiClock : null,
+    initialized: false,
+    midiClock: null,
   }
 }
 
 
 window.guitars = [
   {
-      rootOctave    : config.guitarMachine.machines[0].rootOctave,
-      groove          : [],
-      midi            : {
-          output          : {
-              name    : config.guitarMachine.machines[0].midi.output.name,
-              id      : config.guitarMachine.machines[0].midi.output.id
-          },
-      }
+    rootOctave: config.guitarMachine.machines[0].rootOctave,
+    groove: [],
+    midi: {
+      output: {
+        name: config.guitarMachine.machines[0].midi.output.name,
+        id: config.guitarMachine.machines[0].midi.output.id
+      },
+    }
   },
   {
-      rootOctave    : config.guitarMachine.machines[1].rootOctave,
-      groove          : [],
-      midi            : {
-          output          : {
-              name    : config.guitarMachine.machines[1].midi.output.name,
-              id      : config.guitarMachine.machines[1].midi.output.id
-          },
-      }
+    rootOctave: config.guitarMachine.machines[1].rootOctave,
+    groove: [],
+    midi: {
+      output: {
+        name: config.guitarMachine.machines[1].midi.output.name,
+        id: config.guitarMachine.machines[1].midi.output.id
+      },
+    }
   }
 ]
 
@@ -64,19 +65,19 @@ WebMidi
 
 
 function onEnabled() {
-/* 
-  // Inputs
-  WebMidi.inputs.forEach(input => console.log(input.manufacturer, input.name));
-
-  // Outputs
-  WebMidi.outputs.forEach(output => console.log(output.manufacturer, output.name));
- */
+  /* 
+    // Inputs
+    WebMidi.inputs.forEach(input => console.log(input.manufacturer, input.name));
+  
+    // Outputs
+    WebMidi.outputs.forEach(output => console.log(output.manufacturer, output.name));
+   */
 
   window.midi.webMidi = WebMidi;
 
   window.midi.inputs = WebMidi.inputs;
   window.midi.outputs = WebMidi.outputs;
-  
+
 
 
   EventBus.dispatch("Update System", {
@@ -89,6 +90,16 @@ function onEnabled() {
 
 function App() {
 
+
+
+  useEventListener('keyup', (evt) => {
+    console.log(evt.code);
+    if (evt.code === 'Escape') {
+      alert('escape');
+    }
+  });
+
+
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyles />
@@ -99,7 +110,7 @@ function App() {
 
     </ThemeProvider>
   );
-  
+
 }
 
 export default App;
