@@ -137,7 +137,7 @@ const FretBoard = memo(({ children, guitar, machineId, showFretBoard, selectedNo
 
         const string = stringElement.getAttribute("data");
 
-        console.log('String Id:', string, 'Fret:', fret);
+        //console.log('String Id:', string, 'Fret:', fret);
         
         if (selectedNote !== -1) {
             if (window.guitars[machineId].tablature[selectedNote].strings[string].fret !== fret) {
@@ -160,7 +160,7 @@ const FretBoard = memo(({ children, guitar, machineId, showFretBoard, selectedNo
 
     const updateFretBoard = () => {
 
-        console.log('updateFretBoard()');
+        //console.log('updateFretBoard()');
 
         stringElements.current.forEach(stringElement => {
             const frets = stringElement.querySelectorAll('.fret');
@@ -182,7 +182,7 @@ const FretBoard = memo(({ children, guitar, machineId, showFretBoard, selectedNo
         });
         /* stringElement.querySelector('.fretboard-location-') */
 
-        console.log(window.guitars[machineId].tablature[selectedNote]);
+        //console.log(window.guitars[machineId].tablature[selectedNote]);
     }
 
 

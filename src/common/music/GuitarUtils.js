@@ -1,6 +1,6 @@
 import { WebMidi } from "webmidi";
 
-const GuitarTunings = {
+/* const GuitarTunings = {
     'Drop-B' : ['B1','F#2','B2','E3','G#3','C#4']
 }
 
@@ -10,13 +10,13 @@ const GuitarChords = {
     'Octave Chords' : [
         
     ]
-}
+} */
 
 
 const GuitarUtils = {
 
     GuitarTunings : {
-        'Drop-B' : ['B1','F#2','B2','E3','G#3','C#4']
+        'Drop-B' : ['B2','F#3','B3','E4','G#4','C#5']
     },
     
     
@@ -27,20 +27,20 @@ const GuitarUtils = {
     },
     
     PlayStyle : {
-        'open'      : 'C-2',
-        'chugga'    : 'G#-1',
-        'down mute' : 'E0',
-        'up mute'   : 'F0',
+        'OPEN'      : 'C2',
+        'CHUGGA'    : 'G#-1',
+        'DOWN MUTE' : 'E0',
+        'UP MUTE'   : 'F0',
     },
 
 
     GetGuitarTuning(tuningName){
-        return GuitarTunings[tuningName];
+        return this.GuitarTunings[tuningName];
     },
 
 
     GetGuitarChord(chordName){
-        return GuitarChords[chordName];
+        return this.GuitarChords[chordName];
     },
 
 
@@ -48,18 +48,24 @@ const GuitarUtils = {
 
     SetPlayStyle (playStyleName, midiOutputId) {
         if (playStyleName != 'open') {
-            WebMidi.outputs[midiOutputId].playNote(this.PlayStyle[playStyleName]);
-        } else {
+            console.log(playStyleName, this.PlayStyle);
+            WebMidi.outputs[midiOutputId].playNote(this.PlayStyle[playStyleName.toUpperCase()]);
+        }/*  else {
             this.UnsetPlayStyle(playStyleName, midiOutputId);
-        }
+        } */
     },
 
     UnsetPlayStyle (playStyleName, midiOutputId) {
-        WebMidi.outputs[midiOutputId].stopNote(this.PlayStyle[playStyleName]);
+        if (playStyleName != 'open') {
+
+            WebMidi.outputs[midiOutputId].stopNote(this.PlayStyle[playStyleName.toUpperCase()]);
+        }
     },
 
 
-
+    PlayGuitarNoteOnly (noteName, midiOutputId) {        
+        WebMidi.outputs[midiOutputId].playNote(noteName);
+    },
 
     PlayGuitarNote (noteName, playStyleName, midiOutputId) {
 
@@ -68,7 +74,9 @@ const GuitarUtils = {
         WebMidi.outputs[midiOutputId].playNote(noteName);
     },
 
-
+    StopGuitarNoteOnly (noteName, midiOutputId) {        
+        WebMidi.outputs[midiOutputId].stopNote(noteName);
+    },
 
 
     StopGuitarNote (noteName, playStyleName, midiOutputId) {

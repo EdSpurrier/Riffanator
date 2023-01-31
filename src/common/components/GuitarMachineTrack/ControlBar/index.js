@@ -134,12 +134,12 @@ const GuitarMachineTrackControlBar = memo(({ children, machineId, updateControl=
 
     useEffect(() => {
 
-        console.log('muteState:', muteState);
+        //console.log('muteState:', muteState);
 
     }, [muteState]);
 
     const toggleMute = () => {
-        console.log('toggleMute()');
+        //console.log('toggleMute()');
         setMuteState(!muteState);
     }
 
@@ -151,20 +151,20 @@ const GuitarMachineTrackControlBar = memo(({ children, machineId, updateControl=
 
     useEffect(() => {
 
-        console.log('showFretBoard:', showFretBoard);
+        //console.log('showFretBoard:', showFretBoard);
         updateControl('showFretBoard', showFretBoard);
 
     }, [showFretBoard]);
 
 
     const toggleFretBoard = () => {
-        console.log('toggleFretBoard()');
+        //console.log('toggleFretBoard()');
         setShowFretBoard(!showFretBoard);
     }
 
 
     const cloneGrooveSkeleton = () => {
-        console.log('cloneGrooveSkeleton()');
+        //console.log('cloneGrooveSkeleton()');
 
         updateControl('selectedNote', -1);
 

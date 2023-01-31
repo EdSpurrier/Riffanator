@@ -59,6 +59,7 @@ const MidiCore = memo(({ }) => {
             activeBars : getTotalActiveBars()
         };
         window.midi.midiCore.initialized = true;
+
     }
 
 
@@ -70,6 +71,13 @@ const MidiCore = memo(({ }) => {
         if(window.midi.grooveSkeleton.initialized) {
             window.midi.grooveSkeleton.startMidiPlay();
         };
+        if(window.midi.guitars[0].initialized) {
+            window.midi.guitars[0].startMidiPlay();
+        };
+        if(window.midi.guitars[1].initialized) {
+            window.midi.guitars[1].startMidiPlay();
+        };
+
 
         //  Update GUI Last (Midi Actions Takes Precendence)
         if(window.midi.grooveSkeleton.initialized) {
@@ -85,6 +93,13 @@ const MidiCore = memo(({ }) => {
         //  Perform Midi Actions First
         if(window.midi.grooveSkeleton.initialized) {
             window.midi.grooveSkeleton.stopMidiPlay();
+        };
+
+        if(window.midi.guitars[0].initialized) {
+            window.midi.guitars[0].stopMidiPlay();
+        };
+        if(window.midi.guitars[1].initialized) {
+            window.midi.guitars[1].stopMidiPlay();
         };
 
         //  Update GUI Last (Midi Actions Takes Precendence)
@@ -111,10 +126,25 @@ const MidiCore = memo(({ }) => {
             window.midi.grooveSkeleton.updateMidiFrameAction();
         };
 
+        if(window.midi.guitars[0].initialized) {
+            window.midi.guitars[0].updateMidiFrameAction();
+        };
+        if(window.midi.guitars[1].initialized) {
+            window.midi.guitars[1].updateMidiFrameAction();
+        };
+
         //  Update GUI Last (Midi Actions Takes Precendence)
         if(window.midi.grooveSkeleton.initialized) {
             window.midi.grooveSkeleton.updateMidiFrameGUI();
         };
+
+        if(window.midi.guitars[0].initialized) {
+            window.midi.guitars[0].updateMidiFrameGUI();
+        };
+        if(window.midi.guitars[1].initialized) {
+            window.midi.guitars[1].updateMidiFrameGUI();
+        };
+
     }
 
 
@@ -146,7 +176,7 @@ const MidiCore = memo(({ }) => {
                 //console.log("BAR => CLICK");
 
                 if(newBar >= numberOfActiveBars) {
-                    console.log("BAR => RESET");
+                    //console.log("BAR => RESET");
                     newBar = 0;
                     newCount = 0;
                     reset();
@@ -163,7 +193,7 @@ const MidiCore = memo(({ }) => {
                 //console.log("BEAT => CLICK");
             }
 
-            console.log('count:', newCount + "/" + newBar);
+            //console.log('count:', newCount + "/" + newBar);
         }
 
 
@@ -286,7 +316,7 @@ const MidiCore = memo(({ }) => {
 
     return (
         <Container>
-            MidiCore Clock (bpm:{midiClock.tempo})(count:{midiClock.count})= {timerTick}/ {midiClock.bar/* Math.floor(timerTick/midiResolution) */}<br />
+            MidiCore Clock (bpm:{midiClock.tempo})-[{(midiClock.count+1) + "/" + (midiClock.bar+1)}]:{timerTick}<br />
             <Metronome />
             
         </Container>

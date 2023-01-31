@@ -55,7 +55,7 @@ const GuitarMachineTrack = memo(({ children, machineId }) => {
     });
 
     const updateControlStates = (controlStateName, state) => {
-        console.log(controlStateName, state);
+        //console.log(controlStateName, state);
         if(controlStateName === 'showFretBoard') {
             setControlStates(prevState => ({...prevState,  
                 showFretBoard   : state
@@ -70,13 +70,13 @@ const GuitarMachineTrack = memo(({ children, machineId }) => {
 
 
     useEffect(() => {
-        console.log('controlStates update:', controlStates);
+        //console.log('controlStates update:', controlStates);
     }, [controlStates]);
 
 
 
     useEffect(() => {
-        console.log('guitar update:', guitar);
+        //console.log('guitar update:', guitar);
 
         window.guitars[machineId].guitar = guitar;
     }, [guitar]);

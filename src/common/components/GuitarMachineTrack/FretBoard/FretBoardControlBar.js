@@ -67,7 +67,7 @@ const FretBoardControlBar = memo(({ children, machineId, selectedNote, updateFre
 
         if (selectedNote === -1) return;
 
-        console.log('useEffect => playStyle:', playStyle);
+        //console.log('useEffect => playStyle:', playStyle);
         window.guitars[machineId].tablature[selectedNote].playStyle = playStyle;
 
         updateFretBoard();
@@ -78,7 +78,7 @@ const FretBoardControlBar = memo(({ children, machineId, selectedNote, updateFre
 
     const changePlayStyle = (newPlayStyle) => {
 
-        console.log('changePlayStyle():', playStyle);
+        //console.log('changePlayStyle():', playStyle);
 
         setPlayStyle(newPlayStyle);
 
@@ -90,7 +90,7 @@ const FretBoardControlBar = memo(({ children, machineId, selectedNote, updateFre
 
 
     const clearTablatureNote = () => {
-        console.log('clearTablatureNote()');
+        //console.log('clearTablatureNote()');
 
         window.guitars[machineId].tablature[selectedNote].strings.forEach(string => {
             string.state = false;
@@ -107,10 +107,10 @@ const FretBoardControlBar = memo(({ children, machineId, selectedNote, updateFre
 
         let i = 0;
         for (let [key, value] of Object.entries(playStyles)) {
-            console.log(key, value);
+            //console.log(key, value);
 
             playStyleOptions.push(
-                <option key={i} value={key} selected={selectedNote===-1?(i===0):(window.guitars[machineId].tablature[selectedNote].playStyle === key)}>{key.toUpperCase()}</option>
+                <option key={i} defaultValue={key} selected={selectedNote===-1?(i===0):(window.guitars[machineId].tablature[selectedNote].playStyle === key)}>{key.toUpperCase()}</option>
             );
 
             i++;

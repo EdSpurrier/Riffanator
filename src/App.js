@@ -25,7 +25,19 @@ window.midi = {
     initialized: false,
     updateMidiFrame: null
   },
-  instruments: [],
+  guitars: [
+    {
+      initialized: false,
+      updateMidiFrame: null
+    },
+    {
+      initialized: false,
+      updateMidiFrame: null
+    },
+  ],
+  instruments: [
+
+  ],
   midiCore: {
     initialized: false,
     midiClock: null,

@@ -281,10 +281,7 @@ const GrooveSkeletonTrackTrackLane = memo(({ children }) => {
 
     const getRelativeClockTick = () => {
 
-
-
         /*
-
             calculate from the loop.from
 
             and finish on the loop.to
@@ -297,11 +294,9 @@ const GrooveSkeletonTrackTrackLane = memo(({ children }) => {
             calculate the 1.0 (100%) from the number of bars within loop.from => loop.to
 
         */
-/* 
+        /* 
         let startBar = window.transport.loop.from - 1;
         let endBar = window.transport.loop.to; */
-
-
 
         let numberOfActiveBars = window.transport.loop.to - window.transport.loop.from + 1;
 
