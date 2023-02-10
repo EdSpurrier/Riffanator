@@ -14,14 +14,12 @@ const Container = styled.div`
 
 const SideBar = memo(({ children, width }) => {
     
-
-
-
     return (
         <Container width={width}>
            { children }
         </Container>
     );
+    
 });
 
 SideBar.displayName = 'SideBar';

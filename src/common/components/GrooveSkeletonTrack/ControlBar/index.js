@@ -9,7 +9,6 @@ import { WebMidi } from 'webmidi';
 
 const Container = styled.div`
     height: ${({ theme }) => theme.sizes.grooveSkeleton.controlBar.height};
-    background: ${({ theme }) => theme.colors.grooveSkeleton.controlBar.background};
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -21,7 +20,6 @@ const Container = styled.div`
     select {
         font-size: ${({ theme }) => theme.fontSizes.grooveSkeleton.controlBar};
         color: ${({ theme }) => theme.colors.grooveSkeleton.controlBar.text};
-        background: ${({ theme }) => theme.colors.grooveSkeleton.controlBar.background}; 
         text-align: center;
         -webkit-appearance: none;
         -moz-appearance: none;
@@ -29,6 +27,9 @@ const Container = styled.div`
         text-overflow: '';
         cursor: pointer;
         outline: none;
+        option {
+            background: ${({ theme }) => theme.colors.machine.controlBar.background};
+        }
     }
 
     svg g, svg {
@@ -167,7 +168,7 @@ const GrooveSkeletonTrackControlBar = memo(({ children }) => {
                 <ResolutionIcon size={theme.fontSizes.grooveSkeleton.controlBar} />
                 <ResolutionSelector
                     onChange={(event) => changeResolution(event.target.value)}
-                    value={currentResolution}
+                    defaultValue={currentResolution}
                 >
                     <option value="8">8</option>
                     <option value="16">16</option>

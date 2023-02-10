@@ -13,7 +13,6 @@ import CloneIcon from '../../Icons/CloneIcon';
 
 const Container = styled.div`
     height: ${({ theme }) => theme.sizes.machine.controlBar.height};
-    background: ${({ theme }) => theme.colors.machine.controlBar.background};
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -25,7 +24,6 @@ const Container = styled.div`
     select {
         font-size: ${({ theme }) => theme.fontSizes.machine.controlBar};
         color: ${({ theme }) => theme.colors.machine.controlBar.text};
-        background: ${({ theme }) => theme.colors.machine.controlBar.background}; 
         text-align: center;
         -webkit-appearance: none;
         -moz-appearance: none;
@@ -33,6 +31,9 @@ const Container = styled.div`
         text-overflow: '';
         cursor: pointer;
         outline: none;
+        option {
+            background: ${({ theme }) => theme.colors.machine.controlBar.background};
+        }
     }
 
     svg g, svg {
@@ -212,6 +213,7 @@ const GuitarMachineTrackControlBar = memo(({ children, machineId, updateControl=
                 <MidiOutputSelector
                     ref={midiOutputRef}
                     onChange={(event) => changeMidiOutput(event.target.value)}
+                    defaultValue={currentMidiOutput}
                 >
                     {renderMidiOutputOptions(window?.midi?.outputs || [])}
                 </MidiOutputSelector>

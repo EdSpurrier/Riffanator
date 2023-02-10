@@ -24,14 +24,14 @@ import GuitarUtils from "../../../music/GuitarUtils";
 import Midi from "../../../utils/Midi";
 
 
-const Guitar = (stringCount = 6, tuningName = 'Drop-B', fretCount = 23) => {
-    
-    const rootOctave = 1;
+const Guitar = (stringCount = 7, tuningName = 'Drop-A', fretCount = 23) => {
+
 
     const strings = Array(stringCount).fill().map(item => (
         {
-            note    : 'A',
-            frets   : []
+            note            : 'A',
+            frets           : [],
+            noteNumbers     : []
         }
     ));
     
@@ -44,20 +44,19 @@ const Guitar = (stringCount = 6, tuningName = 'Drop-B', fretCount = 23) => {
 
         let tuning = GuitarUtils.GetGuitarTuning(tuningName);
 
-
-
         for (let i = 0; i < strings.length; i++) {
 
             strings[i].note = tuning[i];
 
             strings[i].frets = [];
-
+            strings[i].noteNumbers = [];
 
             for (let ii = 0; ii < fretCount; ii++) {
                 let fretNote = Midi.GetNoteNumber(tuning[i]);
                 fretNote += ii;
 
                 strings[i].frets.push(Midi.GetNoteName(fretNote));
+                strings[i].noteNumbers.push(fretNote);
             }
             
 
@@ -68,6 +67,8 @@ const Guitar = (stringCount = 6, tuningName = 'Drop-B', fretCount = 23) => {
 
         //console.log('Guitar strings => ', strings);
     }
+
+
 
     Init();
 

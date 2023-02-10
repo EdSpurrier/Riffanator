@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import React, { memo, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
+import { useGuitarMachine } from '../../../../State/GuitarMachine/Machine';
 import { config } from '../../../utils/config';
 import FretBoardControlBar from './FretBoardControlBar';
 
@@ -98,7 +99,17 @@ const FretNote = styled.div`
 `;
 
 
-const FretBoard = memo(({ children, guitar, machineId, showFretBoard, selectedNote, updateControl=null }) => {
+const FretBoard = memo(({ children, guitar, machineId, showFretBoard, updateControl=null }) => {
+
+    
+
+    const guitarMachine = useGuitarMachine(machineId, {
+        fretboard: {
+            updateFretboard: () => {updateFretBoard()}
+        }
+    });
+
+    const [selectedNote, setSelectedNote] = useState(-1);
 
     const singleDotFrets = [
         3, 5, 7, 9,
@@ -113,21 +124,13 @@ const FretBoard = memo(({ children, guitar, machineId, showFretBoard, selectedNo
 
 
 
-
-    useEffect(() => {
-        //console.log('FretBoard selectedNote update:', selectedNote);
-        
-        updateFretBoard();
-    }, [selectedNote]);
-
-
     const selectFret = (event, fret) => {
 
 /*         let fretElement = event.target;
         if () {
 
         } */
-        if (selectedNote === -1) return;
+        if (guitarMachine.machine.selectedNote === -1) return;
 
         let stringElement = event.target.parentElement;
 
@@ -139,15 +142,15 @@ const FretBoard = memo(({ children, guitar, machineId, showFretBoard, selectedNo
 
         //console.log('String Id:', string, 'Fret:', fret);
         
-        if (selectedNote !== -1) {
-            if (window.guitars[machineId].tablature[selectedNote].strings[string].fret !== fret) {
-                window.guitars[machineId].tablature[selectedNote].strings[string].fret = fret;
-                window.guitars[machineId].tablature[selectedNote].strings[string].state = true;
+        if (guitarMachine.machine.selectedNote !== -1) {
+            if (window.guitars[machineId].tablature[guitarMachine.machine.selectedNote].strings[string].fret !== fret) {
+                window.guitars[machineId].tablature[guitarMachine.machine.selectedNote].strings[string].fret = fret;
+                window.guitars[machineId].tablature[guitarMachine.machine.selectedNote].strings[string].state = true;
             } else {
-                window.guitars[machineId].tablature[selectedNote].strings[string].state = !window.guitars[machineId].tablature[selectedNote].strings[string].state;
+                window.guitars[machineId].tablature[guitarMachine.machine.selectedNote].strings[string].state = !window.guitars[machineId].tablature[guitarMachine.machine.selectedNote].strings[string].state;
             }
 
-            if(window.guitars[machineId].tablature[selectedNote].strings[string].state) {
+            if(window.guitars[machineId].tablature[guitarMachine.machine.selectedNote].strings[string].state) {
                 stringElement.classList.add('active');
             } else {
                 stringElement.classList.remove('active');
@@ -160,7 +163,9 @@ const FretBoard = memo(({ children, guitar, machineId, showFretBoard, selectedNo
 
     const updateFretBoard = () => {
 
-        //console.log('updateFretBoard()');
+        console.log('updateFretBoard()');
+
+        setSelectedNote(guitarMachine.machine.selectedNote);
 
         stringElements.current.forEach(stringElement => {
             const frets = stringElement.querySelectorAll('.fret');
@@ -169,10 +174,10 @@ const FretBoard = memo(({ children, guitar, machineId, showFretBoard, selectedNo
             });
         });
 
-        if (selectedNote === -1) return;
+        if (guitarMachine.machine.selectedNote === -1) return;
             
         let stringId = 0;
-        window.guitars[machineId].tablature[selectedNote].strings.forEach(string => {
+        window.guitars[machineId].tablature[guitarMachine.machine.selectedNote].strings.forEach(string => {
             
             if(string.state) {
                 let fret = stringElements.current[stringId].querySelector(`.fretboard-location-${stringId}-${string.fret}`);
@@ -182,7 +187,7 @@ const FretBoard = memo(({ children, guitar, machineId, showFretBoard, selectedNo
         });
         /* stringElement.querySelector('.fretboard-location-') */
 
-        //console.log(window.guitars[machineId].tablature[selectedNote]);
+        //console.log(window.guitars[machineId].tablature[guitarMachine.machine.selectedNote]);
     }
 
 
@@ -216,8 +221,8 @@ const FretBoard = memo(({ children, guitar, machineId, showFretBoard, selectedNo
                     console.log(guitarString);
                 }); */
 
-/*         if (selectedNote !== -1) {
-            console.log(window.guitars[machineId].tablature[selectedNote]);
+/*         if (guitarMachine.machine.selectedNote !== -1) {
+            console.log(window.guitars[machineId].tablature[guitarMachine.machine.selectedNote]);
         } */
 
 
@@ -259,6 +264,7 @@ const FretBoard = memo(({ children, guitar, machineId, showFretBoard, selectedNo
     }
 
     return (
+
         <Container>
             <FretBoardContainer className={clsx(showFretBoard ? 'show' : 'hide', 'fretboard')}>
                 {renderStrings(guitar)}

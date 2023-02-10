@@ -7,7 +7,6 @@ import GuitarTablatureTrack from './GuitarTablatureTrack';
 
 
 const Container = styled.div`
-    background: ${({ theme }) => theme.colors.machine.background};
     padding: 0 ${({ theme }) => theme.sizes.machine.paddingHorizontal};
 `;
 
@@ -50,8 +49,7 @@ const GuitarMachineTrack = memo(({ children, machineId }) => {
     const [guitar, setGuitar] = useState(new Guitar());
 
     const [controlStates, setControlStates] = useState({
-        showFretBoard       : true,
-        selectedNote        : -1
+        showFretBoard       : true
     });
 
     const updateControlStates = (controlStateName, state) => {
@@ -60,12 +58,7 @@ const GuitarMachineTrack = memo(({ children, machineId }) => {
             setControlStates(prevState => ({...prevState,  
                 showFretBoard   : state
             }));
-        } else if (controlStateName === 'selectedNote') {
-            setControlStates(prevState => ({...prevState,  
-                selectedNote  : state
-            }));
         };
-       
     }
 
 
@@ -100,7 +93,6 @@ const GuitarMachineTrack = memo(({ children, machineId }) => {
                 guitar={guitar}
                 machineId={machineId}
                 showFretBoard={controlStates.showFretBoard}
-                selectedNote={controlStates.selectedNote}
                 updateControl={updateControlStates}
             />
 

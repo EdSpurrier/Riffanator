@@ -6,6 +6,9 @@ const Container = styled.div`
 
 `
 
+const UploadFile = styled.div`
+
+`
 
 const FolderSelector = memo(({}) => {
 
@@ -13,23 +16,33 @@ const FolderSelector = memo(({}) => {
 
 
     useEffect(() => {
-        //console.log(files);
-    }, [files]);
-
-    const selectFolder = (e) => {
+        if(!files) return
+        console.log(files);
 
         
-        setFiles(files => [...files, e.target.files]);
+    }, [files]);
 
 
+    const selectFiles = (e) => {
+
+        let newFiles = files;
+        for(let i = 0; i < e.target.files.length; i++) {
+            newFiles.push(e.target.files.item(i));
+        }
+        
+        console.log(newFiles);
+        setFiles(newFiles);
+
+        console.log(e);
     }
+
 
 
     return (
         <Container>
-            <input directory="" webkitdirectory="" type="file" onChange={selectFolder}/>
+            Upload File:<input type="file" name="avatar" id="id_avatar" multiple onChange={selectFiles}/><br />
             <ul id="listing">
-                {files.map( (file, index)=>
+                {files.map( (file, index)=> 
                     <li key={index}>{ file.name }</li>
                 )}
             </ul>

@@ -7,7 +7,7 @@ const Button = styled.button`
     transition: ${({ theme }) => theme.animation.fast};
     cursor: pointer;
 
-    colour: ${({ theme }) => theme.colors.controlBar.button.unselected};
+    color: ${({ theme }) => theme.colors.controlBar.button.unselected};
 
 
 

@@ -16,7 +16,8 @@ const GuitarChords = {
 const GuitarUtils = {
 
     GuitarTunings : {
-        'Drop-B' : ['B2','F#3','B3','E4','G#4','C#5']
+        'Drop-B' : ['B2','F#3','B3','E4','G#4','C#5', 'D#6'],
+        'Drop-A' : ['A2','E3','A3','D4','F#4','B5', 'E6'],
     },
     
     

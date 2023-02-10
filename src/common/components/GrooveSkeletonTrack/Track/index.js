@@ -216,9 +216,14 @@ const GrooveSkeletonTrackTrackLane = memo(({ children }) => {
         window.midi.grooveSkeleton.updateMidiFrameAction = updateMidiFrameAction;
         window.midi.grooveSkeleton.updateMidiFrameGUI = updateMidiFrameGUI;
         window.midi.grooveSkeleton.initialized = true;
+
+        window.grooveSkeleton.actions.overwriteGroove = overwriteGroove;
     }
     
-
+    const overwriteGroove = (newGroove) => {
+        window.grooveSkeleton.groove = newGroove;
+        setGroove(newGroove);
+    }
 
 
     const PlayNote = () => {
@@ -731,7 +736,7 @@ const GrooveSkeletonTrackTrackLane = memo(({ children }) => {
                 }}
             >
             </GrooveNote>
-            : <></>
+            : <div key={key}></div>
             )
         })
 

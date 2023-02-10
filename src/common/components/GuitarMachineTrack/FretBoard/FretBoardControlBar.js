@@ -12,7 +12,6 @@ import GuitarUtils from '../../../music/GuitarUtils';
 
 const Container = styled.div`
     height: ${({ theme }) => theme.sizes.machine.controlBar.height};
-    background: ${({ theme }) => theme.colors.machine.controlBar.background};
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -23,13 +22,15 @@ const Container = styled.div`
     select {
         font-size: ${({ theme }) => theme.fontSizes.machine.controlBar};
         color: ${({ theme }) => theme.colors.machine.controlBar.text};
-        background: ${({ theme }) => theme.colors.machine.controlBar.background}; 
         text-align: left;
         -webkit-appearance: none;
         -moz-appearance: none;
         text-overflow: '';
         cursor: pointer;
         outline: none;
+        option {
+            background: ${({ theme }) => theme.colors.machine.controlBar.background};
+        }
     }
 
     svg g, svg {
@@ -55,19 +56,29 @@ const PlayStyleSelector = styled.select`
 
 
 
-const FretBoardControlBar = memo(({ children, machineId, selectedNote, updateFretBoard, updateControl=null }) => {
+const FretBoardControlBar = memo(({ children, machineId, selectedNote, updateFretBoard, updateControl = null }) => {
 
-    const [playStyle, setPlayStyle] = useState([]);
+    const [playStyle, setPlayStyle] = useState('NONE');
     const playStyleRef = useRef(null);
 
 
-    
+    useEffect(() => {
+
+        if (selectedNote === -1) {
+            setPlayStyle('NONE');
+            return;
+        };
+
+        setPlayStyle(window.guitars[machineId].tablature[selectedNote].playStyle);
+
+
+    }, [selectedNote]);
+
 
     useEffect(() => {
 
         if (selectedNote === -1) return;
 
-        //console.log('useEffect => playStyle:', playStyle);
         window.guitars[machineId].tablature[selectedNote].playStyle = playStyle;
 
         updateFretBoard();
@@ -77,8 +88,6 @@ const FretBoardControlBar = memo(({ children, machineId, selectedNote, updateFre
 
 
     const changePlayStyle = (newPlayStyle) => {
-
-        //console.log('changePlayStyle():', playStyle);
 
         setPlayStyle(newPlayStyle);
 
@@ -90,7 +99,6 @@ const FretBoardControlBar = memo(({ children, machineId, selectedNote, updateFre
 
 
     const clearTablatureNote = () => {
-        //console.log('clearTablatureNote()');
 
         window.guitars[machineId].tablature[selectedNote].strings.forEach(string => {
             string.state = false;
@@ -110,40 +118,39 @@ const FretBoardControlBar = memo(({ children, machineId, selectedNote, updateFre
             //console.log(key, value);
 
             playStyleOptions.push(
-                <option key={i} defaultValue={key} selected={selectedNote===-1?(i===0):(window.guitars[machineId].tablature[selectedNote].playStyle === key)}>{key.toUpperCase()}</option>
+                <option key={i} value={key}>{key.toUpperCase()}</option>
             );
 
             i++;
         }
 
-
         return playStyleOptions;
     }
 
     return (
-        <Container>
-            <Control>
-                <PlayStyleSelector
-                    ref={playStyleRef}
-                    onChange={(event) => changePlayStyle(event.target.value)}
-                >
-                    {renderPlayStyleOptions(GuitarUtils.PlayStyle || {})}
-                </PlayStyleSelector>
-            </Control>
+        <Container>{(selectedNote !== -1 ?
+            <>
+                <Control>
+                    <PlayStyleSelector
+                        ref={playStyleRef}
+                        onChange={(event) => changePlayStyle(event.target.value)}
+                        value={playStyle}
+                    >
+                        {renderPlayStyleOptions(GuitarUtils.PlayStyle || {})}
+                    </PlayStyleSelector>
+                </Control>
 
 
-            <Control>
-                <ToggleButton 
-                    iconActive={<CleanIcon size={'1em'} />}
-                    iconInactive={<CleanIcon size={'1em'} />}
-                    onClickAction={clearTablatureNote}
-                    toggleState={true}
-                />
-            </Control>
-
-
-            
-
+                <Control>
+                    <ToggleButton
+                        iconActive={<CleanIcon size={'1em'} />}
+                        iconInactive={<CleanIcon size={'1em'} />}
+                        onClickAction={clearTablatureNote}
+                        toggleState={true}
+                    />
+                </Control>
+            </>
+            : <></>)}
         </Container>
     );
 });

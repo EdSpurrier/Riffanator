@@ -6,6 +6,8 @@ import { WebMidi } from "webmidi";
 import EventBus from './common/systems/EventBus';
 import { config } from './common/utils/config';
 import useEventListener from './common/hooks/useEventListener';
+import initiateKeyboardInput from './State/Interaction/Input';
+import useKeyboardInput from './State/Interaction/Input';
 
 
 const GlobalStyles = createGlobalStyle`
@@ -49,6 +51,7 @@ window.guitars = [
   {
     rootOctave: config.guitarMachine.machines[0].rootOctave,
     groove: [],
+    actions: {},
     midi: {
       output: {
         name: config.guitarMachine.machines[0].midi.output.name,
@@ -59,6 +62,7 @@ window.guitars = [
   {
     rootOctave: config.guitarMachine.machines[1].rootOctave,
     groove: [],
+    actions: {},
     midi: {
       output: {
         name: config.guitarMachine.machines[1].midi.output.name,
@@ -102,14 +106,8 @@ function onEnabled() {
 
 function App() {
 
-
-
-  useEventListener('keyup', (evt) => {
-    console.log(evt.code);
-    if (evt.code === 'Escape') {
-      alert('escape');
-    }
-  });
+  
+  useKeyboardInput();
 
 
   return (

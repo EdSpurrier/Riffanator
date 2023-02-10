@@ -4,6 +4,8 @@ import PianoKeyboardController from '../../components/PianoKeyboardController';
 import EventBus from '../../systems/EventBus';
 import Music from '../../utils/Music';
 import clsx from 'clsx';
+import { useActivePanel } from '../../../State/Interaction/ActivePanel';
+import { config } from '../../utils/config';
 
 const Container = styled.div`
     background: ${({ theme }) => theme.colors.riffSettings.background};
@@ -17,7 +19,6 @@ const Container = styled.div`
     select {
         font-size: ${({ theme }) => theme.fontSizes.riffSettings.controlBar};
         color: ${({ theme }) => theme.colors.riffSettings.text};
-        background: ${({ theme }) => theme.colors.riffSettings.background}; 
         text-align: left;
         -webkit-appearance: none;
         -moz-appearance: none;
@@ -26,6 +27,14 @@ const Container = styled.div`
         outline: none;
         margin-bottom: -2px;
         padding: 5px 3px;
+        option {
+            background: ${({ theme }) => theme.colors.machine.controlBar.background};
+        }
+    }
+        
+    transition: background ${({ theme }) => theme.animation.med};
+    &.selected {
+        background: ${({ theme }) => theme.colors.machine.backgroundSelected};
     }
 `
 
@@ -87,17 +96,19 @@ const Input = styled.input`
 `
 
 window.riffSettings = {
-    rootOctave  : 1,
-    bars        : 4,
+    rootOctave  : config.riffSettings.rootOctave,
+    bars        : config.riffSettings.bars,
     scale  : {
-        rootNote    : 'B',
-        type        : Music.scales[0].type,
+        rootNote    : config.riffSettings.scale.rootNote,
+        type        : config.riffSettings.scale.type,
     },
 };
 
 
 
 const RiffSettings = memo(({ name, show }) => {
+
+    const activePanel = useActivePanel({name: name});
 
     const [currentScale, setCurrentScale] = useState(window.riffSettings.scale)
 
@@ -190,7 +201,7 @@ const RiffSettings = memo(({ name, show }) => {
 
     return (
         show ? (
-            <Container>
+            <Container className={clsx(activePanel.isSelected())} onClick={activePanel.activatePanel}>
                 <ControlBar>
                     <Control>
                         <PianoKeyboardController

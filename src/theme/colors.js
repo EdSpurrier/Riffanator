@@ -166,10 +166,18 @@ const colors = {
   },
 
 
+
   machine       : {
-    background  : standardColors.grey850,
-    text        : standardColors.white,
-    border      : standardColors.grey800,
+    background          : standardColors.grey850,
+    backgroundSelected  : standardColors.grey900,
+    text                : standardColors.white,
+    border              : standardColors.grey800,
+
+    slider  : {
+      background  : standardColors.grey700,
+      thumb       : standardColors.white,
+      range       : standardColors.grey500,
+    },
 
     controlBar : {
       background  : standardColors.grey850,

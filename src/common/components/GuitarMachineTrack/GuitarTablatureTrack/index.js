@@ -5,6 +5,9 @@ import { config } from '../../../utils/config';
 import EventBus from '../../../systems/EventBus';
 import GuitarUtils from '../../../music/GuitarUtils';
 import { WebMidi } from 'webmidi';
+import { useGuitarMachine } from '../../../../State/GuitarMachine/Machine';
+import { useDispatch, useSelector } from 'react-redux';
+import { attachGuitarMachine } from '../../../../State/GuitarMachine/actions';
 
 const Container = styled.div`
 `;
@@ -92,6 +95,23 @@ const GrooveNoteText = styled.div`
 
 const GuitarTablatureTrack = memo(({ guitar, machineId, updateControl = null }) => {
 
+
+    const guitarMachine = useGuitarMachine(machineId);
+
+
+
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(attachGuitarMachine(machineId, {
+            tablatureTrack: {
+                nextNote: () => {selectNextNote()},
+                previousNote: () => {selectPreviousNote()},    
+            }
+        }));
+    }, [dispatch])
+
+
+
     const [globalMousePos, setGlobalMousePos] = useState({});
     const [localMousePos, setLocalMousePos] = useState({});
 
@@ -139,7 +159,7 @@ const GuitarTablatureTrack = memo(({ guitar, machineId, updateControl = null }) 
     //  MIDI - [START]
     //=================================
 
-    
+
     const initialize = () => {
         console.log(`Guitar #${machineId} Tab Initialize`);
 
@@ -148,8 +168,9 @@ const GuitarTablatureTrack = memo(({ guitar, machineId, updateControl = null }) 
         window.midi.guitars[machineId].updateMidiFrameAction = updateMidiFrameAction;
         window.midi.guitars[machineId].updateMidiFrameGUI = updateMidiFrameGUI;
         window.midi.guitars[machineId].initialized = true;
+
+        window.guitars[machineId].actions.cloneGrooveSkeleton = cloneGrooveSkeleton;
     }
-    
 
 
 
@@ -157,12 +178,12 @@ const GuitarTablatureTrack = memo(({ guitar, machineId, updateControl = null }) 
 
         //console.log(util.inspect(window.midi.midiCore, {showHidden: false, depth: null, colors: true}));
 
-        if(!window.midi.midiCore.midiClock.isPlaying) {
+        if (!window.midi.midiCore.midiClock.isPlaying) {
             return;
         }
 
         //console.log('noteOn', note, guitar.GetStrings());
-        
+
         let midiOutput = window.guitars[machineId].midi.output.id;
 
         // Set Play Style
@@ -170,12 +191,12 @@ const GuitarTablatureTrack = memo(({ guitar, machineId, updateControl = null }) 
 
         // Play Through each string
         // Get note from fret of each string
-        note.strings.forEach((string, index)=> {
-           //console.log(index, string.state);
-           if (string.state) {
+        note.strings.forEach((string, index) => {
+            //console.log(index, string.state);
+            if (string.state) {
                 console.log('Play', guitar.GetStrings()[index].frets[string.fret]);
                 GuitarUtils.PlayGuitarNoteOnly(guitar.GetStrings()[index].frets[string.fret], midiOutput);
-           }
+            }
         });
 
     }
@@ -189,16 +210,16 @@ const GuitarTablatureTrack = memo(({ guitar, machineId, updateControl = null }) 
         // Set Play Style
         GuitarUtils.UnsetPlayStyle(note.playStyle, midiOutput);
 
-        
+
 
         // Play Through each string
         // Get note from fret of each string
-        note.strings.forEach((string, index)=> {
-           //console.log(index, string.state);
-           if (string.state) {
+        note.strings.forEach((string, index) => {
+            //console.log(index, string.state);
+            if (string.state) {
                 console.log('Stop', guitar.GetStrings()[index].frets[string.fret]);
                 GuitarUtils.StopGuitarNoteOnly(guitar.GetStrings()[index].frets[string.fret], midiOutput);
-           }
+            }
         });
 
     }
@@ -206,26 +227,26 @@ const GuitarTablatureTrack = memo(({ guitar, machineId, updateControl = null }) 
     const startMidiPlay = () => {
         //  Clear Midi Output for device
         //console.log('grooveSkeleton.startMidiPlay');
-        if(WebMidi.outputs.length === 0) return;
+        if (WebMidi.outputs.length === 0) return;
 
     }
-    
+
 
 
 
     const stopMidiPlay = () => {
         //  Clear Midi Output for device
-        
-        if(WebMidi.outputs.length === 0) return;
+
+        if (WebMidi.outputs.length === 0) return;
         //console.log('grooveSkeleton.stopMidiPlay');
 
         let relativeClockTick = getRelativeClockTick();
 
         let noteOff = window.guitars[machineId].tablature.find((grooveNote) => (grooveNote.start <= relativeClockTick && grooveNote.end >= relativeClockTick));
-        
+
         if (!noteOff) return;
         StopNote(noteOff);
-        
+
     }
 
 
@@ -249,16 +270,16 @@ const GuitarTablatureTrack = memo(({ guitar, machineId, updateControl = null }) 
             calculate the 1.0 (100%) from the number of bars within loop.from => loop.to
 
         */
-/* 
-        let startBar = window.transport.loop.from - 1;
-        let endBar = window.transport.loop.to; */
+        /* 
+                let startBar = window.transport.loop.from - 1;
+                let endBar = window.transport.loop.to; */
 
 
 
         let numberOfActiveBars = window.transport.loop.to - window.transport.loop.from + 1;
 
         let barLength = 1 / config.number_of_bars;
-        
+
         let totalLength = numberOfActiveBars * barLength;
 
         let startPoint = (window.transport.loop.from - 1) * barLength;
@@ -266,13 +287,13 @@ const GuitarTablatureTrack = memo(({ guitar, machineId, updateControl = null }) 
 
         let relativeTick = startPoint + (window.midi.midiCore.midiClock.clockTick * totalLength);
 
-   
-/*         
-        console.log(
-            'clockTick', window.midi.midiCore.midiClock.clockTick, ' => ', relativeTick,
-            'startPoint', startPoint,
-            'endPoint', endPoint
-        ); */
+
+        /*         
+                console.log(
+                    'clockTick', window.midi.midiCore.midiClock.clockTick, ' => ', relativeTick,
+                    'startPoint', startPoint,
+                    'endPoint', endPoint
+                ); */
 
         return relativeTick;
     }
@@ -305,8 +326,8 @@ const GuitarTablatureTrack = memo(({ guitar, machineId, updateControl = null }) 
         setPlayMarkerPosition(
             (window.midi.midiCore.midiClock.tick / window.midi.midiCore.midiClock.activeBars)
             * (controlRef?.current?.offsetWidth / window.midi.midiCore.midiClock.midiResolution)
-            );
-        
+        );
+
         //setPlayMarkerPosition(window.midi.midiCore.midiClock.tick * (controlRef?.current?.offsetWidth / window.midi.midiCore.midiClock.midiResolution));
     }
 
@@ -462,6 +483,7 @@ const GuitarTablatureTrack = memo(({ guitar, machineId, updateControl = null }) 
         }
 
         setTablature(newTablature);
+        window.guitars[machineId].tablature = newTablature; 
 
     }
 
@@ -536,23 +558,40 @@ const GuitarTablatureTrack = memo(({ guitar, machineId, updateControl = null }) 
 
 
 
-    const [selectedNote, setSelectedNote] = useState(-1);
+/*     const [selectedNote, setSelectedNote] = useState(-1); */
+
+
+
 
     const selectNote = (event, noteId) => {
-        if (selectedNote === noteId) {
-            setSelectedNote(-1);
+
+        if (guitarMachine.machine.selectedNote === noteId) {
+            guitarMachine.selectNote(-1);
         } else if (tablature[noteId].state) {
-            setSelectedNote(noteId);
+            guitarMachine.selectNote(noteId);
         }
 
     }
 
+
+    const selectNextNote = () => {
+        console.log('nextNote()', guitarMachine.machine.selectedNote);
+
+
+    }
+
+    const selectPreviousNote = () => {
+        console.log('previousNote()', guitarMachine.machine.selectedNote);
+    }
+
+
+/* 
     useEffect(() => {
 
-        //console.log(`selectedNote update:`, selectedNote);
+        console.log(`selectedNote update:`, selectedNote);
         updateControl('selectedNote', selectedNote);
 
-    }, [selectedNote]);
+    }, [selectedNote]); */
 
 
 
@@ -595,7 +634,7 @@ const GuitarTablatureTrack = memo(({ guitar, machineId, updateControl = null }) 
 
             return (grooveNote.start >= startPoint && grooveNote.start < endPoint ?
                 /* grooveNote.start >= startPoint && grooveNote.end <= endPoint? */
-                <GrooveNote className={clsx(grooveNote.state ? 'noteOn' : 'noteOff', selectedNote === key ? 'selected' : '')}
+                <GrooveNote className={clsx(grooveNote.state ? 'noteOn' : 'noteOff', guitarMachine.machine.selectedNote === key ? 'selected' : '')}
                     key={key}
                     onClick={(event) => { selectNote(event, key) }}
                     style={{
@@ -607,7 +646,7 @@ const GuitarTablatureTrack = memo(({ guitar, machineId, updateControl = null }) 
                     {noteTexts}
 
                 </GrooveNote>
-                : <></>
+                : <div key={key}></div>
             )
         })
 
@@ -619,11 +658,11 @@ const GuitarTablatureTrack = memo(({ guitar, machineId, updateControl = null }) 
             {/* {renderTab(guitar)} */}
             <Track ref={controlRef}>
                 {renderTab(tablature)}
-                <GrooveLaneGuidePlayMarker 
-                            style={{
-                                left: (playMarkerPosition-1) + 'px',
-                            }}
-                        />
+                <GrooveLaneGuidePlayMarker
+                    style={{
+                        left: (playMarkerPosition - 1) + 'px',
+                    }}
+                />
             </Track>
         </Container>
     );

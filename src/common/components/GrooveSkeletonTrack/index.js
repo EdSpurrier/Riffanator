@@ -6,8 +6,6 @@ import GrooveSkeletonTrackTrackLane from './Track';
 
 
 const Container = styled.div`
-    background: ${({ theme }) => theme.colors.grooveSkeleton.background};
-
     padding: 0 ${({ theme }) => theme.sizes.grooveSkeleton.paddingHorizontal};
 `;
 
@@ -17,6 +15,7 @@ window.grooveSkeleton = {
     resolution      : config.grooveSkeleton.resolution,
     outputOctave    : config.grooveSkeleton.outputOctave,
     playStyle       : config.grooveSkeleton.playStyle,
+    actions         : {},
     groove          : [],
     midi            : {
         output          : {

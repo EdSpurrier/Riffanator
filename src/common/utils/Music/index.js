@@ -1,3 +1,4 @@
+import Midi from "../Midi";
 
 const Music = {
     scales: [
@@ -51,6 +52,9 @@ const Music = {
     ],
 
 
+    getScaleByName(scaleName) {
+        return this.scales.filter((scale) => scale.type === scaleName)[0];
+    },
 
 
     notes: [
@@ -83,6 +87,26 @@ const Music = {
         return scaleNotes;
     },
 
+
+    getAllScaleNotes(rootNote, scaleType) {
+        let scaleNotes = this.getscaleNotes(rootNote, scaleType);
+        let minOctave = -2;
+        let maxOctave = 7;
+
+        let allScaleNotes = [];
+
+        for(let octave = minOctave; octave <= maxOctave; octave++) {
+            scaleNotes.forEach(scaleNote => {
+                allScaleNotes.push({
+                    name: scaleNote+octave,
+                    number: Midi.GetNoteNumber(scaleNote+octave)
+                });
+            });
+            
+        }
+
+        return allScaleNotes;
+    }
 };
 
 export default Music;
