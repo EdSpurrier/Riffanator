@@ -96,11 +96,15 @@ const Music = {
         let allScaleNotes = [];
 
         for(let octave = minOctave; octave <= maxOctave; octave++) {
+            let scaleNoteId = 0;
             scaleNotes.forEach(scaleNote => {
                 allScaleNotes.push({
                     name: scaleNote+octave,
-                    number: Midi.GetNoteNumber(scaleNote+octave)
+                    number: Midi.GetNoteNumber(scaleNote+octave),
+                    scaleNoteId: scaleNoteId//  Note Id where it sits in the chosen scale
                 });
+
+                scaleNoteId++;
             });
             
         }

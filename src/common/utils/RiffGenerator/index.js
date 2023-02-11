@@ -122,7 +122,51 @@ const RiffGenerator = {
     },
 
 
+    getScaleNotesOnStrings(scaleNotes, strings) {
+        
+        let scaleNotesOnStrings = [];
+
+        /*
+
+            scaleNoteOnString = {
+                stringId: 0,
+                fretId: 5,
+                octaveStep: 0,
+                scaleNote: ...scaleNote,
+            }
+
+        */
+
+
+        let filteredScaleNotes = [];
+
+        strings.forEach(string => {
+            
+            scaleNotes.forEach(scaleNote => {
+                if (string.noteNumbers.includes(scaleNote.number)) {
+                    console.log('found', scaleNote)
+                    filteredScaleNotes.push(scaleNote);
+                    if(!filteredScaleNotes.includes(scaleNote)) {
+                        filteredScaleNotes.push(scaleNote)
+                    }
+                }
+            });
+            
+        });
+
+
+        return filteredScaleNotes //scaleNotes.filter((scaleNote)=> ());
+    },
+
+
     getGuitarStrings (tabPoint, guitar) {
+
+        console.log();
+
+        if(tabPoint.typeof === 'single') {
+
+        }
+
 
 
         return null;
@@ -139,6 +183,9 @@ const RiffGenerator = {
         const strings = guitarMachine.guitar.GetStrings();
         const scale =  window.riffSettings.scale;
         const scaleNotes =  Music.getAllScaleNotes(window.riffSettings.scale.rootNote, window.riffSettings.scale.type);
+
+
+        const scaleNotesOnStrings = this.getScaleNotesOnStrings(scaleNotes, strings);
 
         const chancePoints = [
             {
@@ -264,7 +311,8 @@ const RiffGenerator = {
             totalChance:totalChance,
             strings: strings,
             scale: scale,
-            scaleNotes: scaleNotes
+            scaleNotes: scaleNotes,
+            scaleNotesOnStrings:scaleNotesOnStrings
         });
 
     },
