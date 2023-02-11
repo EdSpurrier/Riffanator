@@ -109,7 +109,9 @@ const Music = {
             
         }
 
-        return allScaleNotes;
+       
+        return  allScaleNotes.sort(function(a, b){return b.number-a.number}).reverse();
+
     }
 };
 

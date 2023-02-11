@@ -3,21 +3,21 @@ import Music from "../Music";
 
 
 const RiffGenerator = {
-    
+
     generateRandom(min, max) {
 
         // find diff
         let difference = max - min;
-    
+
         // generate random number 
         let rand = Math.random();
-    
+
         // multiply with difference 
-        rand = Math.floor( rand * difference);
-    
+        rand = Math.floor(rand * difference);
+
         // add with min value 
         rand = rand + min;
-    
+
         return rand;
     },
 
@@ -43,64 +43,64 @@ const RiffGenerator = {
         const noteChances = generator.state.settings.grooveSkeleton.note_chance;
 
         const number_of_bars = config.number_of_bars;
-/* 
-        console.log({
-            number_of_bars: number_of_bars,
-            grooveSkeleton: grooveSkeleton,
-            noteChances: noteChances,
-            groove: groove, 
-            transport: transport, 
-            generator: generator,
-            midi: midi
-        });
- */
+        /* 
+                console.log({
+                    number_of_bars: number_of_bars,
+                    grooveSkeleton: grooveSkeleton,
+                    noteChances: noteChances,
+                    groove: groove, 
+                    transport: transport, 
+                    generator: generator,
+                    midi: midi
+                });
+         */
 
         let totalChance = 0;
         let smallestNoteLength = 0;
 
         for (let key in noteChances) {
             totalChance += noteChances[key];
-            
-            if(key > smallestNoteLength) {
+
+            if (key > smallestNoteLength) {
                 smallestNoteLength = parseInt(key);
             };
         }
 
 
-        let resolutionPerBar = (1/number_of_bars);
+        let resolutionPerBar = (1 / number_of_bars);
 
-/*         console.log({
-            resolutionPerBar: resolutionPerBar,
-            totalChance: totalChance,
-            smallestNoteLength: smallestNoteLength
-        }); */
+        /*         console.log({
+                    resolutionPerBar: resolutionPerBar,
+                    totalChance: totalChance,
+                    smallestNoteLength: smallestNoteLength
+                }); */
 
 
         let newGroove = [];
         let currentTime = 0;
 
-        while(currentTime < 1) {
+        while (currentTime < 1) {
 
             let randomChance = this.generateRandom(1, totalChance);
             let noteType = this.getNoteFromChance(randomChance, noteChances);
-            let noteLength = resolutionPerBar/noteType;
+            let noteLength = resolutionPerBar / noteType;
 
-/*             console.log({
-                randomChance:randomChance,
-                noteType:noteType,
-                noteLength:noteLength
-            }); */
+            /*             console.log({
+                            randomChance:randomChance,
+                            noteType:noteType,
+                            noteLength:noteLength
+                        }); */
 
             newGroove.push({
-                start: currentTime, 
-                end: currentTime += noteLength, 
+                start: currentTime,
+                end: currentTime += noteLength,
                 state: true
             });
 
         }
 
-        
-/*         console.log(newGroove); */
+
+        /*         console.log(newGroove); */
         //  Update Groove of GrooveSkeleton Directly
         window.grooveSkeleton.actions.overwriteGroove(newGroove);
         window.guitars[0].actions.cloneGrooveSkeleton();
@@ -123,119 +123,186 @@ const RiffGenerator = {
 
 
     getScaleNotesOnStrings(scaleNotes, strings) {
-        
+
         let scaleNotesOnStrings = [];
 
         /*
-
             scaleNoteOnString = {
                 stringId: 0,
-                fretId: 5,
+                fretId: 0,
                 octaveStep: 0,
-                scaleNote: ...scaleNote,
+                noteName: 'A2',
+                nodeId: 45,
+                scaleNoteId: 0
             }
-
         */
 
 
         let filteredScaleNotes = [];
 
-        strings.forEach(string => {
-            
-            scaleNotes.forEach(scaleNote => {
+        strings.forEach((string, stringId) => {
+            scaleNotes.forEach((scaleNote) => {
+
                 if (string.noteNumbers.includes(scaleNote.number)) {
-                    console.log('found', scaleNote)
-                    filteredScaleNotes.push(scaleNote);
-                    if(!filteredScaleNotes.includes(scaleNote)) {
+                    if (!filteredScaleNotes.includes(scaleNote)) {
                         filteredScaleNotes.push(scaleNote)
                     }
                 }
             });
-            
         });
 
 
-        return filteredScaleNotes //scaleNotes.filter((scaleNote)=> ());
+        //  Order based on noteIds
+        filteredScaleNotes = filteredScaleNotes.sort(function(a, b){return b.number-a.number}).reverse();
+
+        //  Set Octaves
+        let currentOctave = -1;
+
+        filteredScaleNotes.forEach((scaleNote, key)=> {
+            if(scaleNote.scaleNoteId === 0) currentOctave++;
+            scaleNote.octave = currentOctave;
+        });
+
+        strings.forEach((string, stringId) => {
+
+            string.noteNumbers.forEach((noteNumber, fretId) => {
+
+                const thisNote = filteredScaleNotes.filter((scaleNote)=>scaleNote.number === noteNumber);
+                if(thisNote.length > 0) {
+                    let scaleNoteOnString = {
+                        stringId: stringId,
+                        fretId: fretId,
+                        octaveStep: thisNote[0].octave,
+                        noteName: string.noteNumbers[fretId],
+                        noteNumber: noteNumber,
+                        scaleNoteId: thisNote[0].scaleNoteId
+                    }
+
+                    scaleNotesOnStrings.push(scaleNoteOnString);
+                }
+                    
+            });
+
+        });
+
+
+
+        return {
+            filteredScaleNotes,
+            scaleNotesOnStrings
+        }
     },
 
 
-    getGuitarStrings (tabPoint, guitar) {
+    getScaleNotesOnStringFromTabPoint(tabPoint, scaleNotesOnStrings, excludeStrings = []) {
+        
+        let newNote = null;
 
-        console.log();
+        scaleNotesOnStrings.forEach(scaleNotesOnString => {
+            if(newNote === null) {
+                //  EXCLUDE STRINGS IF STRING IS ALREADY IN USE
+                if(!excludeStrings.includes(scaleNotesOnString.stringId)) {
+                    if(
+                        tabPoint.scaleNoteId === scaleNotesOnString.scaleNoteId &&
+                        tabPoint.octave === scaleNotesOnString.octave
+                        ) {
+                        newNote = scaleNotesOnString;
+                    }
+                };
+            }
+            
 
-        if(tabPoint.typeof === 'single') {
+        });
 
+        return newNote;
+    },
+
+    getGuitarStrings(tabPoint, scaleNotesOnStrings, guitar) {
+
+
+        let newStrings = new Array(guitar.GetStrings().length).fill({
+            fret: 0,
+            state: false,
+        });
+        
+        if (tabPoint.typeof === 'single') {
+            let scaleNoteOnString = this.getScaleNotesOnStringFromTabPoint(tabPoint, scaleNotesOnStrings, []);
+/*             console.log({
+                scaleNoteOnString:scaleNoteOnString
+            }); */
+            console.log(newStrings[scaleNoteOnString.stringId]);
+            newStrings[scaleNoteOnString.stringId] = {
+                fret: scaleNoteOnString.fretId,
+                state: true
+            };
         }
 
-
-
-        return null;
+        return newStrings;
     },
 
 
     generateGuitarMachineTab() {
 
-        
+
 
         const guitarMachine = window.guitars[0];
         const tablature = guitarMachine.tablature;
 
         const strings = guitarMachine.guitar.GetStrings();
-        const scale =  window.riffSettings.scale;
-        const scaleNotes =  Music.getAllScaleNotes(window.riffSettings.scale.rootNote, window.riffSettings.scale.type);
+        const scale = window.riffSettings.scale;
+        const scaleNotes = Music.getAllScaleNotes(window.riffSettings.scale.rootNote, window.riffSettings.scale.type);
 
-
-        const scaleNotesOnStrings = this.getScaleNotesOnStrings(scaleNotes, strings);
+        const { filteredScaleNotes, scaleNotesOnStrings } = this.getScaleNotesOnStrings(scaleNotes, strings);
 
         const chancePoints = [
             {
-                scaleNote   : 0,            //  Note Id in the set scale
-                octaveStep  : 0,            //  Lowest = 0 - related to lowest allowed note of that note on the guitar fretboard
-                typeof      : 'single',     //  Single note or chord (different chord types here eg. octave chord)
-                chance      : 20,            //  Chance of it being this
-                playStyle   : 'chugga'
+                scaleNoteId: 0,            //  Note Id in the set scale
+                octaveStep: 0,            //  Lowest = 0 - related to lowest allowed note of that note on the guitar fretboard
+                typeof: 'single',     //  Single note or chord (different chord types here eg. octave chord)
+                chance: 20,            //  Chance of it being this
+                playStyle: 'chugga'
             },
             {
-                scaleNote   : 1,            //  Note Id in the set scale
-                octaveStep  : 0,            //  Lowest = 0 - related to lowest allowed note of that note on the guitar fretboard
-                typeof      : 'single',     //  Single note or chord (different chord types here eg. octave chord)
-                chance      : 10,            //  Chance of it being this
-                playStyle   : 'open'
+                scaleNoteId: 1,            //  Note Id in the set scale
+                octaveStep: 0,            //  Lowest = 0 - related to lowest allowed note of that note on the guitar fretboard
+                typeof: 'single',     //  Single note or chord (different chord types here eg. octave chord)
+                chance: 10,            //  Chance of it being this
+                playStyle: 'open'
             },
             {
-                scaleNote   : 2,            //  Note Id in the set scale
-                octaveStep  : 0,            //  Lowest = 0 - related to lowest allowed note of that note on the guitar fretboard
-                typeof      : 'single',     //  Single note or chord (different chord types here eg. octave chord)
-                chance      : 10,            //  Chance of it being this
-                playStyle   : 'open'
+                scaleNoteId: 2,            //  Note Id in the set scale
+                octaveStep: 0,            //  Lowest = 0 - related to lowest allowed note of that note on the guitar fretboard
+                typeof: 'single',     //  Single note or chord (different chord types here eg. octave chord)
+                chance: 10,            //  Chance of it being this
+                playStyle: 'open'
             },
             {
-                scaleNote   : 3,            //  Note Id in the set scale
-                octaveStep  : 0,            //  Lowest = 0 - related to lowest allowed note of that note on the guitar fretboard
-                typeof      : 'single',     //  Single note or chord (different chord types here eg. octave chord)
-                chance      : 10,            //  Chance of it being this
-                playStyle   : 'open'
+                scaleNoteId: 3,            //  Note Id in the set scale
+                octaveStep: 0,            //  Lowest = 0 - related to lowest allowed note of that note on the guitar fretboard
+                typeof: 'single',     //  Single note or chord (different chord types here eg. octave chord)
+                chance: 10,            //  Chance of it being this
+                playStyle: 'open'
             },
             {
-                scaleNote   : 3,            //  Note Id in the set scale
-                octaveStep  : 0,            //  Lowest = 0 - related to lowest allowed note of that note on the guitar fretboard
-                typeof      : 'single',     //  Single note or chord (different chord types here eg. octave chord)
-                chance      : 20,            //  Chance of it being this
-                playStyle   : 'open'
+                scaleNoteId: 3,            //  Note Id in the set scale
+                octaveStep: 0,            //  Lowest = 0 - related to lowest allowed note of that note on the guitar fretboard
+                typeof: 'single',     //  Single note or chord (different chord types here eg. octave chord)
+                chance: 20,            //  Chance of it being this
+                playStyle: 'open'
             },
             {
-                scaleNote   : 0,            //  Note Id in the set scale
-                octaveStep  : 1,            //  Lowest = 0 - related to lowest allowed note of that note on the guitar fretboard
-                typeof      : 'single',     //  Single note or chord (different chord types here eg. octave chord)
-                chance      : 20,            //  Chance of it being this
-                playStyle   : 'open'
+                scaleNoteId: 0,            //  Note Id in the set scale
+                octaveStep: 1,            //  Lowest = 0 - related to lowest allowed note of that note on the guitar fretboard
+                typeof: 'single',     //  Single note or chord (different chord types here eg. octave chord)
+                chance: 20,            //  Chance of it being this
+                playStyle: 'open'
             },
             {
-                scaleNote   : 0,            //  Note Id in the set scale
-                octaveStep  : 2,            //  Lowest = 0 - related to lowest allowed note of that note on the guitar fretboard
-                typeof      : 'single',     //  Single note or chord (different chord types here eg. octave chord)
-                chance      : 10,            //  Chance of it being this
-                playStyle   : 'open'
+                scaleNoteId: 0,            //  Note Id in the set scale
+                octaveStep: 2,            //  Lowest = 0 - related to lowest allowed note of that note on the guitar fretboard
+                typeof: 'single',     //  Single note or chord (different chord types here eg. octave chord)
+                chance: 10,            //  Chance of it being this
+                playStyle: 'open'
             }
         ];
 
@@ -286,34 +353,36 @@ const RiffGenerator = {
 
         tablature.forEach(tabNote => {
             //console.log('tabNote', tabNote);
-            
+
             let randomChance = this.generateRandom(1, totalChance);
             let tabPoint = this.getTabNoteFromChance(randomChance, chancePoints);
-            
+
 
             tabNote.playStyle = tabPoint.playStyle;
 
             //tabNote.strings = this.getGuitarStrings(tabPoint, guitarMachine.guitar);
-            let newStrings = this.getGuitarStrings(tabPoint, guitarMachine.guitar);
+            let newStrings = this.getGuitarStrings(tabPoint, scaleNotesOnStrings, guitarMachine.guitar);
 
-            console.log({
-                randomChance:randomChance,
-                tabPoint:tabPoint,
-                tabNote:tabNote,
-                newStrings:newStrings
-            });
-
+            /*          console.log({
+                         randomChance:randomChance,
+                         tabPoint:tabPoint,
+                         tabNote:tabNote,
+                         newStrings:newStrings
+                     }); */
+            tabNote.strings = newStrings;
         });
 
-        console.log({
-            guitarMachine:guitarMachine,
-            chancePoints:chancePoints,
-            totalChance:totalChance,
+/*         console.log({
+            guitarMachine: guitarMachine,
+            chancePoints: chancePoints,
+            totalChance: totalChance,
             strings: strings,
             scale: scale,
             scaleNotes: scaleNotes,
-            scaleNotesOnStrings:scaleNotesOnStrings
-        });
+            scaleNotesOnStrings: scaleNotesOnStrings,
+            filteredScaleNotes: filteredScaleNotes,
+            tablature:tablature
+        }); */
 
     },
 
