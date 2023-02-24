@@ -5,6 +5,9 @@ import Maths from '../../../utils/Maths';
 import { WebMidi } from 'webmidi';
 import GuitarUtils from '../../../music/GuitarUtils';
 import { config } from '../../../utils/config';
+import { useDispatch } from 'react-redux';
+import { useGenerator } from '../../../../State/Generator/Generator';
+import { midiCore } from '../../../../theme/colors';
 
 const Container = styled.div`
   width: 100%;
@@ -178,6 +181,22 @@ const GrooveNote = styled.div`
 
 const GrooveSkeletonTrackTrackLane = memo(({ children }) => {
 
+
+    const generator = useGenerator();
+
+
+
+    const dispatch = useDispatch();
+    useEffect(() => {
+        generator.updateGeneratorActions({
+            grooveSkeleton: {
+                noteTriggerRecord: () => {noteTriggerRecord()},
+                clearGrooveSkeleton: () => {clearGrooveSkeleton()},
+            }
+        })
+    }, [dispatch])
+
+
     const [globalMousePos, setGlobalMousePos] = useState({});
     const [localMousePos, setLocalMousePos] = useState({});
 
@@ -218,11 +237,24 @@ const GrooveSkeletonTrackTrackLane = memo(({ children }) => {
         window.midi.grooveSkeleton.initialized = true;
 
         window.grooveSkeleton.actions.overwriteGroove = overwriteGroove;
+        window.grooveSkeleton.actions.clearGrooveSkeleton = clearGrooveSkeleton;
+        window.grooveSkeleton.actions.noteTriggerRecord = noteTriggerRecord;
     }
     
     const overwriteGroove = (newGroove) => {
         window.grooveSkeleton.groove = newGroove;
         setGroove(newGroove);
+    }
+
+
+    const clearGrooveSkeleton = () => {
+        setGroove([
+            {
+                start   : 0,    //  Percentage Start Point eg. 0.5
+                end     : 1,    //  Percentage End Point eg. 0.75
+                state   : true  //  noteOn or noteOff
+            }
+        ]);
     }
 
 
@@ -265,6 +297,10 @@ const GrooveSkeletonTrackTrackLane = memo(({ children }) => {
         //console.log('grooveSkeleton.startMidiPlay');
         if(WebMidi.outputs.length === 0) return;
 
+
+        
+        overwriteTapGrooveWithGroove();
+        
     }
     
 
@@ -277,6 +313,10 @@ const GrooveSkeletonTrackTrackLane = memo(({ children }) => {
         //console.log('grooveSkeleton.stopMidiPlay');
         StopNote();
         
+        
+/*         if (groove.length < tapGroove) { */
+            overwriteGrooveWithTapGroove();
+/*         } */
     }
 
 
@@ -475,6 +515,148 @@ const GrooveSkeletonTrackTrackLane = memo(({ children }) => {
 
 
 
+
+    const [tapGroove, setTapGroove] = useState([
+        {
+            start   : 0,    //  Percentage Start Point eg. 0.5
+            end     : 1,    //  Percentage End Point eg. 0.75
+            state   : true  //  noteOn or noteOff
+        }
+    ]);
+
+
+
+
+    const resetTapGroove = () => {
+
+        setTapGroove([
+            {
+                start   : 0,    //  Percentage Start Point eg. 0.5
+                end     : 1,    //  Percentage End Point eg. 0.75
+                state   : true  //  noteOn or noteOff
+            }
+        ])
+    }
+
+
+    const overwriteTapGrooveWithGroove = () => {
+        let newGrooveArray =  [...groove];
+
+        setTapGroove(newGrooveArray)
+    }
+
+
+
+    const overwriteGrooveWithTapGroove = () => {
+        let newGrooveArray =  [...tapGroove];
+
+        setGroove(newGrooveArray)
+    }
+
+
+
+
+    const noteTriggerRecord = () => {
+        console.log('noteTriggerRecord');
+        console.log({
+            1: 'get current position of playbar',
+            2: 'add in note/break then'
+        })
+
+        if (!window.midi.midiCore.midiClock.isPlaying) {
+            console.log('NOT PLAYING');
+            return;
+        }
+
+        let numberOfActiveBars = window.transport.loop.to - window.transport.loop.from + 1;
+
+        let barLength = 1 / config.number_of_bars;
+        
+        let totalLength = numberOfActiveBars * barLength;
+
+
+        let resolutionSelectorPosition = getResolutionPosition((window.midi.midiCore.midiClock.tick / window.midi.midiCore.midiClock.midiResolution));
+
+        let currentPointInActiveBars = (window.midi.midiCore.midiClock.tick/window.midi.midiCore.midiClock.midiResolution)/numberOfActiveBars;
+        let currentPointInEntireGroove = currentPointInActiveBars * (totalLength);
+
+
+        console.log(
+            currentPointInActiveBars, currentPointInEntireGroove, 
+            [numberOfActiveBars, barLength, totalLength, window.midi.midiCore.midiClock.tick, window.midi.midiCore.midiClock.midiResolution, resolutionSelectorPosition]);
+
+        if (resolutionSelectorPosition === 0 || resolutionSelectorPosition === 1) {
+            console.log("Not Valid Position", resolutionSelectorPosition);
+            return;
+        };
+
+
+        let newGrooveArray = AddSplitAtPoint(currentPointInEntireGroove, groove);
+
+        console.log(
+            'before', groove,
+            'after', newGrooveArray
+        );
+        setGroove(newGrooveArray);
+
+    }
+
+
+
+
+
+
+    const AddSplitAtPoint = (splitPoint, grooveToUpdate) => {
+        
+        console.log('Add Split', splitPoint);
+
+        let newGrooveNote = {
+            start   : 0,    //  Percentage Start Point eg. 0.5
+            end     : 1,    //  Percentage End Point eg. 0.75
+            state   : true  //  noteOn or noteOff
+        };
+
+        let newGrooveArray =  [...grooveToUpdate];
+
+        let exists = false;
+
+        //  CHECK IF EXISTS
+        newGrooveArray.forEach((grooveNote, index) => {
+
+            if (grooveNote.start === splitPoint || grooveNote.end === splitPoint) {
+                exists = true;
+            };
+
+        });
+
+        if (exists) {
+            console.log("Already Exists!");
+            return;
+        }
+
+
+        newGrooveArray.forEach((grooveNote, index) => {
+
+            if (grooveNote.start < splitPoint && grooveNote.end > splitPoint) {
+                
+                newGrooveNote.start = splitPoint;
+                newGrooveNote.end = grooveNote.end;
+
+                newGrooveArray[index].end = splitPoint;
+                
+            };
+
+        });
+
+        newGrooveArray.push(newGrooveNote);
+
+        console.log(groove, newGrooveArray);
+
+        return newGrooveArray;
+
+
+    }
+
     const OnTrackClick = (event) => {
         let resolutionSelectorPosition = getResolutionPosition(selectorPosition);
 
@@ -489,6 +671,11 @@ const GrooveSkeletonTrackTrackLane = memo(({ children }) => {
 
         if (event.type === 'click' && !event.ctrlKey) {
 
+
+            let newGrooveArray = AddSplitAtPoint(resolutionSelectorPosition, groove);
+
+            setGroove(newGrooveArray);
+/* 
             console.log('Add Split', resolutionSelectorPosition);
 
             let newGrooveNote = {
@@ -531,7 +718,7 @@ const GrooveSkeletonTrackTrackLane = memo(({ children }) => {
             newGrooveArray.push(newGrooveNote);
             
 
-            setGroove(newGrooveArray);
+            setGroove(newGrooveArray); */
 
         } else if (event.type === 'click' && event.ctrlKey) {
 

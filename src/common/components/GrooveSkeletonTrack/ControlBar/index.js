@@ -2,8 +2,14 @@ import React, { memo, useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import EventBus from '../../../systems/EventBus';
 import ResolutionIcon from '../../Icons/ResolutionIcon';
+
 import theme from '../../../../theme/theme';
 import { WebMidi } from 'webmidi';
+import ToggleButton from '../../Buttons/ToggleButton';
+import CleanIcon from '../../Icons/CleanIcon';
+import OutputIcon from '../../Icons/OutputIcon';
+import BeatIcon from '../../Icons/BeatIcon';
+
 
 
 
@@ -20,7 +26,7 @@ const Container = styled.div`
     select {
         font-size: ${({ theme }) => theme.fontSizes.grooveSkeleton.controlBar};
         color: ${({ theme }) => theme.colors.grooveSkeleton.controlBar.text};
-        text-align: center;
+        text-align: left;
         -webkit-appearance: none;
         -moz-appearance: none;
         text-indent: 1px;
@@ -38,6 +44,13 @@ const Container = styled.div`
     }
 
 `;
+
+const ControlGroup = styled.div`
+    margin-right: ${({ theme }) => theme.sizes.grooveSkeleton.controlBar.controlSpacingHorizontal};
+    display: flex;
+    align-items: center;
+`
+
 
 const Control = styled.div`
     margin-right: ${({ theme }) => theme.sizes.grooveSkeleton.controlBar.controlSpacingHorizontal};
@@ -73,39 +86,40 @@ const MidiOutputSelector = styled.select`
 
 const GrooveSkeletonTrackControlBar = memo(({ children }) => {
 
+
     const [midiOutputs, setMidiOutputs] = useState([]);
     const [currentMidiOutput, setCurrentMidiOutput] = useState(window.grooveSkeleton.midi.output)
     const midiOutputRef = useRef(null);
 
 
     useEffect(() => {
-      EventBus.on("Update System", (event) => {
-        if (event.label === "Midi Initialized") {
-            setMidiOutputs(window?.midi?.outputs);
-            
-            const presetOutput = WebMidi.getOutputByName("Riff Generator");
-            let midiOutputId = 0;
+        EventBus.on("Update System", (event) => {
+            if (event.label === "Midi Initialized") {
+                setMidiOutputs(window?.midi?.outputs);
 
-            if (presetOutput) {
-                midiOutputId = WebMidi.outputs.indexOf(presetOutput);
+                const presetOutput = WebMidi.getOutputByName("Riff Generator");
+                let midiOutputId = 0;
+
+                if (presetOutput) {
+                    midiOutputId = WebMidi.outputs.indexOf(presetOutput);
+                }
+
+                changeMidiOutput(midiOutputId);
+
             }
+        });
 
-            changeMidiOutput(midiOutputId);
 
-        }
-      });
-
-  
-      return () => {
-        EventBus.remove("Update System");
-      };
+        return () => {
+            EventBus.remove("Update System");
+        };
     }, []);
-  
+
 
     useEffect(() => {
 
         //console.log('midiOutputs:', midiOutputs);
-        
+
     }, [midiOutputs]);
 
 
@@ -128,7 +142,7 @@ const GrooveSkeletonTrackControlBar = memo(({ children }) => {
             label: "Update Midi Output",
             data: currentMidiOutput
         });
-        
+
         midiOutputRef.current.value = currentMidiOutput.id;
 
     }, [currentMidiOutput]);
@@ -150,10 +164,21 @@ const GrooveSkeletonTrackControlBar = memo(({ children }) => {
             label: "Update Resolution",
             data: currentResolution
         });
-        
+
     }, [currentResolution]);
 
 
+
+
+
+    const clearGrooveSkeleton = () => {
+        window.grooveSkeleton.actions.clearGrooveSkeleton();
+    }
+    
+
+    const noteTriggerRecord = () => {
+        window.grooveSkeleton.actions.noteTriggerRecord();
+    }
 
     const renderMidiOutputOptions = (midiOutputDevices) => {
         return midiOutputDevices.map((outputDevice, key) =>
@@ -163,21 +188,44 @@ const GrooveSkeletonTrackControlBar = memo(({ children }) => {
 
     return (
         <Container>
+            <ControlGroup>
+                <Control>
+                    <ResolutionIcon size={theme.fontSizes.grooveSkeleton.controlBar} />
+                    <ResolutionSelector
+                        onChange={(event) => changeResolution(event.target.value)}
+                        defaultValue={currentResolution}
+                    >
+                        <option value="8">8</option>
+                        <option value="16">16</option>
+                        <option value="32">32</option>
+                        <option value="64">64</option>
+                    </ResolutionSelector>
+                </Control>
 
-            <Control>
-                <ResolutionIcon size={theme.fontSizes.grooveSkeleton.controlBar} />
-                <ResolutionSelector
-                    onChange={(event) => changeResolution(event.target.value)}
-                    defaultValue={currentResolution}
-                >
-                    <option value="8">8</option>
-                    <option value="16">16</option>
-                    <option value="32">32</option>
-                    <option value="64">64</option>
-                </ResolutionSelector>
-            </Control>
+                <Control>
+                    <ToggleButton
+                        iconActive={<CleanIcon size={'1em'} />}
+                        iconInactive={<CleanIcon size={'1em'} />}
+                        onClickAction={clearGrooveSkeleton}
+                        toggleState={true}
+                    />
+                </Control>
 
+
+
+                <Control>
+                    <ToggleButton
+                        iconActive={<BeatIcon size={'1em'} />}
+                        iconInactive={<BeatIcon size={'1em'} />}
+                        onClickAction={noteTriggerRecord}
+                        toggleState={true}
+                    />
+                </Control>
+
+
+            </ControlGroup>
             <Control>
+                <OutputIcon size={theme.fontSizes.grooveSkeleton.controlBar} />
                 <MidiOutputSelector
                     ref={midiOutputRef}
                     onChange={(event) => changeMidiOutput(event.target.value)}

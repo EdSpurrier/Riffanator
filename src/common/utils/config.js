@@ -2,7 +2,7 @@ const { default: Music } = require("./Music");
 
 exports.config = {
 
-    tempo: 120,
+    tempo: 105,
     number_of_bars: 8,
     loop: {
         from: 1,
@@ -44,7 +44,7 @@ exports.config = {
         playStyle       : 'chugga',
         midi            : {
             output          : {
-                name    : 'Riff Generator',
+                name    : 'Riffanator [GrooveSkeleton]',
                 id      : 0
             },
         }
@@ -57,7 +57,7 @@ exports.config = {
                 fretCount       : 24,
                 midi            : {
                     output          : {
-                        name    : 'Riff Generator [Guitar A]',
+                        name    : 'Riffanator [Guitar 1]',
                         id      : 0
                     },
                 },
@@ -71,7 +71,7 @@ exports.config = {
                 fretCount       : 24,
                 midi            : {
                     output          : {
-                        name    : 'Riff Generator [Guitar B]',
+                        name    : 'Riffanator [Guitar 2]',
                         id      : 0
                     },
                 },

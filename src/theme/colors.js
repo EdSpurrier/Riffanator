@@ -205,7 +205,15 @@ const colors = {
       fretNote          : {
           background : standardColors.amberA400,
           text : standardColors.black,
-      }
+      },
+      fretNoteInScale       : {
+          background : standardColors.green700,
+          text : standardColors.black,
+      },
+      fretNoteNotInScale       : {
+        background : standardColors.red900,
+        text : standardColors.black,
+    }
     }
   },
 

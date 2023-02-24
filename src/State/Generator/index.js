@@ -15,7 +15,9 @@ const initialState = {
     files: {},
     actions: {
         grooveSkeleton : {
-            generate : null
+            generate : null,
+            noteTriggerRecord : null,
+            clearGrooveSkeleton : null
         }
     },
     settings: {

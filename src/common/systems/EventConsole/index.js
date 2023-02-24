@@ -61,6 +61,12 @@ const EventConsole = memo(({ show }) => {
             updateEventLog('Update System', event)
         });
 
+        EventBus.on("Update Input", (event) => {
+            //console.log('Update System', event)
+            updateEventLog('Update Input', event)
+        });
+
+
         EventBus.on("Update Transport", (event) => {
             //console.log('Update Transport', event)
             updateEventLog('Update Transport', event)
@@ -95,6 +101,7 @@ const EventConsole = memo(({ show }) => {
 
         return () => {
             EventBus.remove("Update System");
+            EventBus.remove("Update Input");
             EventBus.remove("Update Transport");
             EventBus.remove("Update Instrument");
             EventBus.remove("Update Dashboard");

@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import useEventListener from '../../../common/hooks/useEventListener';
+import EventBus from '../../../common/systems/EventBus';
 import { deselectPanel } from '../actions';
 
 
@@ -11,6 +12,14 @@ const useKeyboardInput = () => {
 
     useEventListener('keyup', (evt) => {
 /*         console.log('keyup', evt); */
+        
+        EventBus.dispatch("Update Input", {
+            label: "Keyboard keyup",
+            data: {
+                action: evt.code
+            }
+        });
+
 
         if (evt.code === "Escape") {
             dispatch(deselectPanel());

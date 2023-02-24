@@ -112,6 +112,18 @@ const Music = {
        
         return  allScaleNotes.sort(function(a, b){return b.number-a.number}).reverse();
 
+    },
+
+    getCurrentScale() {
+        return {
+            rootNote: window.riffSettings.scale.rootNote, 
+            scaleType: window.riffSettings.scale.type
+        };
+    },
+
+    isNoteInScale() {
+        
+        return false;
     }
 };
 

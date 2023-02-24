@@ -98,9 +98,8 @@ const GuitarTablatureTrack = memo(({ guitar, machineId, updateControl = null }) 
 
     const guitarMachine = useGuitarMachine(machineId);
 
-
-
     const dispatch = useDispatch();
+
     useEffect(() => {
         dispatch(attachGuitarMachine(machineId, {
             tablatureTrack: {
@@ -194,7 +193,7 @@ const GuitarTablatureTrack = memo(({ guitar, machineId, updateControl = null }) 
         note.strings.forEach((string, index) => {
             //console.log(index, string.state);
             if (string.state) {
-                console.log('Play', guitar.GetStrings()[index].frets[string.fret]);
+                //console.log('Play', guitar.GetStrings()[index].frets[string.fret]);
                 GuitarUtils.PlayGuitarNoteOnly(guitar.GetStrings()[index].frets[string.fret], midiOutput);
             }
         });
@@ -217,7 +216,7 @@ const GuitarTablatureTrack = memo(({ guitar, machineId, updateControl = null }) 
         note.strings.forEach((string, index) => {
             //console.log(index, string.state);
             if (string.state) {
-                console.log('Stop', guitar.GetStrings()[index].frets[string.fret]);
+                //console.log('Stop', guitar.GetStrings()[index].frets[string.fret]);
                 GuitarUtils.StopGuitarNoteOnly(guitar.GetStrings()[index].frets[string.fret], midiOutput);
             }
         });

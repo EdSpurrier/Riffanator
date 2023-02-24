@@ -49,7 +49,7 @@ const GuitarUtils = {
 
     SetPlayStyle (playStyleName, midiOutputId) {
         if (playStyleName != 'open') {
-            console.log(playStyleName, this.PlayStyle);
+            //console.log(playStyleName, this.PlayStyle);
             WebMidi.outputs[midiOutputId].playNote(this.PlayStyle[playStyleName.toUpperCase()]);
         }/*  else {
             this.UnsetPlayStyle(playStyleName, midiOutputId);

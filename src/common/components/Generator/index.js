@@ -7,6 +7,8 @@ import { config } from '../../utils/config';
 import RiffGenerator from '../../utils/RiffGenerator';
 import ValueSlider from '../Forms/ValueSlider';
 import GeneratorControlBar from './ControlBar';
+import Algorithms from '../../utils/RiffGenerator/Algorithms';
+
 
 const Container = styled.div`
     padding: 0 ${({ theme }) => theme.sizes.grooveSkeleton.paddingHorizontal};
@@ -33,17 +35,27 @@ const Generator = memo(({ children }) => {
     useEffect(() => {
         generator.updateGeneratorActions({
             grooveSkeleton: {
-                generate: () => {generateGrooveSkeleton()},
+                generateSimple: () => {generateSimpleRiff()},
+                generateGrooveRiff: () => {generateGrooveRiff()},
             }
         })
     }, [dispatch])
 
-    const generateGrooveSkeleton = () => {
-        console.log('generating Groove Skeleton');
+    const generateSimpleRiff = () => {
+        console.log('generating Simple Riff');
 
         RiffGenerator.generateGooveSkeleton(generator);
 
         RiffGenerator.generateGuitarMachineTab();
+    }
+
+    
+    const generateGrooveRiff = () => {
+        console.log('generating Groove Riff');
+
+        let algorithm = Algorithms.myOwnSickness;
+
+        RiffGenerator.generateGooveRiff(algorithm);
     }
 
 

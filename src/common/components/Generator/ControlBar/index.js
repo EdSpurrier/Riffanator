@@ -47,6 +47,9 @@ const Control = styled.div`
     align-items: center;
 `
 
+const Label = styled.div`
+    margin-left: 5px;
+`
 
 
 const GeneratorControlBar = memo(({ children }) => {
@@ -63,9 +66,25 @@ const GeneratorControlBar = memo(({ children }) => {
                 <SingleButton 
                     icon={<PlayIcon size={theme.fontSizes.grooveSkeleton.controlBar} />}
                     onClickAction={()=> {
-                        generator.state.actions.grooveSkeleton.generate()
+                        generator.state.actions.grooveSkeleton.generateSimple()
                     }}
                 />
+                <Label>Simple</Label>
+                    
+            </Control>
+
+            <Control>
+                
+
+                <SingleButton 
+                    icon={<PlayIcon size={theme.fontSizes.grooveSkeleton.controlBar} />}
+                    onClickAction={()=> {
+                        generator.state.actions.grooveSkeleton.generateGrooveRiff()
+                    }}
+                />
+
+                <Label>Groove</Label>
+
             </Control>
 
             <Control>

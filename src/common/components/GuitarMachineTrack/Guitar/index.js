@@ -44,6 +44,7 @@ const Guitar = (stringCount = 7, tuningName = 'Drop-A', fretCount = 23) => {
 
         let tuning = GuitarUtils.GetGuitarTuning(tuningName);
 
+
         for (let i = 0; i < strings.length; i++) {
 
             strings[i].note = tuning[i];

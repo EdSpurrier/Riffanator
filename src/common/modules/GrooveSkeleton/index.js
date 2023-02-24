@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import GrooveSkeletonTrack from '../../components/GrooveSkeletonTrack';
 import clsx from 'clsx';
 import { useActivePanel } from '../../../State/Interaction/ActivePanel';
+import { useGenerator } from '../../../State/Generator/Generator';
 
 const Container = styled.div`
     background: ${({ theme }) => theme.colors.grooveSkeleton.background};
@@ -26,8 +27,25 @@ const Container = styled.div`
 
 const GrooveSkeleton = memo(({ name, show }) => {
 
+    const generator = useGenerator();
+
+
     const activePanel = useActivePanel({
-        name: name
+        name: name,
+        keyboardActions: [
+            {
+                key : ['Enter'],
+                action: () => {
+                    generator.state.actions.grooveSkeleton.noteTriggerRecord()
+                }
+            },
+            {
+                key : ['Delete'],
+                action: () => {
+                    generator.state.actions.grooveSkeleton.clearGrooveSkeleton()
+                }
+            }
+        ]
     });
 
     return (

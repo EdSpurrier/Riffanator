@@ -2,7 +2,9 @@ import clsx from 'clsx';
 import React, { memo, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { useGuitarMachine } from '../../../../State/GuitarMachine/Machine';
+import EventBus from '../../../systems/EventBus';
 import { config } from '../../../utils/config';
+import Music from '../../../utils/Music';
 import FretBoardControlBar from './FretBoardControlBar';
 
 const Container = styled.div`
@@ -77,6 +79,26 @@ const Fret = styled.div`
     &.active .fretNote {
         opacity: 1;
     }
+
+
+`;
+
+const FretInScale = styled.div`
+    position: absolute;
+    height: 100%;
+    width: 100%;
+
+    background: ${({ theme }) => theme.colors.machine.fretboard.fretNoteInScale.background};
+    color: ${({ theme }) => theme.colors.machine.fretboard.fretNoteInScale.text};
+    text-align: center;
+    font-weight: 700;
+    z-index: 10;
+    opacity: 0.25;
+
+    &.notInScale {
+        background: ${({ theme }) => theme.colors.machine.fretboard.fretNoteNotInScale.background};
+        color: ${({ theme }) => theme.colors.machine.fretboard.fretNoteNotInScale.text};
+    }
 `;
 
 
@@ -96,12 +118,34 @@ const FretNote = styled.div`
     text-align: center;
     font-weight: 700;
     transition: ${({ theme }) => theme.animation.med};
+    z-index: 20;
 `;
 
 
 const FretBoard = memo(({ children, guitar, machineId, showFretBoard, updateControl=null }) => {
 
     
+    const [scaleNotes, setScaleNotes] = useState([]);
+    
+    useEffect(() => {
+
+        EventBus.on("Update RiffSettings", (event) => {
+            if(event.label === 'Update Scale') {
+                let {rootNote, scaleType} = Music.getCurrentScale();
+                let scaleNotes = Music.getAllScaleNotes(rootNote, scaleType);
+
+                setScaleNotes(scaleNotes);
+            }
+        });
+
+
+
+        return () => {
+            EventBus.remove("Update RiffSettings");
+        };
+    }, []);
+
+
 
     const guitarMachine = useGuitarMachine(machineId, {
         fretboard: {
@@ -195,8 +239,13 @@ const FretBoard = memo(({ children, guitar, machineId, showFretBoard, updateCont
         let frets = [];
         let fretWidth = (150 / config.guitarMachine.machines[machineId].fretCount + 1);
         let openFret = (50 / config.guitarMachine.machines[machineId].fretCount + 1);
+
+
         for (let i = 0; i < config.guitarMachine.machines[machineId].fretCount + 1; i++) {
             //console.log((singleDotFrets.includes(i)?'single':doubleDotFrets.includes(i)?'double':''));
+
+            let inScale = scaleNotes.filter((note)=> note.name === guitar.GetStrings()[stringId].frets[i]).length > 0;
+
             frets.push(
                 <Fret
                     className={clsx('fret', `fretboard-location-${stringId}-${i}`, (singleDotFrets.includes(i) ? 'single' : doubleDotFrets.includes(i) ? 'double' : ''))}
@@ -206,6 +255,7 @@ const FretBoard = memo(({ children, guitar, machineId, showFretBoard, updateCont
                     onClick={(event)=>{selectFret(event, i)}}
                 >
                     <FretNote className={clsx('fretNote')}>{i}</FretNote>
+                    <FretInScale  className={clsx(inScale?'':'notInScale')}/>
                 </Fret>
             );
             fretWidth -= (config.guitarMachine.machines[machineId].fretCount / 150);
@@ -267,7 +317,7 @@ const FretBoard = memo(({ children, guitar, machineId, showFretBoard, updateCont
 
         <Container>
             <FretBoardContainer className={clsx(showFretBoard ? 'show' : 'hide', 'fretboard')}>
-                {renderStrings(guitar)}
+                {renderStrings(guitar, scaleNotes)}
             </FretBoardContainer>
             <FretBoardControlBar 
                 machineId={machineId}
