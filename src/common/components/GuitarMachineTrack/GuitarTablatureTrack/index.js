@@ -169,6 +169,8 @@ const GuitarTablatureTrack = memo(({ guitar, machineId, updateControl = null }) 
         window.midi.guitars[machineId].initialized = true;
 
         window.guitars[machineId].actions.cloneGrooveSkeleton = cloneGrooveSkeleton;
+        window.guitars[machineId].actions.overwriteTablature = overwriteTablature;
+        
     }
 
 
@@ -486,6 +488,10 @@ const GuitarTablatureTrack = memo(({ guitar, machineId, updateControl = null }) 
 
     }
 
+    const overwriteTablature = (newTablature) => {
+        setTablature(newTablature);
+        window.guitars[machineId].tablature = newTablature;         
+    }
 
     useEffect(() => {
 

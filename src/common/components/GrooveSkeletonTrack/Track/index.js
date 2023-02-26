@@ -192,7 +192,7 @@ const GrooveSkeletonTrackTrackLane = memo(({ children }) => {
             grooveSkeleton: {
                 noteTriggerRecord: () => {noteTriggerRecord()},
                 clearGrooveSkeleton: () => {clearGrooveSkeleton()},
-                loadGrooveSkeleton: () => {loadGrooveSkeleton()},
+                /* loadGrooveSkeleton: () => {loadGrooveSkeleton()}, */
             }
         })
     }, [dispatch])
@@ -240,11 +240,14 @@ const GrooveSkeletonTrackTrackLane = memo(({ children }) => {
         window.grooveSkeleton.actions.overwriteGroove = overwriteGroove;
         window.grooveSkeleton.actions.clearGrooveSkeleton = clearGrooveSkeleton;
         window.grooveSkeleton.actions.noteTriggerRecord = noteTriggerRecord;
+        
     }
     
     const overwriteGroove = (newGroove) => {
+        console.log(window.grooveSkeleton.groove, newGroove);
         window.grooveSkeleton.groove = newGroove;
         setGroove(newGroove);
+        
     }
 
 

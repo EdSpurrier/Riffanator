@@ -33,7 +33,7 @@ const FileManagement = {
         })
     }, */
 
-    loadFile(file) {
+    loadRiffFile(file) {
 
         console.log('loadFile()');
         let fileReader = new FileReader();
@@ -41,13 +41,16 @@ const FileManagement = {
         
         fileReader.onload = (event) => {
       
-            const riffJSON = JSON.parse(event.target.result);
+            const riffJSON = JSON.parse(event.target.result)[0];
 
             // or do whatever manipulation you want on JSON.parse(event.target.result) here.
             console.log('loadFile', riffJSON);
 
-            
-          
+            window.riffSettings.riffName = riffJSON.riffName;
+            console.log(riffJSON.grooveSkeleton, riffJSON['grooveSkeleton']);
+            window.grooveSkeleton.actions.overwriteGroove(riffJSON.grooveSkeleton);
+            window.guitars[0].actions.overwriteTablature(riffJSON.guitar_1);
+            window.guitars[1].actions.overwriteTablature(riffJSON.guitar_2);
         };
         fileReader.readAsText(file[0]);
 
