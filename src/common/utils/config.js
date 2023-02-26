@@ -9,8 +9,15 @@ exports.config = {
         to: 1,
     },
 
+   
+
+    fileManager: {
+        saveFolder: '',
+        fileName: 'riffname-[tag].json'
+    },
 
     riffSettings : {
+        riffName    : 'Riff Name',
         rootOctave  : 2,
         bars        : 4,
         scale  : {

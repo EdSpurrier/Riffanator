@@ -5,6 +5,8 @@ import SettingsIcon from '../../common/components/Icons/SettingsIcon';
 import SideBar from '../../common/components/SideBar';
 import SideBarButton from '../../common/components/SideBar/SideBarButton';
 import ConsoleIcon from '../../common/components/Icons/ConsoleIcon';
+import SaveIcon from '../../common/components/Icons/SaveIcon';
+
 
 function getItem(label, keyId, icon) {
     return {
@@ -15,6 +17,7 @@ function getItem(label, keyId, icon) {
 }
 
 const items = [
+    getItem('File Manager', 'File Manager', <SaveIcon size={'1.25em'} />),
     getItem('Generator Settings', 'Generator Settings', <LevelsIcon size={'1.25em'} />),
     getItem('System Settings', 'System Settings', <SettingsIcon size={'1.25em'} />),
     getItem('Event Console', 'Event Console', <ConsoleIcon size={'1.25em'} />),
@@ -66,7 +69,7 @@ const SideBarRight = memo(() => {
 
 
     return (
-        <SideBar>
+        <SideBar side={'right'}>
             {renderMenuButtons(items)}
         </SideBar>
     );

@@ -8,8 +8,7 @@ const Button = styled.button`
     cursor: pointer;
 
     colour: ${({ theme }) => theme.colors.controlBar.button.unselected};
-
-
+    border-radius: 3px;
 
     &.selected {
         
@@ -18,6 +17,7 @@ const Button = styled.button`
         svg g, svg {
             fill: ${({ theme }) => theme.colors.controlBar.button.selected};
         }
+
     }
 
     &:hover {
@@ -28,11 +28,42 @@ const Button = styled.button`
         }
     }
 
+    &.standard {
+
+        padding: ${({ theme }) => theme.sizes.button.standard.padding};
+        background: ${({ theme }) => theme.colors.button.background};
+        color: ${({ theme }) => theme.colors.button.text};
+        font-size : ${({ theme }) => theme.fontSizes.button};
+
+        svg g, svg {
+            fill: ${({ theme }) => theme.colors.button.text};
+        }
+
+
+        &.selected {
+            background: ${({ theme }) => theme.colors.button.selected.background};
+            color: ${({ theme }) => theme.colors.button.selected.text};
+            svg g, svg {
+                fill: ${({ theme }) => theme.colors.button.selected.text};
+            }
+        }
+
+        &:hover {
+            background: ${({ theme }) => theme.colors.button.hover.background};
+            color: ${({ theme }) => theme.colors.button.hover.text};
+            svg g, svg {
+                fill: ${({ theme }) => theme.colors.button.hover.text};
+            }
+        }
+
+
+    }
+
     svg g, svg {
         fill: ${({ theme }) => theme.colors.controlBar.button.unselected};
         transition: fill ${({ theme }) => theme.animation.fast};
     }
-    
+
 `;
 
 
@@ -44,7 +75,8 @@ const SingleButton = memo(({
     icon, 
     text,
     classNames, 
-    onClickAction
+    onClickAction,
+    buttonStyle
 }) => {
 
     const onButtonClick = (event) => {
@@ -61,7 +93,7 @@ const SingleButton = memo(({
     }
 
     return (
-        <Button onClick={onButtonClick} className={clsx(classNames)}>
+        <Button onClick={onButtonClick} className={clsx(classNames, buttonStyle==='standard'?'standard':'')}>
             {icon}{text}
         </Button>
     );

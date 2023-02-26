@@ -7,6 +7,10 @@ import TransportSettings from './TransportSettings';
 
 
 const Container = styled.div`
+  position      : fixed;
+  bottom        : 10px;
+  left          : 0px;
+  right         : 0px;
   background    : ${({ theme }) => theme.colors.transport.background};
   height        : ${({ theme }) => theme.sizes.transport.height};
   width         : 100%;

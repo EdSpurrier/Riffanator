@@ -6,6 +6,7 @@ import Music from '../../utils/Music';
 import clsx from 'clsx';
 import { useActivePanel } from '../../../State/Interaction/ActivePanel';
 import { config } from '../../utils/config';
+import TextInput from '../../components/Forms/Input';
 
 const Container = styled.div`
     background: ${({ theme }) => theme.colors.riffSettings.background};
@@ -96,6 +97,7 @@ const Input = styled.input`
 `
 
 window.riffSettings = {
+    riffName    : 'Unsaved Name',
     rootOctave  : config.riffSettings.rootOctave,
     bars        : config.riffSettings.bars,
     scale  : {
@@ -235,7 +237,11 @@ const RiffSettings = memo(({ name, show }) => {
                         </ControlColumn>
                     </Control>
                     <Control>       
-
+                        <TextInput
+                            name={'riffName'} 
+                            inputValue={config.riffSettings.riffName} 
+                            onChangeAction={(riffName) => {window.riffSettings.riffName = riffName}} 
+                        />
                     </Control>
                     
                     <Control>

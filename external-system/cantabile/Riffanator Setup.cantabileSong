@@ -1,0 +1,553 @@
+{
+	"metronome": 
+	{
+		"timeSignature": "4\/4",
+		"tempo": 120,
+		"masterTransportId": "metronome",
+		"soundsGain": 1,
+		"soundsMeasureBeatBalance": 0,
+		"soundsEnabled": false,
+		"measureSoundsEnabled": true,
+		"stateManager": 
+		{
+			"behaviour": 3,
+			"indexedBehaviour": null,
+			"externalBehaviour": 0,
+			"externalIndexedBehaviour": null,
+			"nonLinkedBehaviour": 0,
+			"nonLinkedIndexedBehaviour": null,
+			"resetBehaviour": 0,
+			"resetIndexedBehaviour": null,
+			"states": {},
+			"resetState": null
+		}
+	},
+	"primaryView": null,
+	"onscreenKeyboardState": 
+	{
+		"activeOctaveA": 4,
+		"activeOctaveB": 5,
+		"stateManager": 
+		{
+			"behaviour": 3,
+			"indexedBehaviour": null,
+			"externalBehaviour": 0,
+			"externalIndexedBehaviour": null,
+			"nonLinkedBehaviour": 0,
+			"nonLinkedIndexedBehaviour": null,
+			"resetBehaviour": 0,
+			"resetIndexedBehaviour": null,
+			"states": {},
+			"resetState": null
+		}
+	},
+	"showNotes": [],
+	"currentState": null,
+	"bindings": [],
+	"bindingGroups": 
+	[
+		{
+			"name": "General",
+			"expanded": true,
+			"enabled": true,
+			"slotColor": "Default",
+			"userNotes": null,
+			"stateManager": 
+			{
+				"behaviour": 0,
+				"indexedBehaviour": null,
+				"externalBehaviour": 0,
+				"externalIndexedBehaviour": null,
+				"nonLinkedBehaviour": 0,
+				"nonLinkedIndexedBehaviour": null,
+				"resetBehaviour": 0,
+				"resetIndexedBehaviour": null,
+				"states": {},
+				"resetState": null
+			},
+			"uniqueID": 1
+		}
+	],
+	"states": [],
+	"triggers": [],
+	"viewAsRoutingDiagram": true,
+	"showPortsInRoutingDiagram": true,
+	"savedByVersion": "4.0.4061",
+	"nextUniqueID": 4,
+	"objects": 
+	[
+		{
+			"kind": "InputPortProvider",
+			"transpose": 0,
+			"inputGain": 1,
+			"stateManager": 
+			{
+				"behaviour": 2,
+				"indexedBehaviour": null,
+				"externalBehaviour": 0,
+				"externalIndexedBehaviour": null,
+				"nonLinkedBehaviour": 0,
+				"nonLinkedIndexedBehaviour": null,
+				"resetBehaviour": 0,
+				"resetIndexedBehaviour": null,
+				"states": {},
+				"resetState": null
+			},
+			"userNotes": null,
+			"portWiringPositions": 
+			{
+				"MIDI.Main Keyboard": 125,
+				"MIDI.Onscreen Keyboard": 275,
+				"Audio.Main Microphone": 115,
+				"MIDI.GrooveSkeleton": 40,
+				"MIDI.Guitar 1": 65,
+				"MIDI.Guitar 2": 90
+			},
+			"wiringPositionX": 150,
+			"wiringPositionY": 0,
+			"nextUniqueID": 1,
+			"uniqueId": 1,
+			"routes": 
+			[
+				{
+					"kind": "midiRoute",
+					"sourceChannelMask": 65535,
+					"keyRangeMin": 0,
+					"keyRangeMax": 127,
+					"transpose": 0,
+					"velocityCurve": 
+					{
+						"inputMin": 0,
+						"inputMax": 127,
+						"outputMin": 0,
+						"outputMax": 127,
+						"curveKind": "ExpandCompress",
+						"curveAmount": 0
+					},
+					"targetChannel": -1,
+					"conditionOperator": "GreaterThanOrEqual",
+					"conditionValue": 64,
+					"notesOnly": false,
+					"enableSourceProgramNumber": false,
+					"sourceProgramNumber": 8421376,
+					"ignoreSharedTranspose": false,
+					"showKeyRange": false,
+					"keyRangeColor": "Auto",
+					"enableConditionCC": false,
+					"conditionCC": 0,
+					"midiFilter": 
+					{
+						"items": []
+					},
+					"stateManager": 
+					{
+						"behaviour": 917,
+						"indexedBehaviour": null,
+						"externalBehaviour": 0,
+						"externalIndexedBehaviour": null,
+						"nonLinkedBehaviour": 0,
+						"nonLinkedIndexedBehaviour": null,
+						"resetBehaviour": 0,
+						"resetIndexedBehaviour": null,
+						"states": {},
+						"resetState": null
+					},
+					"wiringStartInset": 10,
+					"wiringEndInset": 10,
+					"enabled": true,
+					"userNotes": null,
+					"uniqueID": 1,
+					"name": null,
+					"sourcePort": "Main Keyboard",
+					"targetKind": "Plugin",
+					"targetName": "Odin II 1",
+					"targetPort": "MIDI In"
+				}
+			],
+			"name": "InputPort",
+			"displayExpanded": true,
+			"slotColor": "Default"
+		},
+		{
+			"kind": "OutputPortProvider",
+			"outputGain": 1,
+			"stateManager": 
+			{
+				"behaviour": 0,
+				"indexedBehaviour": null,
+				"externalBehaviour": 0,
+				"externalIndexedBehaviour": null,
+				"nonLinkedBehaviour": 0,
+				"nonLinkedIndexedBehaviour": null,
+				"resetBehaviour": 0,
+				"resetIndexedBehaviour": null,
+				"states": {},
+				"resetState": null
+			},
+			"userNotes": null,
+			"portWiringPositions": 
+			{
+				"MIDI.External Synth": 125,
+				"MIDI.Onscreen Keyboard": 275,
+				"Audio.Main Speakers": 40,
+				"Audio.Metronome": 575
+			},
+			"wiringPositionX": 150,
+			"wiringPositionY": 0,
+			"nextUniqueID": 1,
+			"uniqueId": 2,
+			"routes": [],
+			"name": "OutputPort",
+			"displayExpanded": true,
+			"slotColor": "Default"
+		},
+		{
+			"kind": "Plugin",
+			"pluginPath": "C:\\Program Files\\Common Files\\VST3\\Odin II.vst3>5653544f-4449-496f-6469-6e2069690000",
+			"pluginId": "5653544f-4449-496f-6469-6e2069690000",
+			"selectedProgram": 0,
+			"pluginData": "SnTyDWBlYGBQAWJTM1NjUxOTNF0TExNLXRNLszRdMxMzS12zVCMDM0szSwMgACpjYIRiGLsByhYE4oCc0vTMPIXgvMSC4oz8EgVDqBzDsec/5oNpoI6w4BBjRiQLQfaBrAPZhmzZNKgtYcUl4UCKA2avc3KeN5Dp5+bknAHkMvm7eHoyMMFsGnCwLczZSLEQyLAJygcGQXhxZlWqrZKhHshL6EDJzsYxJye0OLUoILEoMdfOQM8YDHQMgdBAzwhEARlgjomhmZmZOZBjoGdqo4+izUYfZJUd3Aleoc6uAUWZZYklqS6JJYkMjIxOlQWJxcVABjODLHZFPpnFJaBAdM7PLQDHMxCkQWPAOT+vBBYbMAAAAAD//wMA",
+			"uiSettings": 
+			{
+				"GuiEditorOpen": false,
+				"guiEditorPlacement": "440.8,139.2,654.4,545.6,False:False,1",
+				"guiEditorPlacementDetached": false
+			},
+			"blobs": {},
+			"midiPassthrough": false,
+			"trackParameterChanges": false,
+			"shouldFlushTailSounds": false,
+			"runMode": "Running",
+			"midiPorts": 
+			[
+				{
+					"IsInput": true,
+					"midiFilter": 
+					{
+						"items": []
+					},
+					"pluginPortName": "MIDI In",
+					"name": "MIDI In"
+				}
+			],
+			"audioPorts": 
+			[
+				{
+					"kind": "input",
+					"channels": 
+					[
+						{
+							"name": "L",
+							"assignments": 
+							[
+								{
+									"assignedChannel": "#0",
+									"mixLevel": 1,
+									"panPlacement": "None",
+									"fadePlacement": "None"
+								}
+							]
+						},
+						{
+							"name": "R",
+							"assignments": 
+							[
+								{
+									"assignedChannel": "#1",
+									"mixLevel": 1,
+									"panPlacement": "None",
+									"fadePlacement": "None"
+								}
+							]
+						}
+					],
+					"aliases": null,
+					"enabled": true,
+					"default": false,
+					"showInMonitor": true,
+					"includeInMasterIndicator": true,
+					"name": "Input In"
+				},
+				{
+					"kind": "output",
+					"channels": 
+					[
+						{
+							"name": "L",
+							"assignments": 
+							[
+								{
+									"assignedChannel": "pluginOutput\\#0",
+									"mixLevel": 1,
+									"panPlacement": "LeftBalance",
+									"fadePlacement": "FrontBalance"
+								},
+								{
+									"assignedChannel": "pluginInput\\#0",
+									"mixLevel": 1,
+									"panPlacement": "None",
+									"fadePlacement": "None"
+								}
+							]
+						},
+						{
+							"name": "R",
+							"assignments": 
+							[
+								{
+									"assignedChannel": "pluginOutput\\#1",
+									"mixLevel": 1,
+									"panPlacement": "RightBalance",
+									"fadePlacement": "FrontBalance"
+								},
+								{
+									"assignedChannel": "pluginInput\\#1",
+									"mixLevel": 1,
+									"panPlacement": "None",
+									"fadePlacement": "None"
+								}
+							]
+						}
+					],
+					"aliases": null,
+					"enabled": true,
+					"default": false,
+					"showInMonitor": true,
+					"includeInMasterIndicator": true,
+					"name": "Output Out"
+				}
+			],
+			"gain": 1,
+			"audioBypass": false,
+			"wetDryBalance": 1,
+			"panPosition": 0,
+			"fadePosition": 1,
+			"pluginInputChannelCount": 2,
+			"pluginOutputChannelCount": 2,
+			"switchPresetOnProgramChange": false,
+			"userNotes": null,
+			"stateManager": 
+			{
+				"behaviour": 115,
+				"indexedBehaviour": null,
+				"externalBehaviour": 0,
+				"externalIndexedBehaviour": null,
+				"nonLinkedBehaviour": 0,
+				"nonLinkedIndexedBehaviour": null,
+				"resetBehaviour": 0,
+				"resetIndexedBehaviour": null,
+				"states": {},
+				"resetState": null
+			},
+			"solo": false,
+			"soloControl": true,
+			"morphSets": {},
+			"wiringPositionX": 431.80000000000007,
+			"wiringPositionY": 149.8,
+			"nextUniqueID": 1,
+			"uniqueId": 3,
+			"routes": 
+			[
+				{
+					"kind": "audioRoute",
+					"gainLevel": 1,
+					"stateManager": 
+					{
+						"behaviour": 13,
+						"indexedBehaviour": null,
+						"externalBehaviour": 0,
+						"externalIndexedBehaviour": null,
+						"nonLinkedBehaviour": 0,
+						"nonLinkedIndexedBehaviour": null,
+						"resetBehaviour": 0,
+						"resetIndexedBehaviour": null,
+						"states": {},
+						"resetState": null
+					},
+					"wiringStartInset": 10,
+					"wiringEndInset": 10,
+					"enabled": true,
+					"userNotes": null,
+					"uniqueID": 1,
+					"name": null,
+					"sourcePort": "Output Out",
+					"targetKind": "Plugin",
+					"targetName": "Toneforge - Misha Mansoor 1",
+					"targetPort": "Input In"
+				}
+			],
+			"name": "Odin II 1",
+			"displayExpanded": true,
+			"slotColor": "Default"
+		},
+		{
+			"kind": "Plugin",
+			"pluginPath": "C:\\Program Files\\Common Files\\VST3\\Toneforge - Misha Mansoor.vst3>56535454-666d-4d74-6f6e-65666f726765",
+			"pluginId": "56535454-666d-4d74-6f6e-65666f726765",
+			"selectedProgram": 0,
+			"pluginData": "xJdRb9MwEMfTISSeNvEBkErF67SuWzIhbUhrYSBYRMVKeZzc2G0skjiznW7liY/BR+Bjck7SJG1ju29EiuLtfr3/+XJnx2joj587jvMGbtdzz9xz9/zY8zx8fI4vYDT3yLHnwj/mFwPvwnMBczrlvR7/Lscv4R5H2YIm3bsEpSJksnta2pw5mh+q598jx5neTc46DUGlp+SUWlPsCVh1TYX8AY8Xa91RkHxxnKP+zXAUwp8Hk3nsg+VgrfV/r8M/09Hg9R3M9nLCEjJnfEHufSpCdO+jRDDG312Or79d+12Kr3qCRCSQBE8peex1lyjKyFXvtHfSZGiSZrIy9jeNKE6DiKBkgWhSO+i3UDxLgnADe7tLgSu86crVCC5ZlMWk4lydop1Tmnt4W88yWMHQlI5qojZyPVkbFzNcmwftkUXs0Rp9TLGVCekitCfVppZDNrkcsumpHFnUFGLRUohRKZ97yokgSaAvgyJkK6bU7L6UIoeS0r75Qs2IKCUjwDJpaN4FkvUvj7WtJiFzxgUgD9RGqVitnpScQHYxM6OkLF7y951xblWyQPm7tvjJ+wrxmCU0EFbBfci8nvfxqKQDFqtqFMw+2b1QJW4HAzSTq1RbmDENTGbKt1bkLTsmEVrF9EnbXgXAcBYhSVnySLGsu9/Mzjl5yKB3V0aek5QgKcwBSNiB9btijghJOGG6vbfw0kxUG5AyQVXkRigK6iXytA2YrVIk6gltIUHIeCZmEUn0K23BYJI2ct3O8ObK046Yc1eGYwyZkyXhM6jTfHq6t1lQgv7SB1QgkurrsSSMIReMqWjLUCBihG1+ngbmWMypAYmACigZJCUKflox6EZt1BU04xvLu5bDnC61mayojc1pJwm1qHGe5OEGunnYJM7aiFtmtvuN74tWYMIJ9Iae+QjfeRth9NuIRhit9mYYrcBWGDvM0Nzj1ao+CeEZskgrV6NfNz8xdju1In0Ca53f/JjV6pvjlFkCjrJGffRbgC0fW4igiwRFKZJhSjCK7BjsfHYIdj07FKMFDezYvF4otAx5sDMRjSkkXrujY5xvHii6x0giZTzRnRyrU+bn76MPY2hj6NH38COn0ymyDYNnzqt26JYKqQ7JI3jL/RL5VJ6xRyyR6/P2+voHAAD//wMA",
+			"uiSettings": 
+			{
+				"GuiEditorOpen": false,
+				"guiEditorPlacement": "420,236.8,1",
+				"guiEditorPlacementDetached": false
+			},
+			"blobs": {},
+			"midiPassthrough": false,
+			"trackParameterChanges": false,
+			"shouldFlushTailSounds": false,
+			"runMode": "Running",
+			"midiPorts": [],
+			"audioPorts": 
+			[
+				{
+					"kind": "input",
+					"channels": 
+					[
+						{
+							"name": "L",
+							"assignments": 
+							[
+								{
+									"assignedChannel": "#0",
+									"mixLevel": 1,
+									"panPlacement": "None",
+									"fadePlacement": "None"
+								}
+							]
+						},
+						{
+							"name": "R",
+							"assignments": 
+							[
+								{
+									"assignedChannel": "#1",
+									"mixLevel": 1,
+									"panPlacement": "None",
+									"fadePlacement": "None"
+								}
+							]
+						}
+					],
+					"aliases": null,
+					"enabled": true,
+					"default": false,
+					"showInMonitor": true,
+					"includeInMasterIndicator": true,
+					"name": "Input In"
+				},
+				{
+					"kind": "output",
+					"channels": 
+					[
+						{
+							"name": "L",
+							"assignments": 
+							[
+								{
+									"assignedChannel": "pluginOutput\\#0",
+									"mixLevel": 1,
+									"panPlacement": "LeftBalance",
+									"fadePlacement": "FrontBalance"
+								},
+								{
+									"assignedChannel": "pluginInput\\#0",
+									"mixLevel": 1,
+									"panPlacement": "None",
+									"fadePlacement": "None"
+								}
+							]
+						},
+						{
+							"name": "R",
+							"assignments": 
+							[
+								{
+									"assignedChannel": "pluginOutput\\#1",
+									"mixLevel": 1,
+									"panPlacement": "RightBalance",
+									"fadePlacement": "FrontBalance"
+								},
+								{
+									"assignedChannel": "pluginInput\\#1",
+									"mixLevel": 1,
+									"panPlacement": "None",
+									"fadePlacement": "None"
+								}
+							]
+						}
+					],
+					"aliases": null,
+					"enabled": true,
+					"default": false,
+					"showInMonitor": true,
+					"includeInMasterIndicator": true,
+					"name": "Output Out"
+				}
+			],
+			"gain": 1,
+			"audioBypass": false,
+			"wetDryBalance": 1,
+			"panPosition": 0,
+			"fadePosition": 1,
+			"pluginInputChannelCount": 2,
+			"pluginOutputChannelCount": 2,
+			"switchPresetOnProgramChange": false,
+			"userNotes": null,
+			"stateManager": 
+			{
+				"behaviour": 115,
+				"indexedBehaviour": null,
+				"externalBehaviour": 0,
+				"externalIndexedBehaviour": null,
+				"nonLinkedBehaviour": 0,
+				"nonLinkedIndexedBehaviour": null,
+				"resetBehaviour": 0,
+				"resetIndexedBehaviour": null,
+				"states": {},
+				"resetState": null
+			},
+			"solo": false,
+			"soloControl": true,
+			"morphSets": {},
+			"wiringPositionX": 812.6000000000001,
+			"wiringPositionY": 398.19999999999993,
+			"nextUniqueID": 1,
+			"uniqueId": 4,
+			"routes": 
+			[
+				{
+					"kind": "audioRoute",
+					"gainLevel": 1,
+					"stateManager": 
+					{
+						"behaviour": 13,
+						"indexedBehaviour": null,
+						"externalBehaviour": 0,
+						"externalIndexedBehaviour": null,
+						"nonLinkedBehaviour": 0,
+						"nonLinkedIndexedBehaviour": null,
+						"resetBehaviour": 0,
+						"resetIndexedBehaviour": null,
+						"states": {},
+						"resetState": null
+					},
+					"wiringStartInset": 10,
+					"wiringEndInset": 10,
+					"enabled": true,
+					"userNotes": null,
+					"uniqueID": 1,
+					"name": null,
+					"sourcePort": "Output Out",
+					"targetKind": "OutputPortProvider",
+					"targetName": "OutputPort",
+					"targetPort": "Main Speakers"
+				}
+			],
+			"name": "Toneforge - Misha Mansoor 1",
+			"displayExpanded": true,
+			"slotColor": "Default"
+		}
+	],
+	"modifiedBehaviour": "SignificantChanges"
+}

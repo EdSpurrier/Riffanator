@@ -192,6 +192,7 @@ const GrooveSkeletonTrackTrackLane = memo(({ children }) => {
             grooveSkeleton: {
                 noteTriggerRecord: () => {noteTriggerRecord()},
                 clearGrooveSkeleton: () => {clearGrooveSkeleton()},
+                loadGrooveSkeleton: () => {loadGrooveSkeleton()},
             }
         })
     }, [dispatch])

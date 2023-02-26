@@ -81,10 +81,20 @@ const sizes = {
         padding: standardSizes.padding.small,
     },
     slidePanel: {
-        width: standardSizes.panels.width.large,
+        width: standardSizes.panels.width.small,
         padding: standardSizes.padding.small,
     },
 
+    button: {
+        standard: {
+            padding: standardSizes.padding.micro
+        }
+    },
+
+    input: {
+        padding: standardSizes.padding.micro,
+        minWidth: "100px"
+    },
 
     machine : {
         paddingVertical: standardSizes.padding.micro,
